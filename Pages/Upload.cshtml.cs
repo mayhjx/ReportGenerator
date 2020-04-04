@@ -169,7 +169,7 @@ namespace ReportGenerator.Pages
             Report.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
             Report.Bias = string.Join(",", from key in targetResult.Keys
                                            let bias = matchResult.GetValueOrDefault(key) / targetResult.GetValueOrDefault(key) - 1
-                                           select SignificantDigits.Reserved(bias, significantDigit));
+                                           select bias.ToString($"F{significantDigit}"));
 
             // 各参数条件判断 不通过则停止程序并提示
 

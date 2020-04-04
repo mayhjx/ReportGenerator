@@ -78,7 +78,7 @@ namespace ReportGenerator.Models
         public string Approver { get; set; } // 学科主任(Section director)
 
         [DataType(DataType.Date)]
-        [Display(Name = "调查日期")]
+        [Display(Name = "审核日期")]
         public DateTime ApprovalDate { get; set; } // 审批日期
     }
 }
