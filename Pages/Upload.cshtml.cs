@@ -33,7 +33,7 @@ namespace ReportGenerator.Pages
         public UploadForm UploadForm { get; set; }
 
         [BindProperty]
-        public Report ReportData { get; set; }
+        public Report Report { get; set; }
 
         // 提示信息
         public string Message { get; private set; } = "";
@@ -57,14 +57,14 @@ namespace ReportGenerator.Pages
 
             string template = UploadForm.Template;
 
-            ReportData.Item = UploadForm.Item;
-            ReportData.TargetInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.TargetFile.FileName);
-            ReportData.MatchInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.MatchFile.FileName);
+            Report.Item = UploadForm.Item;
+            Report.TargetInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.TargetFile.FileName);
+            Report.MatchInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.MatchFile.FileName);
 
-            var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == ReportData.Item);
-            ReportData.ALE = project.ALE;
-            ReportData.Xc1 = project.Xc1;
-            ReportData.Xc2 = project.Xc2;
+            var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == Report.Item);
+            Report.ALE = project.ALE;
+            Report.Xc1 = project.Xc1;
+            Report.Xc2 = project.Xc2;
 
             // 读取数据 包括不同编码格式 岛津是ansi格式, decode?
             // 不同平台要使用不同的模块读取，增加一个输入框用于输入平台
@@ -154,7 +154,7 @@ namespace ReportGenerator.Pages
                     Message = $"实验号不一致: {key}";
                     return Page();
                 }
-                if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > ReportData.ALE)
+                if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > Report.ALE)
                 {
                     Message = $"结果一致性未通过：{key}";
                     return Page();
@@ -164,10 +164,10 @@ namespace ReportGenerator.Pages
             int significantDigit = project.SignificantDigits;
 
             // 结果保留n位有效数字后以逗号分隔的字符串保存到数据库
-            ReportData.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
-            ReportData.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-            ReportData.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-            ReportData.Bias = string.Join(",", from key in targetResult.Keys
+            Report.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
+            Report.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
+            Report.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
+            Report.Bias = string.Join(",", from key in targetResult.Keys
                                                let bias = matchResult.GetValueOrDefault(key) / targetResult.GetValueOrDefault(key) - 1
                                                select SignificantDigits.Reserved(bias, significantDigit));
 
@@ -196,32 +196,32 @@ namespace ReportGenerator.Pages
             }
 
             // 当P值小于0.1
-            if (ReportData.P <= 0.1)
+            if (Report.P <= 0.1)
             {
                 Message = $"两组数据线性相关性差: P<=0.10";
                 return Page();
             }
 
             // 最大SE/Xc > 1/2ALE
-            if (MaxSEDivXc(ReportData.Xc1) * 2 > ReportData.ALE)
+            if (MaxSEDivXc(Report.Xc1) * 2 > Report.ALE)
             {
-                Message = $"医学决定水平一处最大SE/Xc={MaxSEDivXc(ReportData.Xc1)} >1/2ALE";
+                Message = $"医学决定水平一处最大SE/Xc={MaxSEDivXc(Report.Xc1)} >1/2ALE";
                 return Page();
             }
-            if (MaxSEDivXc(ReportData.Xc2) * 2 > ReportData.ALE)
+            if (MaxSEDivXc(Report.Xc2) * 2 > Report.ALE)
             {
-                Message = $"医学决定水平二处最大SE/Xc={MaxSEDivXc(ReportData.Xc2)} >1/2ALE";
+                Message = $"医学决定水平二处最大SE/Xc={MaxSEDivXc(Report.Xc2)} >1/2ALE";
                 return Page();
             }
 
-            return RedirectToPage("QuantitativeReports/Create", "Generate", ReportData);
+            return RedirectToPage("QuantitativeReports/Create", "Generate", Report);
         }
 
         // 返回最大SE/Xc
         double MaxSEDivXc(double Xc)
         {
-            return Math.Max(Math.Abs((ReportData.bLCI * Xc + ReportData.aLCI) / Xc - 1),
-                            Math.Abs((ReportData.bUCI * Xc + ReportData.aUCI) / Xc - 1));
+            return Math.Max(Math.Abs((Report.bLCI * Xc + Report.aLCI) / Xc - 1),
+                            Math.Abs((Report.bUCI * Xc + Report.aUCI) / Xc - 1));
         }
 
         /// <summary>
@@ -248,15 +248,15 @@ namespace ReportGenerator.Pages
             {
                 Directory.CreateDirectory(PictureDir);
             }
-            string imagePath = Path.Combine(PictureDir, ReportData.Item + "-" + DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".png").Replace("\\", "/");
+            string imagePath = Path.Combine(PictureDir, Report.Item + "-" + DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".png").Replace("\\", "/");
 
-            ReportData.PicturePath = Path.Combine(@"\Pictures", Path.GetFileName(imagePath));
+            Report.PicturePath = Path.Combine(@"\Pictures", Path.GetFileName(imagePath));
 
-            engine.SetSymbol("target", engine.CreateCharacter(ReportData.TargetInstrumentName));
-            engine.SetSymbol("match", engine.CreateCharacter(ReportData.MatchInstrumentName));
+            engine.SetSymbol("target", engine.CreateCharacter(Report.TargetInstrumentName));
+            engine.SetSymbol("match", engine.CreateCharacter(Report.MatchInstrumentName));
             engine.SetSymbol("filename", engine.CreateCharacter(imagePath));
-            engine.SetSymbol("检测系统A结果", engine.CreateNumericVector(ReportData.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
-            engine.SetSymbol("检测系统B结果", engine.CreateNumericVector(ReportData.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
+            engine.SetSymbol("检测系统A结果", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
+            engine.SetSymbol("检测系统B结果", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
 
             // 调用 R
             string RSourcePath = Path.Combine(_WebHostEnvironment.WebRootPath, "仪器比对报告后端.R").Replace("\\", "/");
@@ -265,13 +265,13 @@ namespace ReportGenerator.Pages
             // 离群值数据下标列表
             OutliersList = engine.GetSymbol("ID").AsInteger();
 
-            ReportData.P = engine.GetSymbol("p").AsNumeric()[0];
-            ReportData.b = double.Parse(engine.GetSymbol("b").AsNumeric()[0].ToString("F4"));
-            ReportData.bUCI = double.Parse(engine.GetSymbol("b.upper").AsNumeric()[0].ToString("F4"));
-            ReportData.bLCI = double.Parse(engine.GetSymbol("b.lower").AsNumeric()[0].ToString("F4"));
-            ReportData.a = double.Parse(engine.GetSymbol("a").AsNumeric()[0].ToString("F4"));
-            ReportData.aUCI = double.Parse(engine.GetSymbol("a.upper").AsNumeric()[0].ToString("F4"));
-            ReportData.aLCI = double.Parse(engine.GetSymbol("a.lower").AsNumeric()[0].ToString("F4"));
+            Report.P = engine.GetSymbol("p").AsNumeric()[0];
+            Report.b = double.Parse(engine.GetSymbol("b").AsNumeric()[0].ToString("F4"));
+            Report.bUCI = double.Parse(engine.GetSymbol("b.upper").AsNumeric()[0].ToString("F4"));
+            Report.bLCI = double.Parse(engine.GetSymbol("b.lower").AsNumeric()[0].ToString("F4"));
+            Report.a = double.Parse(engine.GetSymbol("a").AsNumeric()[0].ToString("F4"));
+            Report.aUCI = double.Parse(engine.GetSymbol("a.upper").AsNumeric()[0].ToString("F4"));
+            Report.aLCI = double.Parse(engine.GetSymbol("a.lower").AsNumeric()[0].ToString("F4"));
         }
     }
 
@@ -280,67 +280,67 @@ namespace ReportGenerator.Pages
     /// 将num保留n位有效数字
     /// 规则：四舍六入五考虑，五后非空就进一，五后为空看奇偶，五前为偶应舍去，五前为奇要进一
     /// </summary>
-    class SignificantDigits
-    {
-        public static string Reserved(double num, int n)
-        {
-            if (num == 0) return "0";
+    //class SignificantDigits
+    //{
+    //    public static string Reserved(double num, int n)
+    //    {
+    //        if (num == 0) return "0";
 
-            if (n <= 0 || n > 28)
-                throw new ArgumentOutOfRangeException("有效数字位数不能小于等于0或大于28");
+    //        if (n <= 0 || n > 28)
+    //            throw new ArgumentOutOfRangeException("有效数字位数不能小于等于0或大于28");
 
-            decimal result, number;
-            try
-            {
-                number = decimal.Parse(num.ToString());
-            }
-            catch (ArgumentException)
-            {
-                throw new ArgumentException("非法输入");
-            }
+    //        decimal result, number;
+    //        try
+    //        {
+    //            number = decimal.Parse(num.ToString());
+    //        }
+    //        catch (ArgumentException)
+    //        {
+    //            throw new ArgumentException("非法输入");
+    //        }
 
-            int time = 0;   // number除以10或乘以10的次数
-            int pointIndex = number.ToString().IndexOf('.');  // 小数点位置(正数：-1, 含小数：>=1, 负数：2）
-            int negative = number.ToString().StartsWith('-') ? 1 : 0;
+    //        int time = 0;   // number除以10或乘以10的次数
+    //        int pointIndex = number.ToString().IndexOf('.');  // 小数点位置(正数：-1, 含小数：>=1, 负数：2）
+    //        int negative = number.ToString().StartsWith('-') ? 1 : 0;
 
-            if (Math.Abs(number) > 1)
-            {
-                if (n >= pointIndex && pointIndex > 0)
-                {
-                    result = Math.Round(number, n - pointIndex + negative, MidpointRounding.ToEven);
-                    return result.ToString($"F{n - pointIndex + negative}");
-                }
-                else
-                {
-                    while (Math.Abs(number) > 1)
-                    {
-                        number *= (decimal)0.1;
-                        time++;
-                    }
-                    result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
-                    return result.ToString($"G{n}");
-                }
-            }
-            else if (Math.Abs(number) == 1)
-            {
-                // num传入为1.000时，被自动转换为1（原因？），导致pointIndex=-1
-                return number.ToString($"F{n + pointIndex}");
-            }
-            else if (Math.Abs(number) >= (decimal)0.1)
-            {
-                result = Math.Round(number, n, MidpointRounding.ToEven);
-                return result.ToString($"F{n}");
-            }
-            else
-            {
-                while (Math.Abs(number) < (decimal)0.1)
-                {
-                    number *= 10;
-                    time--;
-                }
-                result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
-                return result.ToString($"F{n - time}");
-            }
-        }
-    }
+    //        if (Math.Abs(number) > 1)
+    //        {
+    //            if (n >= pointIndex && pointIndex > 0)
+    //            {
+    //                result = Math.Round(number, n - pointIndex + negative, MidpointRounding.ToEven);
+    //                return result.ToString($"F{n - pointIndex + negative}");
+    //            }
+    //            else
+    //            {
+    //                while (Math.Abs(number) > 1)
+    //                {
+    //                    number *= (decimal)0.1;
+    //                    time++;
+    //                }
+    //                result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
+    //                return result.ToString($"G{n}");
+    //            }
+    //        }
+    //        else if (Math.Abs(number) == 1)
+    //        {
+    //            // num传入为1.000时，被自动转换为1（原因？），导致pointIndex=-1
+    //            return number.ToString($"F{n + pointIndex}");
+    //        }
+    //        else if (Math.Abs(number) >= (decimal)0.1)
+    //        {
+    //            result = Math.Round(number, n, MidpointRounding.ToEven);
+    //            return result.ToString($"F{n}");
+    //        }
+    //        else
+    //        {
+    //            while (Math.Abs(number) < (decimal)0.1)
+    //            {
+    //                number *= 10;
+    //                time--;
+    //            }
+    //            result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
+    //            return result.ToString($"F{n - time}");
+    //        }
+    //    }
+    //}
 }
