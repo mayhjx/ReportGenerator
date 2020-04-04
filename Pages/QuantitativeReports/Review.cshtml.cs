@@ -1,21 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ReportGenerator.Data;
 using ReportGenerator.Models;
+using ReportGenerator.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
-    public class EditModel : PageModel
+    public class ReviewModel : PageModel
     {
         private readonly ReportContext _context;
 
-        public EditModel(ReportContext context)
+        public ReviewModel(ReportContext context)
         {
             _context = context;
         }

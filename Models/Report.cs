@@ -16,8 +16,10 @@ namespace ReportGenerator.Models
         [Display(Name = "比对项目")]
         public string Item { get; set; } // 检测项目
 
+        [Display(Name = "靶仪器")]
         public string TargetInstrumentName { get; set; } // 靶仪器名称
 
+        [Display(Name = "比对仪器")]
         public string MatchInstrumentName { get; set; } // 比对仪器名称
 
         public string TargetReagentLot { get; set; } // 靶仪器检测试剂/批号
@@ -67,12 +69,14 @@ namespace ReportGenerator.Models
         public string Investigator { get; set; } // 调查者
 
         [DataType(DataType.Date)]
+        [Display(Name = "调查日期")]
         public DateTime InvestigationDate { get; set; } // 调查日期
 
         [Display(Name = "审核者")]
         public string Approver { get; set; } // 学科主任(Section director)
 
         [DataType(DataType.Date)]
+        [Display(Name = "调查日期")]
         public DateTime ApprovalDate { get; set; } // 审批日期
     }
 }

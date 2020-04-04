@@ -1,0 +1,407 @@
+﻿@page
+@model ReportGenerator.Pages.QuantitativeReports.ReviewModel
+
+
+@{
+    ViewData["Title"] = "审核";
+}
+
+<h2>审核</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+
+            @*报告开始*@
+            @{
+                var Item = Model.Report.Item;
+                var TargetInstrumentName = Model.Report.TargetInstrumentName;
+                var MatchInstrumentName = Model.Report.MatchInstrumentName;
+            }
+            <div>
+                <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
+            </div>
+
+            <div class="row">
+                <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
+            </div>
+
+            <table class="table table-sm table-bordered">
+
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+                            比对项目名称：@Item
+                        </td>
+                    </tr>
+                    <tr class="table-active text-center">
+                        <td></td>
+                        <td>检测系统A</td>
+                        <td>检测系统B</td>
+                    </tr>
+                    <tr>
+                        <td>检测设备或检测方法：</td>
+                        <td>@TargetInstrumentName</td>
+                        <td>@MatchInstrumentName</td>
+                    </tr>
+                    <tr>
+                        <td>检测试剂/批号：</td>
+                        <td>@Html.DisplayFor(model => model.Report.TargetReagentLot)</td>
+                        <td>@Html.DisplayFor(model => model.Report.MatchReagentLot)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="row">
+                                <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
+                                <span class="col-md-4">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
+                                <span class="col-md-2 text-right">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm text-center">
+                <tbody>
+                    <tr class="table-active">
+                        <td>样品编号</td>
+                        <td>检测系统A结果</td>
+                        <td>检测系统B结果</td>
+                        <td>偏倚/一致性判断</td>
+                    </tr>
+
+                    @{
+                        var halfALE = Model.Report.ALE / 2;
+
+                        // 用于生成实验号和结果列表
+                        var SampleName = Model.Report.SampleName.Split(",").ToList();
+                        var TargetResult = Model.Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList();
+                        var MatchResult = Model.Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList();
+                    }
+
+                    @for (int i = 0; i < SampleName.Count; i++)
+                    {
+                        var samplename = @SampleName[i];
+                        var targetResult = @TargetResult[i];
+                        var matchResult = @MatchResult[i];
+                        var bias = (matchResult / targetResult - 1);
+                        var Y = (halfALE > @Math.Abs(bias)) ? "Y" : "N";
+
+                        <tr>
+                            <td>@samplename</td>
+                            <td>@targetResult</td>
+                            <td>@matchResult</td>
+                            <td>@string.Format("{0:P}", @bias) / @Y</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @{
+                var a = Model.Report.a;
+                var b = Model.Report.b;
+                var aUCI = Model.Report.aUCI;
+                var bUCI = Model.Report.bUCI;
+                var aLCI = Model.Report.aLCI;
+                var bLCI = Model.Report.bLCI;
+                var Xc1 = Model.Report.Xc1;
+                var Xc2 = Model.Report.Xc2;
+
+                double MaxSEDivXc(double Xc)
+                {
+                    // 返回最大SE/Xc
+                    var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
+                    return result;
+                }
+            }
+
+            <table class="table table-bordered table-sm">
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <p>
+                                不同检测系统结果比对分析：<br />
+                                回归方程为 y = @a.ToString("F4") + @b.ToString("F4") x，
+                                斜率b的95%置信区间为(@bLCI.ToString("F4") ~ @bUCI.ToString("F4"))，
+                                截距a的95%置信区间为(@aLCI.ToString("F4") ~ @aUCI.ToString("F4"))；
+
+                                代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
+                                (Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4")))，
+                                最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
+                                小于1/2ALE @(halfALE.ToString("P1"))；
+
+                                代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                                (Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4")))，
+                                最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
+                                小于1/2ALE @(halfALE.ToString("P1"))。
+                            </p>
+                        </td>
+                    </tr>
+                    <tr width="100%">
+                        <td width="50%">
+                            @*(描述性统计)*@
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>Variable X</td>
+                                    <td>@TargetInstrumentName</td>
+                                </tr>
+                                <tr>
+                                    <td>Variable Y</td>
+                                    <td>@MatchInstrumentName</td>
+                                </tr>
+                                <tr>
+                                    <td>Sample size</td>
+                                    <td>@SampleName.Count</td>
+                                </tr>
+                            </table>
+
+                            <table class="table table-sm">
+                                <tr>
+                                    <td></td>
+                                    <td>Variable X</td>
+                                    <td>Variable Y</td>
+                                </tr>
+                                <tr>
+                                    <td>Lowest value</td>
+                                    <td>@TargetResult.Min().ToString("F4")</td>
+                                    <td>@MatchResult.Min().ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Highest value</td>
+                                    <td>@TargetResult.Max().ToString("F4")</td>
+                                    <td>@MatchResult.Max().ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Arithmetic mean</td>
+                                    <td>@TargetResult.Average().ToString("F4")</td>
+                                    <td>@MatchResult.Average().ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Median</td>
+                                    <td>@TargetResult.Median().ToString("F4")</td>
+                                    <td>@MatchResult.Median().ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard deviation</td>
+                                    <td>@TargetResult.StandardDeviation().ToString("F4")</td>
+                                    <td>@MatchResult.StandardDeviation().ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard error of the mean</td>
+                                    <td>@((TargetResult.StandardDeviation() / Math.Sqrt(TargetResult.Count)).ToString("F4"))</td>
+                                    <td>@((MatchResult.StandardDeviation() / Math.Sqrt(MatchResult.Count)).ToString("F4"))</td>
+                                </tr>
+                            </table>
+
+                            <table class="table table-sm">
+                                <tr>
+                                    <td colspan="2">Regression Equation</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">y = @a.ToString("F4")  + @b.ToString("F4") x</td>
+                                </tr>
+                                <tr>
+                                    <td>Intercept A</td>
+                                    <td>@a.ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>95% CI</td>
+                                    <td>@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Slope B</td>
+                                    <td>@b.ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>95% CI</td>
+                                    <td>@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
+                                </tr>
+                                <tr>
+                                    <td>Cusum test for linearity</td>
+                                    <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : ""))</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="50%">
+                            <img src=@Model.Report.PicturePath asp-append-version="true" alt="线性回归图" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p>
+                                评估总结(Evaluation Summary)：<br />
+                                本次实验中仪器比对结果合格，结果表明
+                                @(MatchInstrumentName)和@(TargetInstrumentName)系统进行@(Item)检测没有显著性差异，
+                                @(MatchInstrumentName)能有效地进行@(Item)项目的检测工作。
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm">
+                <tbody>
+                    <tr>
+                        <td>调查者(Investigator): @Html.DisplayFor(model => model.Report.Investigator)</td>
+                        <td>日期(Date): @Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                    </tr>
+                    <tr>
+                        <td>学科主任(Section director): <input asp-for="Report.Approver" /></td>
+                        <td>日期(Date): <input type="date" value="YYYY-MM-DD" asp-for="Report.ApprovalDate" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            @*报告结束*@
+
+
+            @*除了学科主任和审核日期，其他需要提交的内容*@
+            <div hidden="hidden">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Report.ID" />
+                <div class="form-group">
+                    <label asp-for="Report.Status" class="control-label"></label>
+                    <input asp-for="Report.Status" class="form-control" value="已审核" />
+                    <span asp-validation-for="Report.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.Item" class="control-label"></label>
+                    <input asp-for="Report.Item" class="form-control" />
+                    <span asp-validation-for="Report.Item" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.TargetInstrumentName" class="control-label"></label>
+                    <input asp-for="Report.TargetInstrumentName" class="form-control" />
+                    <span asp-validation-for="Report.TargetInstrumentName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.MatchInstrumentName" class="control-label"></label>
+                    <input asp-for="Report.MatchInstrumentName" class="form-control" />
+                    <span asp-validation-for="Report.MatchInstrumentName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.TargetReagentLot" class="control-label"></label>
+                    <input asp-for="Report.TargetReagentLot" class="form-control" />
+                    <span asp-validation-for="Report.TargetReagentLot" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.MatchReagentLot" class="control-label"></label>
+                    <input asp-for="Report.MatchReagentLot" class="form-control" />
+                    <span asp-validation-for="Report.MatchReagentLot" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.StartTestDate" class="control-label"></label>
+                    <input asp-for="Report.StartTestDate" class="form-control" />
+                    <span asp-validation-for="Report.StartTestDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.EndTestDate" class="control-label"></label>
+                    <input asp-for="Report.EndTestDate" class="form-control" />
+                    <span asp-validation-for="Report.EndTestDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.EvaluationDate" class="control-label"></label>
+                    <input asp-for="Report.EvaluationDate" class="form-control" />
+                    <span asp-validation-for="Report.EvaluationDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.Technician" class="control-label"></label>
+                    <input asp-for="Report.Technician" class="form-control" />
+                    <span asp-validation-for="Report.Technician" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.SampleName" class="control-label"></label>
+                    <input asp-for="Report.SampleName" class="form-control" />
+                    <span asp-validation-for="Report.SampleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.TargetResult" class="control-label"></label>
+                    <input asp-for="Report.TargetResult" class="form-control" />
+                    <span asp-validation-for="Report.TargetResult" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.MatchResult" class="control-label"></label>
+                    <input asp-for="Report.MatchResult" class="form-control" />
+                    <span asp-validation-for="Report.MatchResult" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.ALE" class="control-label"></label>
+                    <input asp-for="Report.ALE" class="form-control" />
+                    <span asp-validation-for="Report.ALE" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.Xc1" class="control-label"></label>
+                    <input asp-for="Report.Xc1" class="form-control" />
+                    <span asp-validation-for="Report.Xc1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.Xc2" class="control-label"></label>
+                    <input asp-for="Report.Xc2" class="form-control" />
+                    <span asp-validation-for="Report.Xc2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.a" class="control-label"></label>
+                    <input asp-for="Report.a" class="form-control" />
+                    <span asp-validation-for="Report.a" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.aUCI" class="control-label"></label>
+                    <input asp-for="Report.aUCI" class="form-control" />
+                    <span asp-validation-for="Report.aUCI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.aLCI" class="control-label"></label>
+                    <input asp-for="Report.aLCI" class="form-control" />
+                    <span asp-validation-for="Report.aLCI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.b" class="control-label"></label>
+                    <input asp-for="Report.b" class="form-control" />
+                    <span asp-validation-for="Report.b" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.bUCI" class="control-label"></label>
+                    <input asp-for="Report.bUCI" class="form-control" />
+                    <span asp-validation-for="Report.bUCI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.bLCI" class="control-label"></label>
+                    <input asp-for="Report.bLCI" class="form-control" />
+                    <span asp-validation-for="Report.bLCI" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.P" class="control-label"></label>
+                    <input asp-for="Report.P" class="form-control" />
+                    <span asp-validation-for="Report.P" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.PicturePath" class="control-label"></label>
+                    <input asp-for="Report.PicturePath" class="form-control" />
+                    <span asp-validation-for="Report.PicturePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.Investigator" class="control-label"></label>
+                    <input asp-for="Report.Investigator" class="form-control" />
+                    <span asp-validation-for="Report.Investigator" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.InvestigationDate" class="control-label"></label>
+                    <input asp-for="Report.InvestigationDate" class="form-control" />
+                    <span asp-validation-for="Report.InvestigationDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="审核" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">返回</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
