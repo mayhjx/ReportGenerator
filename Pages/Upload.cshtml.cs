@@ -160,7 +160,14 @@ namespace ReportGenerator.Pages
             ReportData.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
             ReportData.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
 
-            // 离群值列表
+
+            // 各参数条件判断 不通过则停止程序并提示
+
+            // 判断结果一致性
+
+
+
+            // 获取离群值
             IntegerVector OutliersList;
             try
             {
@@ -172,7 +179,7 @@ namespace ReportGenerator.Pages
                 return Page();
             }
 
-            // 各参数条件判断 不通过则停止程序并提示
+            // 返回离群值
             if (OutliersList != null && OutliersList.Count() > 0)
             {
                 Message = "离群值: ";
@@ -181,14 +188,17 @@ namespace ReportGenerator.Pages
                                            select samplename);
                 return Page();
             }
-            // P值小于0.1
+
+            // 当P值小于0.1
             if (ReportData.P < 0.1)
             {
                 Message = $"两组数据线性相关性差: P<0.10";
                 return Page();
             }
+
             // 最大SE/Xc < 1/2ALE
-            // TODO
+
+            
 
             return RedirectToPage("QuantitativeReports/Create", "Generate", ReportData);
         }

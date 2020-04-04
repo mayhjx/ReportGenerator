@@ -8,16 +8,10 @@ namespace ReportGenerator.Models
 {
     public class Report
     {
-        public enum ReportStatus
-        {
-            Submitted, // 待审核
-            Approved, // 已审核
-            Rejected // 拒绝
-        }
         public int ID { get; set; }
 
         [Display(Name = "状态")]
-        public ReportStatus Status { get; set; } // 报告状态（待审核/已审核）
+        public string Status { get; set; } // 报告状态（待审核/已审核）
 
         [Display(Name = "比对项目")]
         public string Item { get; set; } // 检测项目
