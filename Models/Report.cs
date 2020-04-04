@@ -43,6 +43,8 @@ namespace ReportGenerator.Models
 
         public string MatchResult { get; set; } // 比对仪器数据（逗号分隔）
 
+        public string Bias { get; set; } // 偏倚
+
         public double ALE { get; set; } // 最大允许误差
 
         public double Xc1 { get; set; } // 医学决定水平一

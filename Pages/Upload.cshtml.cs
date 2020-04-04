@@ -36,7 +36,7 @@ namespace ReportGenerator.Pages
         public Report ReportData { get; set; }
 
         // 提示信息
-        public string Message { get; private set; }
+        public string Message { get; private set; } = "";
 
         [BindProperty]
         public IEnumerable<string> options { get; private set; }
@@ -92,7 +92,7 @@ namespace ReportGenerator.Pages
                 {
                     if (targetResult.ContainsKey(data[0]))
                     {
-                        Message = "重复的实验号: " + data[0];
+                        Message = $"实验号重复: {data[0]}";
                         return Page();
                     }
                     try
@@ -114,7 +114,7 @@ namespace ReportGenerator.Pages
                 {
                     if (matchResult.ContainsKey(data[0]))
                     {
-                        Message = "重复的实验号: " + data[0];
+                        Message = $"实验号重复: {data[0]}";
                         return Page();
                     }
                     try
@@ -141,6 +141,20 @@ namespace ReportGenerator.Pages
                 return Page();
             }
 
+            foreach (var key in targetResult.Keys)
+            {
+                if (!matchResult.ContainsKey(key))
+                {
+                    Message = $"实验号不一致: {key}";
+                    return Page();
+                }
+                if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > ReportData.ALE)
+                {
+                    Message = $"结果一致性未通过：{key}";
+                    return Page();
+                }
+            }
+
             ReportData.Item = UploadForm.Item;
             ReportData.TargetInstrumentName = targetFileName;
             ReportData.MatchInstrumentName = matchFileName;
@@ -159,13 +173,11 @@ namespace ReportGenerator.Pages
             ReportData.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
             ReportData.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
             ReportData.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-
+            ReportData.Bias = string.Join(",", from key in targetResult.Keys
+                                               let bias = matchResult.GetValueOrDefault(key) / targetResult.GetValueOrDefault(key) - 1
+                                               select SignificantDigits.Reserved(bias, significantDigit));
 
             // 各参数条件判断 不通过则停止程序并提示
-
-            // 判断结果一致性
-
-
 
             // 获取离群值
             IntegerVector OutliersList;
@@ -197,17 +209,32 @@ namespace ReportGenerator.Pages
             }
 
             // 最大SE/Xc < 1/2ALE
-
-            
+            if (MaxSEDivXc(ReportData.Xc1) * 2 > ReportData.ALE)
+            {
+                Message = "医学决定水平一处最大SE/Xc>1/2ALE";
+                return Page();
+            }
+            if (MaxSEDivXc(ReportData.Xc2) * 2 > ReportData.ALE)
+            {
+                Message = "医学决定水平二处最大SE/Xc>1/2ALE";
+                return Page();
+            }
 
             return RedirectToPage("QuantitativeReports/Create", "Generate", ReportData);
+        }
+
+
+        double MaxSEDivXc(double Xc)
+        {
+            return Math.Max(Math.Abs((ReportData.bLCI * Xc + ReportData.aLCI) / Xc - 1),
+                            Math.Abs((ReportData.bUCI * Xc + ReportData.aUCI) / Xc - 1));
         }
 
         /// <summary>
         /// R模块-Passing-Bablok regession
         /// </summary>
-        /// <param name="OutliersList"></param>
-        public void CallRSource(out IntegerVector OutliersList)
+        /// <param name="OutliersList">返回离群值的下标, 从1开始<param>
+        void CallRSource(out IntegerVector OutliersList)
         {
             // 要将 "C:\R-3.5.3\bin\x64 添加到系统环境路径中
             // The problem is actually not that stats.dll could not be found, 
@@ -259,7 +286,7 @@ namespace ReportGenerator.Pages
     /// 将num保留n位有效数字
     /// 规则：四舍六入五考虑，五后非空就进一，五后为空看奇偶，五前为偶应舍去，五前为奇要进一
     /// </summary>
-    public class SignificantDigits
+    class SignificantDigits
     {
         public static string Reserved(double num, int n)
         {
