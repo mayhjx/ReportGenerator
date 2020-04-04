@@ -44,7 +44,7 @@ namespace ReportGenerator.Pages
                 }
                 else if (n < numLength)
                 {
-                    // 保留位数小于字长
+                    // 保留位数小于字长，转换为[0.1, 1)区间
                     while (Math.Abs(number) > 1)
                     {
                         number *= (decimal)0.1;
@@ -55,7 +55,7 @@ namespace ReportGenerator.Pages
                 }
                 else
                 {
-                    // 保留位数大于字长
+                    // 保留位数大于字长, 直接在后面加0即可
                     return number.ToString($"F{n - numLength}");
                 }
             }
