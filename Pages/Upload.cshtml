@@ -16,9 +16,12 @@
             <label class="col-form-label">比对项目:</label>
             <input class="form-control" type="text" list="item" asp-for="UploadForm.Item" />
             <datalist id="item">
-                @foreach (var option in Model.options)
+                @if (Model.options != null)
                 {
-                    <option value=@option>@option</option>
+                    @foreach (var option in Model.options)
+                    {
+                        <option value=@option>@option</option>
+                    }
                 }
             </datalist>
             <span asp-validation-for="UploadForm.Item" class="text-danger"></span>

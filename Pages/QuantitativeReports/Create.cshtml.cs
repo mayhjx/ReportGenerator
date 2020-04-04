@@ -25,6 +25,12 @@ namespace ReportGenerator.Pages.QuantitativeReports
             return RedirectToPage("/Upload");
         }
 
+        public IActionResult OnGetGenerate(Report ReportData)
+        {
+            this.Report = ReportData;
+            return Page();
+        }
+
         [BindProperty]
         public Report Report { get; set; }
 
