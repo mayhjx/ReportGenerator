@@ -16,9 +16,9 @@
             <label class="col-form-label">比对项目:</label>
             <input class="form-control" type="text" list="item" asp-for="UploadForm.Item" />
             <datalist id="item">
-                @if (Model.options != null)
+                @if (Model.Options != null)
                 {
-                    @foreach (var option in Model.options)
+                    @foreach (var option in Model.Options)
                     {
                         <option value=@option>@option</option>
                     }

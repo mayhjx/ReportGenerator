@@ -29,18 +29,22 @@ namespace ReportGenerator.Pages
             }
 
             int time = 0;   // number除以10或乘以10的次数
-            int pointIndex = number.ToString().IndexOf('.');  // 小数点位置(正数：-1, 含小数：>=1, 负数：2）
+            int pointIndex = number.ToString().IndexOf('.');  // 小数点位置(正数：-1, 实数：>=1）
             int negative = number.ToString().StartsWith('-') ? 1 : 0;
+            int numLength = number.ToString().Count();
 
-            if (Math.Abs(number) > 1)
+
+            if (Math.Abs(number) >= 1)
             {
                 if (n >= pointIndex && pointIndex > 0)
                 {
+                    // 实数，有小数点且保留位数在小数点后面,可直接调用Round函数
                     result = Math.Round(number, n - pointIndex + negative, MidpointRounding.ToEven);
                     return result.ToString($"F{n - pointIndex + negative}");
                 }
-                else
+                else if (n < numLength)
                 {
+                    // 保留位数小于字长
                     while (Math.Abs(number) > 1)
                     {
                         number *= (decimal)0.1;
@@ -49,11 +53,11 @@ namespace ReportGenerator.Pages
                     result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
                     return result.ToString($"G{n}");
                 }
-            }
-            else if (Math.Abs(number) == 1)
-            {
-                // num传入为1.000时，被自动转换为1（原因？），导致pointIndex=-1
-                return number.ToString($"F{n + pointIndex}");
+                else
+                {
+                    // 保留位数大于字长
+                    return number.ToString($"F{n - numLength}");
+                }
             }
             else if (Math.Abs(number) >= (decimal)0.1)
             {

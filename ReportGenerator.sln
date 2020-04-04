@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportGenerator", "ReportGenerator.csproj", "{2AB24A1E-348B-4003-B4A2-35D0E5C30D8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignificantDigitsTests", "..\SignificantDigitsTests\SignificantDigitsTests.csproj", "{3920BD44-C623-4119-B754-35FF35EB282E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportGeneratorTests", "..\SignificantDigitsTests\ReportGeneratorTests.csproj", "{3920BD44-C623-4119-B754-35FF35EB282E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
