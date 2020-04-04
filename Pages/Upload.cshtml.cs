@@ -55,10 +55,16 @@ namespace ReportGenerator.Pages
                 return Page();
             }
 
-            // 仪器编号从原始数据文件名称中提取
-            string targetFileName = Path.GetFileNameWithoutExtension(UploadForm.TargetFile.FileName);
-            string matchFileName = Path.GetFileNameWithoutExtension(UploadForm.MatchFile.FileName);
             string template = UploadForm.Template;
+
+            ReportData.Item = UploadForm.Item;
+            ReportData.TargetInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.TargetFile.FileName);
+            ReportData.MatchInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.MatchFile.FileName);
+
+            var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == ReportData.Item);
+            ReportData.ALE = project.ALE;
+            ReportData.Xc1 = project.Xc1;
+            ReportData.Xc2 = project.Xc2;
 
             // 读取数据 包括不同编码格式 岛津是ansi格式, decode?
             // 不同平台要使用不同的模块读取，增加一个输入框用于输入平台
@@ -155,18 +161,6 @@ namespace ReportGenerator.Pages
                 }
             }
 
-            ReportData.Item = UploadForm.Item;
-            ReportData.TargetInstrumentName = targetFileName;
-            ReportData.MatchInstrumentName = matchFileName;
-
-            // 根据项目从appsettings.json获取Xc和ALE
-            // 要先将appsettings另存为UTF-8格式，否则中文会乱码
-            // 添加个性化命令：Tools -> Customize -> Commmands -> Menu(file) -> Add Commands
-            var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == UploadForm.Item);
-            ReportData.ALE = project.ALE;
-            ReportData.Xc1 = project.Xc1;
-            ReportData.Xc2 = project.Xc2;
-
             int significantDigit = project.SignificantDigits;
 
             // 结果保留n位有效数字后以逗号分隔的字符串保存到数据库
@@ -202,28 +196,28 @@ namespace ReportGenerator.Pages
             }
 
             // 当P值小于0.1
-            if (ReportData.P < 0.1)
+            if (ReportData.P <= 0.1)
             {
-                Message = $"两组数据线性相关性差: P<0.10";
+                Message = $"两组数据线性相关性差: P<=0.10";
                 return Page();
             }
 
-            // 最大SE/Xc < 1/2ALE
+            // 最大SE/Xc > 1/2ALE
             if (MaxSEDivXc(ReportData.Xc1) * 2 > ReportData.ALE)
             {
-                Message = "医学决定水平一处最大SE/Xc>1/2ALE";
+                Message = $"医学决定水平一处最大SE/Xc={MaxSEDivXc(ReportData.Xc1)} >1/2ALE";
                 return Page();
             }
             if (MaxSEDivXc(ReportData.Xc2) * 2 > ReportData.ALE)
             {
-                Message = "医学决定水平二处最大SE/Xc>1/2ALE";
+                Message = $"医学决定水平二处最大SE/Xc={MaxSEDivXc(ReportData.Xc2)} >1/2ALE";
                 return Page();
             }
 
             return RedirectToPage("QuantitativeReports/Create", "Generate", ReportData);
         }
 
-
+        // 返回最大SE/Xc
         double MaxSEDivXc(double Xc)
         {
             return Math.Max(Math.Abs((ReportData.bLCI * Xc + ReportData.aLCI) / Xc - 1),
@@ -329,7 +323,7 @@ namespace ReportGenerator.Pages
             }
             else if (Math.Abs(number) == 1)
             {
-                // num传入为1.000时，自动转换为1
+                // num传入为1.000时，被自动转换为1（原因？），导致pointIndex=-1
                 return number.ToString($"F{n + pointIndex}");
             }
             else if (Math.Abs(number) >= (decimal)0.1)
