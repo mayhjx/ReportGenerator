@@ -116,16 +116,16 @@
                                 <p>
                                     不同检测系统结果比对分析：<br />
                                     回归方程为 y = @a + @b x，
-                                    斜率b的95%置信区间为(@bLCI ~ @bUCI)，
-                                    截距a的95%置信区间为(@aLCI ~ @aUCI)；
+                                    斜率b的95%置信区间为（@bLCI ~ @bUCI），
+                                    截距a的95%置信区间为（@aLCI ~ @aUCI）；
 
-                                    代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a))
-                                    (Y的置信区间为@((bLCI * Xc1 + aLCI)) ~ @((bUCI * Xc1 + aUCI)))，
+                                    代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
+                                    （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
                                     最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
                                     小于1/2ALE @(halfALE.ToString("P1"))；
 
-                                    代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a))
-                                    (Y的置信区间为@((bLCI * Xc2 + aLCI)) ~ @((bUCI * Xc2 + aUCI)))，
+                                    代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                                    （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
                                     最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
                                     小于1/2ALE @(halfALE.ToString("P1"))。
                                 </p>
@@ -148,43 +148,46 @@
                                         <td>@SampleName.Count</td>
                                     </tr>
                                 </table>
-
+                                @{
+                                    var doubleTargetResult = TargetResult.Select(x => double.Parse(x)).ToList();
+                                    var doubleMatchResult = MatchResult.Select(x => double.Parse(x)).ToList();
+                                }
                                 <table class="table table-sm">
-                                    <@*tr>
+                                    <tr>
                                         <td></td>
                                         <td>Variable X</td>
                                         <td>Variable Y</td>
                                     </tr>
                                     <tr>
                                         <td>Lowest value</td>
-                                        <td>@TargetResult.Min()</td>
-                                        <td>@MatchResult.Min()</td>
+                                        <td>@doubleTargetResult.Min().ToString("F4")</td>
+                                        <td>@doubleMatchResult.Min().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Highest value</td>
-                                        <td>@TargetResult.Max().ToString("F4")</td>
-                                        <td>@MatchResult.Max().ToString("F4")</td>
+                                        <td>@doubleTargetResult.Max().ToString("F4")</td>
+                                        <td>@doubleMatchResult.Max().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Arithmetic mean</td>
-                                        <td>@TargetResult.Average()</td>
-                                        <td>@MatchResult.Average()</td>
+                                        <td>@doubleTargetResult.Average().ToString("F4")</td>
+                                        <td>@doubleMatchResult.Average().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Median</td>
-                                        <td>@TargetResult.Median().ToString("F4")</td>
-                                        <td>@MatchResult.Median().ToString("F4")</td>
+                                        <td>@doubleTargetResult.Median().ToString("F4")</td>
+                                        <td>@doubleMatchResult.Median().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Standard deviation</td>
-                                        <td>@TargetResult.StandardDeviation().ToString("F4")</td>
-                                        <td>@MatchResult.StandardDeviation().ToString("F4")</td>
+                                        <td>@doubleTargetResult.StandardDeviation().ToString("F4")</td>
+                                        <td>@doubleMatchResult.StandardDeviation().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Standard error of the mean</td>
-                                        <td>@((TargetResult.StandardDeviation() / Math.Sqrt(TargetResult.Count)).ToString("F4"))</td>
-                                        <td>@((MatchResult.StandardDeviation() / Math.Sqrt(MatchResult.Count)).ToString("F4"))</td>
-                                    </tr>*@
+                                        <td>@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
+                                        <td>@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
+                                    </tr>
                                 </table>
 
                                 <table class="table table-sm">
@@ -250,11 +253,10 @@
             @*报告结束*@
 
 
-
             <div hidden="hidden" class="overflow-hidden">
                 <div class="form-group">
                     <label asp-for="Report.Status" class="control-label"></label>
-                    <select asp-for="Report.Status" class="form-control"></select>
+                    <input asp-for="Report.Status" class="form-control" value="待审核"/>
                     <span asp-validation-for="Report.Status" class="text-danger"></span>
                 </div>
                 <div class="form-group">
