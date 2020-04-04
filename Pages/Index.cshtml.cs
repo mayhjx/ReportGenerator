@@ -19,7 +19,7 @@ namespace ReportGenerator.Pages
 
         public void OnGet()
         {
-
+            
         }
     }
 }

@@ -36,6 +36,9 @@ namespace ReportGenerator
 
             services.AddDbContext<ReportContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ReportContext")));
+
+            services.AddDbContext<ProjectParametersContext>(options =>
+                    options.UseSqlite(Configuration.GetConnectionString("ProjectParametersContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
