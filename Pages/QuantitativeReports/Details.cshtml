@@ -1,0 +1,187 @@
+﻿@page
+@model ReportGenerator.Pages.QuantitativeReports.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Report</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Item)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Item)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.TargetInstrumentName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.TargetInstrumentName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.MatchInstrumentName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.MatchInstrumentName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.TargetReagentLot)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.TargetReagentLot)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.MatchReagentLot)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.MatchReagentLot)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.StartTestDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.StartTestDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.EndTestDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.EndTestDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.EvaluationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.EvaluationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Technician)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Technician)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.SampleName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.SampleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.TargetResult)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.TargetResult)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.MatchResult)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.MatchResult)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.ALE)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.ALE)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Xc1)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Xc1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Xc2)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Xc2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.a)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.a)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.aUCI)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.aUCI)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.aLCI)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.aLCI)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.b)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.b)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.bUCI)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.bUCI)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.bLCI)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.bLCI)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.P)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.P)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.PicturePath)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.PicturePath)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Investigator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Investigator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.InvestigationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.InvestigationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Approver)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Approver)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.ApprovalDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.ApprovalDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Report.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
