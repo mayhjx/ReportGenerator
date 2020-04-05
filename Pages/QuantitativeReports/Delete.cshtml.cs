@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
     public class DeleteModel : PageModel
     {
-        private readonly ReportGenerator.Data.ReportContext _context;
+        private readonly ReportContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DeleteModel(ReportGenerator.Data.ReportContext context)
+        public DeleteModel(ReportContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [BindProperty]
@@ -49,7 +53,16 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
             if (Report != null)
             {
+                // 删除关联的图片
+                var path = _webHostEnvironment.WebRootPath + Report.PicturePath;
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+
                 _context.Report.Remove(Report);
+
                 await _context.SaveChangesAsync();
             }
 
