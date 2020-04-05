@@ -2,189 +2,257 @@
 @model ReportGenerator.Pages.QuantitativeReports.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "删除";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3 class="text-danger">请确认是否删除这份报告</h3>
 <div>
-    <h4>Report</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Item)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Item)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.TargetInstrumentName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.TargetInstrumentName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.MatchInstrumentName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.MatchInstrumentName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.TargetReagentLot)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.TargetReagentLot)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.MatchReagentLot)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.MatchReagentLot)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.StartTestDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.StartTestDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.EndTestDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.EndTestDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.EvaluationDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.EvaluationDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Technician)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Technician)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.SampleName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.SampleName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.TargetResult)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.TargetResult)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.MatchResult)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.MatchResult)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.ALE)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.ALE)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Xc1)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Xc1)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Xc2)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Xc2)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.a)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.a)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.aUCI)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.aUCI)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.aLCI)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.aLCI)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.b)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.b)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.bUCI)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.bUCI)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.bLCI)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.bLCI)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.P)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.P)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.PicturePath)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.PicturePath)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Investigator)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Investigator)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.InvestigationDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.InvestigationDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Approver)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Approver)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.ApprovalDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.ApprovalDate)
-        </dd>
-    </dl>
-    
+    @*报告开始*@
+    <div id="Report">
+        <div>
+            <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
+        </div>
+
+        <div class="row">
+            <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
+        </div>
+
+        <table class="table table-bordered table-sm">
+
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        比对项目名称：@Html.DisplayFor(model => model.Report.Item)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>检测系统A</td>
+                    <td>检测系统B</td>
+                </tr>
+                <tr>
+                    <td>检测设备或检测方法：</td>
+                    <td>@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                    <td>@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                </tr>
+                <tr>
+                    <td>检测试剂/批号：</td>
+                    <td>@Html.DisplayFor(model => model.Report.TargetReagentLot)</td>
+                    <td>@Html.DisplayFor(model => model.Report.MatchReagentLot)</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="row">
+                            <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
+                            <span class="col-md-3">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
+                            <span class="col-md-4">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <table class="table table-bordered table-sm text-center">
+            <tbody>
+                <tr class="table-active">
+                    <td>样品编号</td>
+                    <td>检测系统A结果</td>
+                    <td>检测系统B结果</td>
+                    <td>偏倚/一致性判断</td>
+                </tr>
+
+                @{
+                    // 用于生成实验号和结果列表
+                    var SampleName = Model.Report.SampleName.Split(",").ToList();
+                    var TargetResult = Model.Report.TargetResult.Split(",").ToList();
+                    var MatchResult = Model.Report.MatchResult.Split(",").ToList();
+                    var Bias = Model.Report.Bias.Split(",").ToList();
+                    var halfALE = Model.Report.ALE / 2;
+                }
+
+                @for (int i = 0; i < SampleName.Count; i++)
+                {
+                    var samplename = SampleName[i];
+                    var targetResult = TargetResult[i];
+                    var matchResult = MatchResult[i];
+                    var bias = double.Parse(Bias[i]);
+                    var Y = (halfALE > @Math.Abs(bias)) ? "Y" : "N";
+
+                    <tr>
+                        <td>@samplename</td>
+                        <td>@targetResult</td>
+                        <td>@matchResult</td>
+                        <td>@string.Format("{0:P}", bias) / @Y</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @{
+            var a = Model.Report.a;
+            var b = Model.Report.b;
+            var aUCI = Model.Report.aUCI;
+            var bUCI = Model.Report.bUCI;
+            var aLCI = Model.Report.aLCI;
+            var bLCI = Model.Report.bLCI;
+            var Xc1 = Model.Report.Xc1;
+            var Xc2 = Model.Report.Xc2;
+
+            double MaxSEDivXc(double Xc)
+            {
+                // 返回最大SE/Xc
+                var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
+                return result;
+            }
+        }
+        <table class="table table-bordered table-sm">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <p>
+                            不同检测系统结果比对分析：<br />
+                            回归方程为 y = @a + @b x，
+                            斜率b的95%置信区间为（@bLCI ~ @bUCI），
+                            截距a的95%置信区间为（@aLCI ~ @aUCI）；
+
+                            代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
+                            （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
+                            最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
+                            小于1/2ALE @(halfALE.ToString("P1"))；
+
+                            代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                            （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
+                            最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
+                            小于1/2ALE @(halfALE.ToString("P1"))。
+                        </p>
+                    </td>
+                </tr>
+                <tr width="100%">
+                    <td width="50%">
+                        @*(描述性统计)*@
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Variable X</td>
+                                <td>@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                            </tr>
+                            <tr>
+                                <td>Variable Y</td>
+                                <td>@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                            </tr>
+                            <tr>
+                                <td>Sample size</td>
+                                <td>@SampleName.Count</td>
+                            </tr>
+                        </table>
+                        @{
+                            var doubleTargetResult = TargetResult.Select(x => double.Parse(x)).ToList();
+                            var doubleMatchResult = MatchResult.Select(x => double.Parse(x)).ToList();
+                        }
+                        <table class="table table-sm">
+                            <tr>
+                                <td></td>
+                                <td>Variable X</td>
+                                <td>Variable Y</td>
+                            </tr>
+                            <tr>
+                                <td>Lowest value</td>
+                                <td>@doubleTargetResult.Min().ToString("F4")</td>
+                                <td>@doubleMatchResult.Min().ToString("F4")</td>
+                            </tr>
+                            <tr>
+                                <td>Highest value</td>
+                                <td>@doubleTargetResult.Max().ToString("F4")</td>
+                                <td>@doubleMatchResult.Max().ToString("F4")</td>
+                            </tr>
+                            <tr>
+                                <td>Arithmetic mean</td>
+                                <td>@doubleTargetResult.Average().ToString("F4")</td>
+                                <td>@doubleMatchResult.Average().ToString("F4")</td>
+                            </tr>
+                            <tr>
+                                <td>Median</td>
+                                <td>@doubleTargetResult.Median().ToString("F4")</td>
+                                <td>@doubleMatchResult.Median().ToString("F4")</td>
+                            </tr>
+                            <tr>
+                                <td>Standard deviation</td>
+                                <td>@doubleTargetResult.StandardDeviation().ToString("F4")</td>
+                                <td>@doubleMatchResult.StandardDeviation().ToString("F4")</td>
+                            </tr>
+                            <tr>
+                                <td>Standard error of the mean</td>
+                                <td>@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
+                                <td>@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm">
+                            <tr>
+                                <td colspan="2">Regression Equation</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">y = @a + @b x</td>
+                            </tr>
+                            <tr>
+                                <td>Intercept A</td>
+                                <td>@a</td>
+                            </tr>
+                            <tr>
+                                <td>95% CI</td>
+                                <td>@aLCI to @aUCI</td>
+                            </tr>
+                            <tr>
+                                <td>Slope B</td>
+                                <td>@b</td>
+                            </tr>
+                            <tr>
+                                <td>95% CI</td>
+                                <td>@bLCI to @bUCI</td>
+                            </tr>
+                            <tr>
+                                <td>Cusum test for linearity</td>
+                                <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : ""))</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%">
+                        <img src=@Model.Report.PicturePath asp-append-version="true" alt="线性回归图" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>
+                            评估总结(Evaluation Summary)：<br />
+                            本次实验中仪器比对结果合格，结果表明
+                            @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
+                            系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
+                            @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered table-sm">
+            <tbody>
+                <tr>
+                    <td>调查者(Investigator): @Html.DisplayFor(model => model.Report.Investigator)</td>
+                    <td>日期(Date): @Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                </tr>
+                <tr>
+                    <td>学科主任(Section director): @Html.DisplayFor(model => model.Report.Approver)</td>
+                    <td>日期(Date): @Html.DisplayFor(model => model.Report.ApprovalDate)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @*报告结束*@
+
     <form method="post">
         <input type="hidden" asp-for="Report.ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="删除" class="btn btn-danger" /> |
+        <a asp-page="./Index">返回</a>
     </form>
 </div>

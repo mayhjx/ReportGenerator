@@ -24,7 +24,7 @@ namespace ReportGenerator.Models
         [Display(Name = "医学决定水平二")]
         public double Xc2 { get; set; }
 
-        [Display(Name = "有效数字位数")]
+        [Display(Name = "结果有效数字位数")]
         public int SignificantDigits { get; set; }
 
     }
