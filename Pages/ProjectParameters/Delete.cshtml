@@ -2,14 +2,13 @@
 @model ReportGenerator.Pages.ProjectParameters.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "删除";
 }
 
-<h1>Delete</h1>
+<h1>删除</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>ProjectParameter</h4>
+    <h4>项目参数</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -46,7 +45,7 @@
     
     <form method="post">
         <input type="hidden" asp-for="ProjectParameter.ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="删除" class="btn btn-danger" /> |
+        <a asp-page="./Index">返回</a>
     </form>
 </div>

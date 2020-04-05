@@ -2,13 +2,13 @@
 @model ReportGenerator.Pages.ProjectParameters.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "查看";
 }
 
-<h1>Details</h1>
+<h1>查看</h1>
 
 <div>
-    <h4>ProjectParameter</h4>
+    <h4>项目参数</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -44,6 +44,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.ProjectParameter.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.ProjectParameter.ID">编辑</a> |
+    <a asp-page="./Index">返回</a>
 </div>
