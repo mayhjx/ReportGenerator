@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-ReportGenerator-2693E79A-EE1B-400D-862C-7264F93FE5FE</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Tests\**" />
+    <Content Remove="Tests\**" />
+    <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Tests\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.9.0" />
@@ -20,7 +27,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Tests\" />
     <Folder Include="wwwroot\Pictures\" />
   </ItemGroup>
 
