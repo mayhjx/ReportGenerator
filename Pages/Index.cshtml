@@ -4,7 +4,43 @@
     ViewData["Title"] = "首页";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+<div>
+    <h4>仪器比对报告生成程序</h4>
+    <h6>使用说明</h6>
+    <hr />
+    <p>原始数据要求：</p>
+    <ol>
+        <li>文件格式必须为csv格式</li>
+        <li>表格中A列为样品编号，B列为结果</li>
+        <li>比对样品编号以字母<strong>BD</strong>开头</li>
+        <li>编号不能重复</li>
+    </ol>
+    例如:
+    <table class="table table-bordered col-md-4 table-sm">
+        <tr>
+            <td></td>
+            <td>A列</td>
+            <td>B列</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>实验号</td>
+            <td>结果</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>BD1</td>
+            <td>（结果）</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>BD2</td>
+            <td>（结果）</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>BD3</td>
+            <td>（结果）</td>
+        </tr>
+    </table>
 </div>

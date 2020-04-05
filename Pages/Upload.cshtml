@@ -14,7 +14,7 @@
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label class="col-form-label">比对项目:</label>
-            <input class="form-control" type="text" list="item" asp-for="UploadForm.Item" />
+            <input class="form-control" type="text" list="item" asp-for="Upload.Item" />
             <datalist id="item">
                 @if (Model.Options != null)
                 {
@@ -24,28 +24,28 @@
                     }
                 }
             </datalist>
-            <span asp-validation-for="UploadForm.Item" class="text-danger"></span>
+            <span asp-validation-for="Upload.Item" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label class="col-form-label">靶仪器数据：</label>
-            <input class="form-control-file" type="file" asp-for="UploadForm.TargetFile" />
-            <span asp-validation-for="UploadForm.TargetFile" class="text-danger"></span>
+            <input class="form-control-file" type="file" asp-for="Upload.TargetFile" />
+            <span asp-validation-for="Upload.TargetFile" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label class="col-form-label">比对仪器数据：</label>
-            <input class="form-control-file" type="file" asp-for="UploadForm.MatchFile" />
-            <span asp-validation-for="UploadForm.MatchFile" class="text-danger"></span>
+            <input class="form-control-file" type="file" asp-for="Upload.MatchFile" />
+            <span asp-validation-for="Upload.MatchFile" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label class="col-form-label">报告模板：</label>
-            <select class="form-control" asp-for="UploadForm.Template">
+            <select class="form-control" asp-for="Upload.Template">
                 <option value="1">仪器比对模板一</option>
                 @*<option value="2">仪器比对模板二</option>*@
             </select>
-            <span asp-validation-for="UploadForm.Template" class="text-danger"></span>
+            <span asp-validation-for="Upload.Template" class="text-danger"></span>
         </div>
 
         <input class="btn btn-info" type="submit" />

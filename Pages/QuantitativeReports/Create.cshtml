@@ -10,7 +10,7 @@
     <div class="col-md">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Report.Status" class="form-control" value="已提交" />
+            <input type="hidden" asp-for="Report.Status" class="form-control" value="待审核" />
             @*报告开始*@
             <div id="Report">
                 <div>
@@ -48,7 +48,7 @@
                             <td colspan="3">
                                 <div class="row">
                                     <span class="col-md-5">检测日期：<input type="date" value="YYYY-MM-DD" asp-for="Report.StartTestDate" /> 至 <input type="date" value="YYYY-MM-DD" asp-for="Report.EndTestDate" /></span>
-                                    <span class="col-md-3">评估日期：<input type="date" value="YYYY-MM-DD" asp-for="Report.EvaluationDate" /></span>
+                                    <span class="col-md-3">评估日期：<input type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") asp-for="Report.EvaluationDate" /></span>
                                     <span class="col-md-4">检测人员：<input asp-for="Report.Technician" /></span>
                                 </div>
                             </td>
@@ -242,7 +242,7 @@
                     <tbody>
                         <tr>
                             <td>调查者(Investigator): <input asp-for="Report.Investigator" /></td>
-                            <td>日期(Date): <input type="date" value="YYYY-MM-DD" asp-for="Report.InvestigationDate" /></td>
+                            <td>日期(Date): <input type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") asp-for="Report.InvestigationDate" /></td>
                         </tr>
                         <tr>
                             <td>学科主任(Section director): <input asp-for="Report.Approver" /></td>

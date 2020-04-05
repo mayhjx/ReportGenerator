@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ReportGenerator.Models;
 using ReportGenerator.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
+    [Authorize]
     public class ReviewModel : PageModel
     {
         private readonly ReportContext _context;

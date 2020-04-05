@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ReportGenerator.Pages.QuantitativeReports
@@ -16,11 +17,15 @@ namespace ReportGenerator.Pages.QuantitativeReports
     {
         private readonly ReportContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DeleteModel(ReportContext context, IWebHostEnvironment webHostEnvironment)
+        public DeleteModel(ReportContext context, 
+            IWebHostEnvironment webHostEnvironment,
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -53,6 +58,19 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
             if (Report != null)
             {
+                // 删除不同状态报告时需验证用户
+                // 已审核的报告需要管理员权限
+                // 待审核报告无需权限
+
+                // 获取当前用户
+                IdentityUser user = await _userManager.GetUserAsync(HttpContext.User);
+
+                if (user == null && Report.Status == "已审核")
+                {
+                    // 未登录且报告已审核，禁止删除
+                    return Forbid();
+                }
+
                 // 删除关联的图片
                 var path = _webHostEnvironment.WebRootPath + Report.PicturePath;
 

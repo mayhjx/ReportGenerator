@@ -247,7 +247,9 @@
 </div>
 @*报告结束*@
 
-<div class="d-print-none"> @*打印时不显示*@
+<div class="d-print-none">
+    @*打印时不显示*@
     <a asp-page="./Edit" asp-route-id="@Model.Report.ID">编辑</a> |
     <a asp-page="./Index">返回</a>
+    <input class="btn btn-info float-right"  type="button" value="导出" onclick="window.print();" /> 
 </div>

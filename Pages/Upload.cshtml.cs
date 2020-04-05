@@ -10,6 +10,8 @@ using ReportGenerator.Models;
 using ReportGenerator.Data;
 using System.IO;
 using RDotNet;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ReportGenerator.Pages
 {
@@ -29,8 +31,23 @@ namespace ReportGenerator.Pages
             _projectParametersContext = projectParametersContext;
         }
 
+        public class InputModel
+        {
+            [Required(ErrorMessage = "请选择检测项目")]
+            public string Item { get; set; }
+
+            [Required(ErrorMessage = "请提交靶仪器数据文件")]
+            public IFormFile TargetFile { get; set; }
+
+            [Required(ErrorMessage = "请提交比对仪器数据文件")]
+            public IFormFile MatchFile { get; set; }
+
+            [Required(ErrorMessage = "请选择一个报告模板")]
+            public string Template { get; set; }
+        }
+
         [BindProperty]
-        public UploadForm UploadForm { get; set; }
+        public InputModel Upload { get; set; }
 
         [BindProperty]
         public Report Report { get; set; }
@@ -55,11 +72,11 @@ namespace ReportGenerator.Pages
                 return Page();
             }
 
-            string template = UploadForm.Template;
+            string template = Upload.Template;
 
-            Report.Item = UploadForm.Item;
-            Report.TargetInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.TargetFile.FileName);
-            Report.MatchInstrumentName = Path.GetFileNameWithoutExtension(UploadForm.MatchFile.FileName);
+            Report.Item = Upload.Item;
+            Report.TargetInstrumentName = Path.GetFileNameWithoutExtension(Upload.TargetFile.FileName);
+            Report.MatchInstrumentName = Path.GetFileNameWithoutExtension(Upload.MatchFile.FileName);
 
             var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == Report.Item);
             Report.ALE = project.ALE;
@@ -72,7 +89,7 @@ namespace ReportGenerator.Pages
             // 暂时使用csv格式的数据进行测试
 
             // 读取靶仪器数据
-            using var targetFileStream = UploadForm.TargetFile.OpenReadStream();
+            using var targetFileStream = Upload.TargetFile.OpenReadStream();
             string targetDataStream;
             using (StreamReader sr = new StreamReader(targetFileStream))
             {
@@ -80,7 +97,7 @@ namespace ReportGenerator.Pages
             }
 
             // 读取比对仪器数据
-            using var matchFileStream = UploadForm.MatchFile.OpenReadStream();
+            using var matchFileStream = Upload.MatchFile.OpenReadStream();
             string matchDataStream;
             using (StreamReader sr = new StreamReader(matchFileStream))
             {
