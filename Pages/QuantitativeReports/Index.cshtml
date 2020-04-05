@@ -25,66 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Report[0].MatchInstrumentName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Report[0].TargetReagentLot)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].MatchReagentLot)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].StartTestDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].EndTestDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].EvaluationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].Technician)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].SampleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].TargetResult)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].MatchResult)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].ALE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].Xc1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].Xc2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].a)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].aUCI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].aLCI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].b)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].bUCI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].bLCI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].P)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Report[0].PicturePath)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Report[0].Investigator)
             </th>
@@ -115,66 +55,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MatchInstrumentName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.TargetReagentLot)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatchReagentLot)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTestDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTestDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EvaluationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Technician)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SampleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TargetResult)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatchResult)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ALE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Xc1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Xc2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.a)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.aUCI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.aLCI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.b)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.bUCI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.bLCI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.P)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PicturePath)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Investigator)
             </td>
@@ -188,9 +68,12 @@
                 @Html.DisplayFor(modelItem => item.ApprovalDate)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> |
+                @if (item.Status == "已提交")
+                {
+                    <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> <span>|</span>
+                    <a asp-page="./Review" asp-route-id="@item.ID">审核</a> <span>|</span>
+                }
                 <a asp-page="./Details" asp-route-id="@item.ID">预览</a> |
-                <a asp-page="./Review" asp-route-id="@item.ID">审核</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
             </td>
         </tr>
