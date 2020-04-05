@@ -36,6 +36,12 @@ namespace ReportGenerator.Pages.QuantitativeReports
             {
                 return NotFound();
             }
+
+            if (Report.Status == "已审核")
+            {
+                return RedirectToPage("Details", new { id });
+            }
+
             return Page();
         }
 

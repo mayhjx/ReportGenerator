@@ -35,6 +35,12 @@ namespace ReportGenerator.Pages.QuantitativeReports
             {
                 return NotFound();
             }
+
+            if (Report.Status == "“—…Û∫À")
+            {
+                return RedirectToPage("Details", new { id });
+            }
+
             return Page();
         }
 
