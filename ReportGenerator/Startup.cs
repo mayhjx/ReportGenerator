@@ -27,14 +27,13 @@ namespace ReportGenerator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<IdentityContext>();
-
             services.AddDbContext<ReportContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ReportContext")));
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("ReportContext")));
 
             services.AddDbContext<ProjectParametersContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("ProjectParametersContext")));
+                    options.UseSqlite(
+                        Configuration.GetConnectionString("ProjectParametersContext")));
 
             services.AddRazorPages();
         }

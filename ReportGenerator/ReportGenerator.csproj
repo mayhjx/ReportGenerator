@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <None Update="Identity.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ProjectParameters.db">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

@@ -19,8 +19,8 @@ namespace ReportGenerator.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
-                //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                //    .AddEntityFrameworkStores<IdentityContext>();
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddEntityFrameworkStores<IdentityContext>();
 
                 services.Configure<IdentityOptions>(options =>
                 {
