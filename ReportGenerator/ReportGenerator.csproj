@@ -30,4 +30,14 @@
     <Folder Include="wwwroot\Pictures\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Update="Identity.db">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="ProjectParameters.db">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
