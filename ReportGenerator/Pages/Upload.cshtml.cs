@@ -82,6 +82,7 @@ namespace ReportGenerator.Pages
             Report.ALE = project.ALE;
             Report.Xc1 = project.Xc1;
             Report.Xc2 = project.Xc2;
+            Report.Unit = project.Unit;
 
             // 读取数据 包括不同编码格式 岛津是ansi格式, decode?
             // 不同平台要使用不同的模块读取，增加一个输入框用于输入平台

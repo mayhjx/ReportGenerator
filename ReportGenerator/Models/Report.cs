@@ -11,16 +11,19 @@ namespace ReportGenerator.Models
         public int ID { get; set; }
 
         [Display(Name = "状态")]
-        public string Status { get; set; } // 报告状态（待审核/已审核）
+        public string Status { get; set; } // 待审核/已审核
 
         [Display(Name = "比对项目")]
-        public string Item { get; set; } // 检测项目
+        public string Item { get; set; }
+
+        [Display(Name = "单位")]
+        public string Unit { get; set; } 
 
         [Display(Name = "靶仪器")]
-        public string TargetInstrumentName { get; set; } // 靶仪器名称
+        public string TargetInstrumentName { get; set; } 
 
         [Display(Name = "比对仪器")]
-        public string MatchInstrumentName { get; set; } // 比对仪器名称
+        public string MatchInstrumentName { get; set; }
 
         public string TargetReagentLot { get; set; } // 靶仪器检测试剂/批号
 
@@ -68,17 +71,17 @@ namespace ReportGenerator.Models
         public string PicturePath { get; set; }
 
         [Display(Name = "调查者")]
-        public string Investigator { get; set; } // 调查者
+        public string Investigator { get; set; } 
 
         [DataType(DataType.Date)]
         [Display(Name = "调查日期")]
-        public DateTime InvestigationDate { get; set; } // 调查日期
+        public DateTime InvestigationDate { get; set; } 
 
         [Display(Name = "审核者")]
-        public string Approver { get; set; } // 学科主任(Section director)
+        public string Approver { get; set; } 
 
         [DataType(DataType.Date)]
         [Display(Name = "审核日期")]
-        public DateTime ApprovalDate { get; set; } // 审批日期
+        public DateTime ApprovalDate { get; set; }
     }
 }

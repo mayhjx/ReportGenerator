@@ -12,6 +12,11 @@
     <None Remove="Tests\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\ProjectParameters\20200407082509_reinitial.cs" />
+    <Compile Remove="Migrations\ProjectParameters\20200407082509_reinitial.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.9.0" />
@@ -34,9 +39,6 @@
   <ItemGroup>
     <None Update="Identity.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ProjectParameters.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
