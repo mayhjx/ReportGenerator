@@ -33,5 +33,11 @@ namespace ReportGenerator.Models
         [Range(0,10,ErrorMessage ="有效数字位数范围：0~10")]
         public int SignificantDigits { get; set; }
 
+        [Required]
+        [Display(Name="单位")]
+        public string Unit { get; set; }
+
+        [Required]
+        public double LOQ { get; set; }
     }
 }

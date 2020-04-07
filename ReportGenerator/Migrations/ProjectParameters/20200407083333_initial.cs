@@ -2,7 +2,7 @@
 
 namespace ReportGenerator.Migrations.ProjectParameters
 {
-    public partial class initialprojectparameters : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,12 +11,14 @@ namespace ReportGenerator.Migrations.ProjectParameters
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: false),
                     ALE = table.Column<double>(nullable: false),
                     Xc1 = table.Column<double>(nullable: false),
                     Xc2 = table.Column<double>(nullable: false),
-                    SignificantDigits = table.Column<int>(nullable: false)
+                    SignificantDigits = table.Column<int>(nullable: false),
+                    Unit = table.Column<string>(nullable: false),
+                    LOQ = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
