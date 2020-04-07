@@ -255,154 +255,159 @@
             @*报告结束*@
 
 
-            <div hidden="hidden">
-                <input type="hidden" asp-for="Report.ID" />
-                <div class="form-group">
-                    <label asp-for="Report.Status" class="control-label"></label>
-                    <input asp-for="Report.Status" class="form-control" value="已编辑" />
-                    <span asp-validation-for="Report.Status" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Item" class="control-label"></label>
-                    <input asp-for="Report.Item" class="form-control" />
-                    <span asp-validation-for="Report.Item" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.TargetInstrumentName" class="control-label"></label>
-                    <input asp-for="Report.TargetInstrumentName" class="form-control" />
-                    <span asp-validation-for="Report.TargetInstrumentName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.MatchInstrumentName" class="control-label"></label>
-                    <input asp-for="Report.MatchInstrumentName" class="form-control" />
-                    <span asp-validation-for="Report.MatchInstrumentName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.TargetReagentLot" class="control-label"></label>
-                    <input asp-for="Report.TargetReagentLot" class="form-control" />
-                    <span asp-validation-for="Report.TargetReagentLot" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.MatchReagentLot" class="control-label"></label>
-                    <input asp-for="Report.MatchReagentLot" class="form-control" />
-                    <span asp-validation-for="Report.MatchReagentLot" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.StartTestDate" class="control-label"></label>
-                    <input asp-for="Report.StartTestDate" class="form-control" />
-                    <span asp-validation-for="Report.StartTestDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.EndTestDate" class="control-label"></label>
-                    <input asp-for="Report.EndTestDate" class="form-control" />
-                    <span asp-validation-for="Report.EndTestDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.EvaluationDate" class="control-label"></label>
-                    <input asp-for="Report.EvaluationDate" class="form-control" />
-                    <span asp-validation-for="Report.EvaluationDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Technician" class="control-label"></label>
-                    <input asp-for="Report.Technician" class="form-control" />
-                    <span asp-validation-for="Report.Technician" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.SampleName" class="control-label"></label>
-                    <input asp-for="Report.SampleName" class="form-control" />
-                    <span asp-validation-for="Report.SampleName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.TargetResult" class="control-label"></label>
-                    <input asp-for="Report.TargetResult" class="form-control" />
-                    <span asp-validation-for="Report.TargetResult" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.MatchResult" class="control-label"></label>
-                    <input asp-for="Report.MatchResult" class="form-control" />
-                    <span asp-validation-for="Report.MatchResult" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Bias" class="control-label"></label>
-                    <input asp-for="Report.Bias" class="form-control" />
-                    <span asp-validation-for="Report.Bias" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.ALE" class="control-label"></label>
-                    <input asp-for="Report.ALE" class="form-control" />
-                    <span asp-validation-for="Report.ALE" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Xc1" class="control-label"></label>
-                    <input asp-for="Report.Xc1" class="form-control" />
-                    <span asp-validation-for="Report.Xc1" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Xc2" class="control-label"></label>
-                    <input asp-for="Report.Xc2" class="form-control" />
-                    <span asp-validation-for="Report.Xc2" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.a" class="control-label"></label>
-                    <input asp-for="Report.a" class="form-control" />
-                    <span asp-validation-for="Report.a" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.aUCI" class="control-label"></label>
-                    <input asp-for="Report.aUCI" class="form-control" />
-                    <span asp-validation-for="Report.aUCI" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.aLCI" class="control-label"></label>
-                    <input asp-for="Report.aLCI" class="form-control" />
-                    <span asp-validation-for="Report.aLCI" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.b" class="control-label"></label>
-                    <input asp-for="Report.b" class="form-control" />
-                    <span asp-validation-for="Report.b" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.bUCI" class="control-label"></label>
-                    <input asp-for="Report.bUCI" class="form-control" />
-                    <span asp-validation-for="Report.bUCI" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.bLCI" class="control-label"></label>
-                    <input asp-for="Report.bLCI" class="form-control" />
-                    <span asp-validation-for="Report.bLCI" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.P" class="control-label"></label>
-                    <input asp-for="Report.P" class="form-control" />
-                    <span asp-validation-for="Report.P" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.PicturePath" class="control-label"></label>
-                    <input asp-for="Report.PicturePath" class="form-control" />
-                    <span asp-validation-for="Report.PicturePath" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Investigator" class="control-label"></label>
-                    <input asp-for="Report.Investigator" class="form-control" />
-                    <span asp-validation-for="Report.Investigator" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.InvestigationDate" class="control-label"></label>
-                    <input asp-for="Report.InvestigationDate" class="form-control" />
-                    <span asp-validation-for="Report.InvestigationDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Approver" class="control-label"></label>
-                    <input asp-for="Report.Approver" class="form-control" />
-                    <span asp-validation-for="Report.Approver" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.ApprovalDate" class="control-label"></label>
-                    <input asp-for="Report.ApprovalDate" class="form-control" />
-                    <span asp-validation-for="Report.ApprovalDate" class="text-danger"></span>
-                </div>
+        <div hidden="hidden">
+            <input type="hidden" asp-for="Report.ID" />
+            <div class="form-group">
+                <label asp-for="Report.Status" class="control-label"></label>
+                <input asp-for="Report.Status" class="form-control" value="已编辑" />
+                <span asp-validation-for="Report.Status" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Report.Item" class="control-label"></label>
+                <input asp-for="Report.Item" class="form-control" />
+                <span asp-validation-for="Report.Item" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Unit" class="control-label"></label>
+                <input asp-for="Report.Unit" class="form-control" />
+                <span asp-validation-for="Report.Unit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.TargetInstrumentName" class="control-label"></label>
+                <input asp-for="Report.TargetInstrumentName" class="form-control" />
+                <span asp-validation-for="Report.TargetInstrumentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.MatchInstrumentName" class="control-label"></label>
+                <input asp-for="Report.MatchInstrumentName" class="form-control" />
+                <span asp-validation-for="Report.MatchInstrumentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.TargetReagentLot" class="control-label"></label>
+                <input asp-for="Report.TargetReagentLot" class="form-control" />
+                <span asp-validation-for="Report.TargetReagentLot" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.MatchReagentLot" class="control-label"></label>
+                <input asp-for="Report.MatchReagentLot" class="form-control" />
+                <span asp-validation-for="Report.MatchReagentLot" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.StartTestDate" class="control-label"></label>
+                <input asp-for="Report.StartTestDate" class="form-control" />
+                <span asp-validation-for="Report.StartTestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.EndTestDate" class="control-label"></label>
+                <input asp-for="Report.EndTestDate" class="form-control" />
+                <span asp-validation-for="Report.EndTestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.EvaluationDate" class="control-label"></label>
+                <input asp-for="Report.EvaluationDate" class="form-control" />
+                <span asp-validation-for="Report.EvaluationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Technician" class="control-label"></label>
+                <input asp-for="Report.Technician" class="form-control" />
+                <span asp-validation-for="Report.Technician" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.SampleName" class="control-label"></label>
+                <input asp-for="Report.SampleName" class="form-control" />
+                <span asp-validation-for="Report.SampleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.TargetResult" class="control-label"></label>
+                <input asp-for="Report.TargetResult" class="form-control" />
+                <span asp-validation-for="Report.TargetResult" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.MatchResult" class="control-label"></label>
+                <input asp-for="Report.MatchResult" class="form-control" />
+                <span asp-validation-for="Report.MatchResult" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Bias" class="control-label"></label>
+                <input asp-for="Report.Bias" class="form-control" />
+                <span asp-validation-for="Report.Bias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.ALE" class="control-label"></label>
+                <input asp-for="Report.ALE" class="form-control" />
+                <span asp-validation-for="Report.ALE" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Xc1" class="control-label"></label>
+                <input asp-for="Report.Xc1" class="form-control" />
+                <span asp-validation-for="Report.Xc1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Xc2" class="control-label"></label>
+                <input asp-for="Report.Xc2" class="form-control" />
+                <span asp-validation-for="Report.Xc2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.a" class="control-label"></label>
+                <input asp-for="Report.a" class="form-control" />
+                <span asp-validation-for="Report.a" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.aUCI" class="control-label"></label>
+                <input asp-for="Report.aUCI" class="form-control" />
+                <span asp-validation-for="Report.aUCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.aLCI" class="control-label"></label>
+                <input asp-for="Report.aLCI" class="form-control" />
+                <span asp-validation-for="Report.aLCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.b" class="control-label"></label>
+                <input asp-for="Report.b" class="form-control" />
+                <span asp-validation-for="Report.b" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.bUCI" class="control-label"></label>
+                <input asp-for="Report.bUCI" class="form-control" />
+                <span asp-validation-for="Report.bUCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.bLCI" class="control-label"></label>
+                <input asp-for="Report.bLCI" class="form-control" />
+                <span asp-validation-for="Report.bLCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.P" class="control-label"></label>
+                <input asp-for="Report.P" class="form-control" />
+                <span asp-validation-for="Report.P" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.PicturePath" class="control-label"></label>
+                <input asp-for="Report.PicturePath" class="form-control" />
+                <span asp-validation-for="Report.PicturePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Investigator" class="control-label"></label>
+                <input asp-for="Report.Investigator" class="form-control" />
+                <span asp-validation-for="Report.Investigator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.InvestigationDate" class="control-label"></label>
+                <input asp-for="Report.InvestigationDate" class="form-control" />
+                <span asp-validation-for="Report.InvestigationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Approver" class="control-label"></label>
+                <input asp-for="Report.Approver" class="form-control" />
+                <span asp-validation-for="Report.Approver" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.ApprovalDate" class="control-label"></label>
+                <input asp-for="Report.ApprovalDate" class="form-control" />
+                <span asp-validation-for="Report.ApprovalDate" class="text-danger"></span>
+            </div>
+        </div>
             <div class="form-group">
                 <input type="submit" value="保存" class="btn btn-primary" />
             </div>
