@@ -14,7 +14,7 @@
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label class="col-form-label">比对项目:</label>
-            <input class="form-control" type="text" list="item" asp-for="Upload.Item" />
+            <input class="form-control" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
             <datalist id="item">
                 @if (Model.Options != null)
                 {
