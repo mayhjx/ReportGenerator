@@ -5,7 +5,7 @@
 
 }
 
-<div class="col-md-4 offset-md-4">
+<div class="col-md-3 offset-md-4">
     @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
         <h3 class="h3 text-danger">警告： @Model.Message</h3>
@@ -13,8 +13,8 @@
 
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label class="col-form-label">比对项目:</label>
-            <input class="form-control" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
+            <label class="col-form-label">比对项目：</label>
+            <input class="form-control-sm" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
             <datalist id="item">
                 @if (Model.Options != null)
                 {
@@ -28,20 +28,24 @@
         </div>
 
         <div class="form-group">
-            <label class="col-form-label">靶仪器数据：</label>
+            <label class="col-form-label">靶仪器：  </label>
+            <input class="form-control-sm" asp-for="Upload.TargetNum" placeholder="编号" />
+            <span asp-validation-for="Upload.TargetNum" class="text-danger"></span>
             <input class="form-control-file" type="file" asp-for="Upload.TargetFile" />
             <span asp-validation-for="Upload.TargetFile" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label class="col-form-label">比对仪器数据：</label>
+            <label class="col-form-label">比对仪器：</label>
+            <input class="form-control-sm" asp-for="Upload.MatchNum" placeholder="编号" />
+            <span asp-validation-for="Upload.MatchNum" class="text-danger"></span>
             <input class="form-control-file" type="file" asp-for="Upload.MatchFile" />
             <span asp-validation-for="Upload.MatchFile" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label class="col-form-label">报告模板：</label>
-            <select class="form-control" asp-for="Upload.Template">
+            <select class="form-control-sm" asp-for="Upload.Template">
                 <option value="1">仪器比对模板一</option>
                 @*<option value="2">仪器比对模板二</option>*@
             </select>

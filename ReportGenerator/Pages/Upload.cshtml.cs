@@ -39,8 +39,14 @@ namespace ReportGenerator.Pages
             [Required(ErrorMessage = "请选择检测项目")]
             public string Item { get; set; }
 
+            [Required(ErrorMessage = "请输入靶仪器编号")]
+            public string TargetNum { get; set; }
+
             [Required(ErrorMessage = "请提交靶仪器数据文件")]
             public IFormFile TargetFile { get; set; }
+
+            [Required(ErrorMessage = "请输入比对仪器编号")]
+            public string MatchNum { get; set; }
 
             [Required(ErrorMessage = "请提交比对仪器数据文件")]
             public IFormFile MatchFile { get; set; }
@@ -77,8 +83,8 @@ namespace ReportGenerator.Pages
             string template = Upload.Template;
 
             Report.Item = Upload.Item;
-            Report.TargetInstrumentName = Path.GetFileNameWithoutExtension(Upload.TargetFile.FileName);
-            Report.MatchInstrumentName = Path.GetFileNameWithoutExtension(Upload.MatchFile.FileName);
+            Report.TargetInstrumentName = Upload.TargetNum;
+            Report.MatchInstrumentName = Upload.MatchNum;
 
             var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == Report.Item);
             if (project == null)
