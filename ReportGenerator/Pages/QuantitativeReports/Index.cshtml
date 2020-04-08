@@ -10,6 +10,21 @@
 <p>
     <a asp-page="Create">新建</a>
 </p>
+
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only" for="status">报告状态</label>
+        <select id="status" class="form-control-sm" asp-for="ReportStatus" asp-items="Model.Status">
+            <option value="">所有</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="searchString"> 项目名称</label>
+        <input id="searchString" type="text" asp-for="SearchString" class=" form-control-sm" placeholder="比对项目"/>
+    </div>
+    <input type="submit" value="搜索" class="btn btn-outline-info btn-sm" />
+</form>
+
 <table class="table">
     <thead>
         <tr>
