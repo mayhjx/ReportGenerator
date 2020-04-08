@@ -42,14 +42,14 @@ namespace ReportGenerator.Pages
             [Required(ErrorMessage = "请输入靶仪器编号")]
             public string TargetNum { get; set; }
 
-            [Required(ErrorMessage = "请提交靶仪器数据文件")]
-            public IFormFile TargetFile { get; set; }
+            [Required(ErrorMessage = "请提交仪器数据文件")]
+            public IFormFile DataFile { get; set; }
 
             [Required(ErrorMessage = "请输入比对仪器编号")]
             public string MatchNum { get; set; }
 
-            [Required(ErrorMessage = "请提交比对仪器数据文件")]
-            public IFormFile MatchFile { get; set; }
+            //[Required(ErrorMessage = "请提交比对仪器数据文件")]
+            //public IFormFile MatchFile { get; set; }
 
             [Required(ErrorMessage = "请选择一个报告模板")]
             public string Template { get; set; }
@@ -103,27 +103,27 @@ namespace ReportGenerator.Pages
 
             // 暂时使用csv格式的数据进行测试
 
-            // 读取靶仪器数据
-            using var targetFileStream = Upload.TargetFile.OpenReadStream();
-            string targetDataStream;
-            using (StreamReader sr = new StreamReader(targetFileStream))
+            // 读取仪器数据
+            using var DataFileStream = Upload.DataFile.OpenReadStream();
+            string DataStream;
+            using (StreamReader sr = new StreamReader(DataFileStream))
             {
-                targetDataStream = sr.ReadToEnd();
+                DataStream = sr.ReadToEnd();
             }
 
             // 读取比对仪器数据
-            using var matchFileStream = Upload.MatchFile.OpenReadStream();
-            string matchDataStream;
-            using (StreamReader sr = new StreamReader(matchFileStream))
-            {
-                matchDataStream = sr.ReadToEnd();
-            }
+            //using var matchFileStream = Upload.MatchFile.OpenReadStream();
+            //string matchDataStream;
+            //using (StreamReader sr = new StreamReader(matchFileStream))
+            //{
+            //    matchDataStream = sr.ReadToEnd();
+            //}
 
             // 查找BD编号的样本结果
             var targetResult = new Dictionary<string, double>();
             var matchResult = new Dictionary<string, double>();
 
-            foreach (var line in targetDataStream.Split("\r\n"))
+            foreach (var line in DataStream.Split("\r\n"))
             {
                 var data = line.Split(",");
                 if (data[0].StartsWith("BD"))
@@ -142,30 +142,41 @@ namespace ReportGenerator.Pages
                         Message = $"无法识别的输入: {data[0]} {data[1]}";
                         return Page();
                     }
-                }
-            }
 
-            foreach (var line in matchDataStream.Split("\r\n"))
-            {
-                var data = line.Split(",");
-                if (data[0].StartsWith("BD"))
-                {
-                    if (matchResult.ContainsKey(data[0]))
-                    {
-                        Message = $"实验号重复: {data[0]}";
-                        return Page();
-                    }
                     try
                     {
-                        matchResult.Add(data[0], double.Parse(data[1]));
+                        matchResult.Add(data[0], double.Parse(data[2]));
                     }
                     catch
                     {
-                        Message = $"无法识别的输入: {data[0]} {data[1]}";
+                        Message = $"无法识别的输入: {data[0]} {data[2]}";
                         return Page();
                     }
+
                 }
             }
+
+            //foreach (var line in matchDataStream.Split("\r\n"))
+            //{
+            //    var data = line.Split(",");
+            //    if (data[0].StartsWith("BD"))
+            //    {
+            //        if (matchResult.ContainsKey(data[0]))
+            //        {
+            //            Message = $"实验号重复: {data[0]}";
+            //            return Page();
+            //        }
+            //        try
+            //        {
+            //            matchResult.Add(data[0], double.Parse(data[1]));
+            //        }
+            //        catch
+            //        {
+            //            Message = $"无法识别的输入: {data[0]} {data[1]}";
+            //            return Page();
+            //        }
+            //    }
+            //}
 
             if (targetResult.Keys.Count < 20 || matchResult.Keys.Count < 20)
             {
@@ -181,11 +192,11 @@ namespace ReportGenerator.Pages
 
             foreach (var key in targetResult.Keys)
             {
-                if (!matchResult.ContainsKey(key))
-                {
-                    Message = $"实验号不一致: {key}";
-                    return Page();
-                }
+                //if (!matchResult.ContainsKey(key))
+                //{
+                //    Message = $"实验号不一致: {key}";
+                //    return Page();
+                //}
                 if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > Report.ALE)
                 {
                     Message = $"结果一致性未通过：{key}";
