@@ -29,6 +29,9 @@ namespace ReportGenerator.Pages
             _logger = logger;
             _WebHostEnvironment = webHostEnvironment;
             _projectParametersContext = projectParametersContext;
+            // 从项目参数表中获取检测项目名称，在前端生成datalist
+            Options = from project in _projectParametersContext.ProjectParameter.ToList()
+                      select project.Name;
         }
 
         public class InputModel
@@ -55,18 +58,17 @@ namespace ReportGenerator.Pages
         // 提示信息
         public string Message { get; private set; } = "";
 
+
         [BindProperty]
         public IEnumerable<string> Options { get; private set; }
 
         public void OnGet()
         {
-            // 从项目参数数据库中获取检测项目名称
-            Options = from project in _projectParametersContext.ProjectParameter.ToList()
-                      select project.Name;
         }
 
         public IActionResult OnPost()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -79,6 +81,12 @@ namespace ReportGenerator.Pages
             Report.MatchInstrumentName = Path.GetFileNameWithoutExtension(Upload.MatchFile.FileName);
 
             var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == Report.Item);
+            if (project == null)
+            {
+                Message = $"未找到{Upload.Item}的项目参数！";
+                return Page();
+            }
+
             Report.ALE = project.ALE;
             Report.Xc1 = project.Xc1;
             Report.Xc2 = project.Xc2;
