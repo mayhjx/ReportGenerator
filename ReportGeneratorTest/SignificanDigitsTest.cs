@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+锘縰sing Microsoft.VisualStudio.TestTools.UnitTesting;
 using ReportGenerator.Pages;
 
 namespace ReportGeneratorTests
@@ -6,7 +6,7 @@ namespace ReportGeneratorTests
     [TestClass]
     public class SignificantDigitsTest
     {
-        // 四舍六入五考虑，五后非空就进一，五后为空看奇偶，五前为偶应舍去，五前为奇要进一
+        // 鍥涜垗鍏叆浜旇�冭檻锛屼簲鍚庨潪绌哄氨杩涗竴锛屼簲鍚庝负绌虹湅濂囧伓锛屼簲鍓嶄负鍋跺簲鑸嶅幓锛屼簲鍓嶄负濂囪杩涗竴
 
         [TestMethod]
         public void Reversed()
@@ -18,15 +18,11 @@ namespace ReportGeneratorTests
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => SignificantDigits.Reserved(1, 29));
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => SignificantDigits.Reserved(1, 0));
 
-            Assert.AreEqual("1.235E+08", SignificantDigits.Reserved(123456789, 4));
-            Assert.AreEqual("0.1235", SignificantDigits.Reserved(0.123456789, 4));
-            Assert.AreEqual("0.001235", SignificantDigits.Reserved(0.00123456789, 4));
-
             // number >= 1
             Assert.AreEqual("1.0", SignificantDigits.Reserved(1, 2));
             Assert.AreEqual("1.2340", SignificantDigits.Reserved(1.234, 5));
-            Assert.AreEqual("25.0", SignificantDigits.Reserved(25, 3)); 
-            Assert.AreEqual("1000.00", SignificantDigits.Reserved(1000, 6)); 
+            Assert.AreEqual("25.0", SignificantDigits.Reserved(25, 3));
+            Assert.AreEqual("1000.00", SignificantDigits.Reserved(1000, 6));
             Assert.AreEqual("1.1", SignificantDigits.Reserved(1.14, 2));
             Assert.AreEqual("1.2", SignificantDigits.Reserved(1.16, 2));
             Assert.AreEqual("1.3", SignificantDigits.Reserved(1.251, 2));
@@ -57,6 +53,7 @@ namespace ReportGeneratorTests
             Assert.AreEqual("-0.01235", SignificantDigits.Reserved(-0.0123456789, 4));
 
             // tailling zores
+            Assert.AreEqual("1.10E+003", SignificantDigits.Reserved(1101, 3));
             Assert.AreEqual("0.1250", SignificantDigits.Reserved(0.125000, 4));
             Assert.AreEqual("0.012500", SignificantDigits.Reserved(0.0125000, 5));
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages
 {
@@ -51,7 +49,7 @@ namespace ReportGenerator.Pages
                         time++;
                     }
                     result = Math.Round(number, n, MidpointRounding.ToEven) * (decimal)Math.Pow(10, time);
-                    return result.ToString($"G{n}");
+                    return result.ToString($"E{n - 1}");
                 }
                 else
                 {
