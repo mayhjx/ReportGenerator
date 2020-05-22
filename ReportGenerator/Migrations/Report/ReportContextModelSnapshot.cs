@@ -29,7 +29,7 @@ namespace ReportGenerator.Migrations.Report
                     b.Property<double>("ALE")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("ApprovalDate")
+                    b.Property<DateTime?>("ApprovalDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Approver")
@@ -66,6 +66,9 @@ namespace ReportGenerator.Migrations.Report
                         .HasColumnType("float");
 
                     b.Property<string>("PicturePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SampleName")

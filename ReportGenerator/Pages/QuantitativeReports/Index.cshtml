@@ -8,7 +8,7 @@
 <h3>报告列表</h3>
 
 <p>
-    <a asp-page="Create">新建</a>
+    <a asp-page="Create"><input type="button" value="新建" class="btn btn-primary" /></a>
 </p>
 
 <form class="form-inline">
@@ -20,7 +20,7 @@
     </div>
     <div class="form-group">
         <label class="sr-only" for="searchString"> 项目名称</label>
-        <input id="searchString" type="text" asp-for="SearchString" class=" form-control-sm" placeholder="比对项目"/>
+        <input id="searchString" type="text" asp-for="SearchString" class=" form-control-sm" placeholder="比对项目" />
     </div>
     <input type="submit" value="搜索" class="btn btn-outline-info btn-sm" />
 </form>
@@ -56,54 +56,55 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Report) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TargetInstrumentName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatchInstrumentName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Investigator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InvestigationDate)
-            </td>
+        @foreach (var item in Model.Report)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TargetInstrumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatchInstrumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Investigator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvestigationDate)
+                </td>
 
-            @if (item.Status == "已审核")
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Approver)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApprovalDate)
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID">预览</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
-                </td>
-            }
-            else
-            {
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> |
-                    <a asp-page="./Review" asp-route-id="@item.ID">审核</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ID">预览</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
-                </td>
-            }
-        </tr>
-}
+                @if (item.Status == "已审核")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Approver)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApprovalDate)
+                    </td>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@item.ID">预览</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> |
+                        <a asp-page="./Review" asp-route-id="@item.ID">审核</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ID">预览</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>

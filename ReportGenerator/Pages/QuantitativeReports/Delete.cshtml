@@ -232,6 +232,17 @@
                         </p>
                     </td>
                 </tr>
+                @if (@Model.Report.Remark != null)
+                {
+                    <tr>
+                        <td colspan="2">
+                            <p>
+                                备注(Remark)：<br />
+                                @(Html.DisplayFor(model => model.Report.Remark))
+                            </p>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
 

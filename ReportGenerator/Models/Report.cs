@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReportGenerator.Models
@@ -17,10 +14,10 @@ namespace ReportGenerator.Models
         public string Item { get; set; }
 
         [Display(Name = "单位")]
-        public string Unit { get; set; } 
+        public string Unit { get; set; }
 
         [Display(Name = "靶仪器")]
-        public string TargetInstrumentName { get; set; } 
+        public string TargetInstrumentName { get; set; }
 
         [Display(Name = "比对仪器")]
         public string MatchInstrumentName { get; set; }
@@ -71,17 +68,20 @@ namespace ReportGenerator.Models
         public string PicturePath { get; set; }
 
         [Display(Name = "调查者")]
-        public string Investigator { get; set; } 
+        public string Investigator { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "调查日期")]
-        public DateTime InvestigationDate { get; set; } 
+        public DateTime InvestigationDate { get; set; }
 
         [Display(Name = "审核者")]
-        public string Approver { get; set; } 
+        public string Approver { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "审核日期")]
-        public DateTime ApprovalDate { get; set; }
+        public DateTime? ApprovalDate { get; set; }
+
+        [Display(Name = "备注")]
+        public string Remark { get; set; }
     }
 }

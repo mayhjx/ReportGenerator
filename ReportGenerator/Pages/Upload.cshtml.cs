@@ -1,23 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+ï»¿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
-using ReportGenerator.Models;
-using ReportGenerator.Data;
-using System.IO;
 using RDotNet;
+using ReportGenerator.Data;
+using ReportGenerator.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Linq;
 
 namespace ReportGenerator.Pages
 {
     public class UploadModel : PageModel
     {
-
         private readonly ILogger<IndexModel> _logger;
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ProjectParametersContext _projectParametersContext;
@@ -29,29 +27,26 @@ namespace ReportGenerator.Pages
             _logger = logger;
             _WebHostEnvironment = webHostEnvironment;
             _projectParametersContext = projectParametersContext;
-            // ´ÓÏîÄ¿²ÎÊı±íÖĞ»ñÈ¡¼ì²âÏîÄ¿Ãû³Æ£¬ÔÚÇ°¶ËÉú³Édatalist
+            // ä»é¡¹ç›®å‚æ•°è¡¨ä¸­è·å–æ£€æµ‹é¡¹ç›®åç§°ï¼Œåœ¨å‰ç«¯ç”Ÿæˆdatalist
             Options = from project in _projectParametersContext.ProjectParameter.ToList()
                       select project.Name;
         }
 
         public class InputModel
         {
-            [Required(ErrorMessage = "ÇëÑ¡Ôñ¼ì²âÏîÄ¿")]
+            [Required(ErrorMessage = "è¯·é€‰æ‹©æ£€æµ‹é¡¹ç›®")]
             public string Item { get; set; }
 
-            [Required(ErrorMessage = "ÇëÊäÈë°ĞÒÇÆ÷±àºÅ")]
+            [Required(ErrorMessage = "è¯·è¾“å…¥é¶ä»ªå™¨ç¼–å·")]
             public string TargetNum { get; set; }
 
-            [Required(ErrorMessage = "ÇëÌá½»ÒÇÆ÷Êı¾İÎÄ¼ş")]
+            [Required(ErrorMessage = "è¯·æäº¤ä»ªå™¨æ•°æ®æ–‡ä»¶")]
             public IFormFile DataFile { get; set; }
 
-            [Required(ErrorMessage = "ÇëÊäÈë±È¶ÔÒÇÆ÷±àºÅ")]
+            [Required(ErrorMessage = "è¯·è¾“å…¥æ¯”å¯¹ä»ªå™¨ç¼–å·")]
             public string MatchNum { get; set; }
 
-            //[Required(ErrorMessage = "ÇëÌá½»±È¶ÔÒÇÆ÷Êı¾İÎÄ¼ş")]
-            //public IFormFile MatchFile { get; set; }
-
-            [Required(ErrorMessage = "ÇëÑ¡ÔñÒ»¸ö±¨¸æÄ£°å")]
+            [Required(ErrorMessage = "è¯·é€‰æ‹©ä¸€ä¸ªæŠ¥å‘Šæ¨¡æ¿")]
             public string Template { get; set; }
         }
 
@@ -61,9 +56,8 @@ namespace ReportGenerator.Pages
         [BindProperty]
         public Report Report { get; set; }
 
-        // ÌáÊ¾ĞÅÏ¢
+        // æç¤ºä¿¡æ¯
         public string Message { get; private set; } = "";
-
 
         [BindProperty]
         public IEnumerable<string> Options { get; private set; }
@@ -89,7 +83,7 @@ namespace ReportGenerator.Pages
             var project = _projectParametersContext.ProjectParameter.FirstOrDefault(m => m.Name == Report.Item);
             if (project == null)
             {
-                Message = $"Î´ÕÒµ½{Upload.Item}µÄÏîÄ¿²ÎÊı£¡";
+                Message = $"æœªæ‰¾åˆ°{Upload.Item}çš„é¡¹ç›®å‚æ•°ï¼";
                 return Page();
             }
 
@@ -98,12 +92,7 @@ namespace ReportGenerator.Pages
             Report.Xc2 = project.Xc2;
             Report.Unit = project.Unit;
 
-            // ¶ÁÈ¡Êı¾İ °üÀ¨²»Í¬±àÂë¸ñÊ½ µº½òÊÇansi¸ñÊ½, decode?
-            // ²»Í¬Æ½Ì¨ÒªÊ¹ÓÃ²»Í¬µÄÄ£¿é¶ÁÈ¡£¬Ôö¼ÓÒ»¸öÊäÈë¿òÓÃÓÚÊäÈëÆ½Ì¨
-
-            // ÔİÊ±Ê¹ÓÃcsv¸ñÊ½µÄÊı¾İ½øĞĞ²âÊÔ
-
-            // ¶ÁÈ¡ÒÇÆ÷Êı¾İ
+            // è¯»å–ä»ªå™¨æ•°æ®
             using var DataFileStream = Upload.DataFile.OpenReadStream();
             string DataStream;
             using (StreamReader sr = new StreamReader(DataFileStream))
@@ -111,15 +100,7 @@ namespace ReportGenerator.Pages
                 DataStream = sr.ReadToEnd();
             }
 
-            // ¶ÁÈ¡±È¶ÔÒÇÆ÷Êı¾İ
-            //using var matchFileStream = Upload.MatchFile.OpenReadStream();
-            //string matchDataStream;
-            //using (StreamReader sr = new StreamReader(matchFileStream))
-            //{
-            //    matchDataStream = sr.ReadToEnd();
-            //}
-
-            // ²éÕÒBD±àºÅµÄÑù±¾½á¹û
+            // æŸ¥æ‰¾BDç¼–å·çš„æ ·æœ¬ç»“æœ
             var targetResult = new Dictionary<string, double>();
             var matchResult = new Dictionary<string, double>();
 
@@ -130,7 +111,7 @@ namespace ReportGenerator.Pages
                 {
                     if (targetResult.ContainsKey(data[0]))
                     {
-                        Message = $"ÊµÑéºÅÖØ¸´: {data[0]}";
+                        Message = $"å®éªŒå·é‡å¤: {data[0]}";
                         return Page();
                     }
                     try
@@ -139,7 +120,7 @@ namespace ReportGenerator.Pages
                     }
                     catch
                     {
-                        Message = $"ÎŞ·¨Ê¶±ğµÄÊäÈë: {data[0]} {data[1]}";
+                        Message = $"æ— æ³•è¯†åˆ«çš„è¾“å…¥: {data[0]} {data[1]}";
                         return Page();
                     }
 
@@ -149,64 +130,37 @@ namespace ReportGenerator.Pages
                     }
                     catch
                     {
-                        Message = $"ÎŞ·¨Ê¶±ğµÄÊäÈë: {data[0]} {data[2]}";
+                        Message = $"æ— æ³•è¯†åˆ«çš„è¾“å…¥: {data[0]} {data[2]}";
                         return Page();
                     }
 
                 }
             }
 
-            //foreach (var line in matchDataStream.Split("\r\n"))
-            //{
-            //    var data = line.Split(",");
-            //    if (data[0].StartsWith("BD"))
-            //    {
-            //        if (matchResult.ContainsKey(data[0]))
-            //        {
-            //            Message = $"ÊµÑéºÅÖØ¸´: {data[0]}";
-            //            return Page();
-            //        }
-            //        try
-            //        {
-            //            matchResult.Add(data[0], double.Parse(data[1]));
-            //        }
-            //        catch
-            //        {
-            //            Message = $"ÎŞ·¨Ê¶±ğµÄÊäÈë: {data[0]} {data[1]}";
-            //            return Page();
-            //        }
-            //    }
-            //}
-
             if (targetResult.Keys.Count < 20 || matchResult.Keys.Count < 20)
             {
-                Message = $"ÑùÆ·ÊıÁ¿Ğ¡ÓÚ20¸ö£¡";
+                Message = $"æ ·å“æ•°é‡å°äº20ä¸ªï¼";
                 return Page();
             }
 
             if (targetResult.Keys.Count != matchResult.Keys.Count)
             {
-                Message = "ÑùÆ·ÊıÁ¿²»Ò»ÖÂ£¬ÇëÈ·ÈÏ£¡";
+                Message = "æ ·å“æ•°é‡ä¸ä¸€è‡´ï¼Œè¯·ç¡®è®¤ï¼";
                 return Page();
             }
 
             foreach (var key in targetResult.Keys)
             {
-                //if (!matchResult.ContainsKey(key))
-                //{
-                //    Message = $"ÊµÑéºÅ²»Ò»ÖÂ: {key}";
-                //    return Page();
-                //}
                 if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > Report.ALE)
                 {
-                    Message = $"½á¹ûÒ»ÖÂĞÔÎ´Í¨¹ı£º{key}";
+                    Message = $"ç»“æœä¸€è‡´æ€§æœªé€šè¿‡ï¼š{key}";
                     return Page();
                 }
             }
 
             int significantDigit = project.SignificantDigits;
 
-            // ½á¹û±£ÁônÎ»ÓĞĞ§Êı×ÖºóÒÔ¶ººÅ·Ö¸ôµÄ×Ö·û´®±£´æµ½Êı¾İ¿â
+            // ç»“æœä¿ç•™nä½æœ‰æ•ˆæ•°å­—åä»¥é€—å·åˆ†éš”çš„å­—ç¬¦ä¸²ä¿å­˜åˆ°æ•°æ®åº“
             Report.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
             Report.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
             Report.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
@@ -214,9 +168,9 @@ namespace ReportGenerator.Pages
                                            let bias = matchResult.GetValueOrDefault(key) / targetResult.GetValueOrDefault(key) - 1
                                            select bias.ToString($"F4"));
 
-            // ¸÷²ÎÊıÌõ¼şÅĞ¶Ï ²»Í¨¹ıÔòÍ£Ö¹³ÌĞò²¢ÌáÊ¾
+            // å„å‚æ•°æ¡ä»¶åˆ¤æ–­ ä¸é€šè¿‡åˆ™åœæ­¢ç¨‹åºå¹¶æç¤º
 
-            // »ñÈ¡ÀëÈºÖµ
+            // è·å–ç¦»ç¾¤å€¼
             IntegerVector OutliersList;
             try
             {
@@ -224,43 +178,43 @@ namespace ReportGenerator.Pages
             }
             catch (Exception e)
             {
-                Message = "ÎŞ·¨µ÷ÓÃRÓïÑÔÄ£¿é£¬Êı¾İÎ´Ìá½»³É¹¦£¡" + e.Message;
+                Message = "æ— æ³•è°ƒç”¨Rè¯­è¨€æ¨¡å—ï¼Œæ•°æ®æœªæäº¤æˆåŠŸï¼" + e.Message;
                 return Page();
             }
 
-            // ·µ»ØÀëÈºÖµ
+            // è¿”å›ç¦»ç¾¤å€¼
             if (OutliersList != null && OutliersList.Count() > 0)
             {
-                Message = "ÀëÈºÖµ: ";
-                Message += string.Join(',', from i in OutliersList
-                                            let samplename = targetResult.ElementAt(i - 1).Key
-                                            select samplename);
-                return Page();
+                Report.Remark = "ç¦»ç¾¤å€¼: ";
+                Report.Remark += string.Join(',', from i in OutliersList
+                                                  let samplename = targetResult.ElementAt(i - 1).Key
+                                                  select samplename);
+                //return Page();
             }
 
-            // µ±PÖµĞ¡ÓÚ0.1
+            // å½“På€¼å°äº0.1
             if (Report.P <= 0.1)
             {
-                Message = $"Á½×éÊı¾İÏßĞÔÏà¹ØĞÔ²î: P<=0.10";
+                Message = $"ä¸¤ç»„æ•°æ®çº¿æ€§ç›¸å…³æ€§å·®: P<=0.10";
                 return Page();
             }
 
-            // ×î´óSE/Xc > 1/2ALE
+            // æœ€å¤§SE/Xc > 1/2ALE
             if (MaxSEDivXc(Report.Xc1) * 2 > Report.ALE)
             {
-                Message = $"Ò½Ñ§¾ö¶¨Ë®Æ½Ò»´¦×î´óSE/Xc={MaxSEDivXc(Report.Xc1)} >1/2ALE";
+                Message = $"åŒ»å­¦å†³å®šæ°´å¹³ä¸€å¤„æœ€å¤§SE/Xc={MaxSEDivXc(Report.Xc1)} >1/2ALE";
                 return Page();
             }
             if (MaxSEDivXc(Report.Xc2) * 2 > Report.ALE)
             {
-                Message = $"Ò½Ñ§¾ö¶¨Ë®Æ½¶ş´¦×î´óSE/Xc={MaxSEDivXc(Report.Xc2)} >1/2ALE";
+                Message = $"åŒ»å­¦å†³å®šæ°´å¹³äºŒå¤„æœ€å¤§SE/Xc={MaxSEDivXc(Report.Xc2)} >1/2ALE";
                 return Page();
             }
 
             return RedirectToPage("QuantitativeReports/Create", "Generate", Report);
         }
 
-        // ·µ»Ø×î´óSE/Xc
+        // è¿”å›æœ€å¤§SE/Xc
         double MaxSEDivXc(double Xc)
         {
             return Math.Max(Math.Abs((Report.bLCI * Xc + Report.aLCI) / Xc - 1),
@@ -268,12 +222,12 @@ namespace ReportGenerator.Pages
         }
 
         /// <summary>
-        /// RÄ£¿é-Passing-Bablok regession
+        /// Ræ¨¡å—-Passing-Bablok regession
         /// </summary>
-        /// <param name="OutliersList">·µ»ØÀëÈºÖµµÄÏÂ±ê, ´Ó1¿ªÊ¼<param>
+        /// <param name="OutliersList">è¿”å›ç¦»ç¾¤å€¼çš„ä¸‹æ ‡, ä»1å¼€å§‹<param>
         void CallRSource(out IntegerVector OutliersList)
         {
-            // Òª½« "C:\R-3.5.3\bin\x64 Ìí¼Óµ½ÏµÍ³»·¾³Â·¾¶ÖĞ
+            // è¦å°† "C:\R-3.5.3\bin\x64 æ·»åŠ åˆ°ç³»ç»Ÿç¯å¢ƒè·¯å¾„ä¸­
             // The problem is actually not that stats.dll could not be found, 
             // but that a.dll that stats.dll depends on could not be loaded - 
             // I've found this out by inspecting the stats.dll file using a tool called Dependency Walker. 
@@ -285,7 +239,7 @@ namespace ReportGenerator.Pages
             REngine.SetEnvironmentVariables();
             engine = REngine.GetInstance();
 
-            // ÏßĞÎÍ¼±£´æÂ·¾¶
+            // çº¿å½¢å›¾ä¿å­˜è·¯å¾„
             var PictureDir = Path.Combine(_WebHostEnvironment.WebRootPath, "Pictures");
             if (!Directory.Exists(PictureDir))
             {
@@ -298,14 +252,14 @@ namespace ReportGenerator.Pages
             engine.SetSymbol("target", engine.CreateCharacter(Report.TargetInstrumentName));
             engine.SetSymbol("match", engine.CreateCharacter(Report.MatchInstrumentName));
             engine.SetSymbol("filename", engine.CreateCharacter(imagePath));
-            engine.SetSymbol("¼ì²âÏµÍ³A½á¹û", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
-            engine.SetSymbol("¼ì²âÏµÍ³B½á¹û", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
+            engine.SetSymbol("æ£€æµ‹ç³»ç»ŸAç»“æœ", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
+            engine.SetSymbol("æ£€æµ‹ç³»ç»ŸBç»“æœ", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
 
-            // µ÷ÓÃ R
-            string RSourcePath = Path.Combine(_WebHostEnvironment.WebRootPath, "ÒÇÆ÷±È¶Ô±¨¸æºó¶Ë.R").Replace("\\", "/");
+            // è°ƒç”¨ R
+            string RSourcePath = Path.Combine(_WebHostEnvironment.WebRootPath, "ä»ªå™¨æ¯”å¯¹æŠ¥å‘Šåç«¯.R").Replace("\\", "/");
             engine.Evaluate("source('" + RSourcePath + "')");
 
-            // ÀëÈºÖµÊı¾İÏÂ±êÁĞ±í
+            // ç¦»ç¾¤å€¼æ•°æ®ä¸‹æ ‡åˆ—è¡¨
             OutliersList = engine.GetSymbol("ID").AsInteger();
 
             Report.P = engine.GetSymbol("p").AsNumeric()[0];

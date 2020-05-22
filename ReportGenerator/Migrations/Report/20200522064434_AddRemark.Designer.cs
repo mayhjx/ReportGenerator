@@ -10,8 +10,8 @@ using ReportGenerator.Data;
 namespace ReportGenerator.Migrations.Report
 {
     [DbContext(typeof(ReportContext))]
-    [Migration("20200404091929_initial report db")]
-    partial class initialreportdb
+    [Migration("20200522064434_AddRemark")]
+    partial class AddRemark
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,10 +31,13 @@ namespace ReportGenerator.Migrations.Report
                     b.Property<double>("ALE")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("ApprovalDate")
+                    b.Property<DateTime?>("ApprovalDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Approver")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bias")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndTestDate")
@@ -67,14 +70,17 @@ namespace ReportGenerator.Migrations.Report
                     b.Property<string>("PicturePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SampleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartTestDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TargetInstrumentName")
                         .HasColumnType("nvarchar(max)");
@@ -86,6 +92,9 @@ namespace ReportGenerator.Migrations.Report
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Technician")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Unit")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Xc1")
