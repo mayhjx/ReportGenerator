@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ReportGenerator.Pages.ProjectParameters
 {
-    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly ReportGenerator.Data.ProjectParametersContext _context;

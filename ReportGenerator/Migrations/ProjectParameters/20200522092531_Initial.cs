@@ -2,7 +2,7 @@
 
 namespace ReportGenerator.Migrations.ProjectParameters
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,12 +13,16 @@ namespace ReportGenerator.Migrations.ProjectParameters
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: false),
-                    ALE = table.Column<double>(nullable: false),
+                    SpecificationOneConcRange = table.Column<double>(nullable: true),
+                    SpecificationOne = table.Column<double>(nullable: true),
+                    SpecificationTwoConcRange = table.Column<double>(nullable: true),
+                    SpecificationTwo = table.Column<double>(nullable: true),
                     Xc1 = table.Column<double>(nullable: false),
-                    Xc2 = table.Column<double>(nullable: false),
+                    Xc2 = table.Column<double>(nullable: true),
                     SignificantDigits = table.Column<int>(nullable: false),
                     Unit = table.Column<string>(nullable: false),
-                    LOQ = table.Column<double>(nullable: false)
+                    LOQ = table.Column<double>(nullable: false),
+                    ALE = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {

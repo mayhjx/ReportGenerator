@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ReportGenerator.Pages.ProjectParameters
 {
-    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly ReportGenerator.Data.ProjectParametersContext _context;
@@ -29,9 +27,8 @@ namespace ReportGenerator.Pages.ProjectParameters
         [BindProperty]
         public ProjectParameter ProjectParameter { get; set; }
 
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

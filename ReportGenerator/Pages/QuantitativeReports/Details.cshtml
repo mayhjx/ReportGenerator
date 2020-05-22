@@ -66,6 +66,7 @@
                 var TargetResult = Model.Report.TargetResult.Split(",").ToList();
                 var MatchResult = Model.Report.MatchResult.Split(",").ToList();
                 var Bias = Model.Report.Bias.Split(",").ToList();
+                var YorN = Model.Report.YorN.Split(",").ToList();
                 var halfALE = Model.Report.ALE / 2;
             }
 
@@ -74,14 +75,14 @@
                 var samplename = SampleName[i];
                 var targetResult = TargetResult[i];
                 var matchResult = MatchResult[i];
-                var bias = double.Parse(Bias[i]);
-                var Y = (halfALE > @Math.Abs(bias)) ? "Y" : "N";
+                var bias = Bias[i];
+                var Y = YorN[i];
 
                 <tr>
                     <td>@samplename</td>
                     <td>@targetResult</td>
                     <td>@matchResult</td>
-                    <td>@string.Format("{0:P}", bias) / @Y</td>
+                    <td>@bias / @Y</td>
                 </tr>
             }
         </tbody>
@@ -246,12 +247,12 @@
     <table class="table table-bordered table-sm">
         <tbody>
             <tr>
-                <td>调查者(Investigator): @Html.DisplayFor(model => model.Report.Investigator)</td>
-                <td>日期(Date): @Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                <td>调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
+                <td>日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
             </tr>
             <tr>
-                <td>学科主任(Section director): @Html.DisplayFor(model => model.Report.Approver)</td>
-                <td>日期(Date): @Html.DisplayFor(model => model.Report.ApprovalDate)</td>
+                <td>学科主任(Section director)：@Html.DisplayFor(model => model.Report.Approver)</td>
+                <td>日期(Date)：@Html.DisplayFor(model => model.Report.ApprovalDate)</td>
             </tr>
         </tbody>
     </table>
@@ -260,7 +261,10 @@
 
 <div class="d-print-none">
     @*打印时不显示*@
-    <a asp-page="./Edit" asp-route-id="@Model.Report.ID">编辑</a> |
-    <a asp-page="./Index">返回</a>
+    @if (Model.Report.Status != "已审核")
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.Report.ID">编辑</a><span>|</span>
+        <a asp-page="./Index">返回</a>
+    }
     <input class="btn btn-info float-right" type="button" value="导出" onclick="window.print();" />
 </div>

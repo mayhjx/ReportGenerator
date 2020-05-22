@@ -89,7 +89,7 @@ namespace ReportGenerator.Pages
 
             Report.ALE = project.ALE;
             Report.Xc1 = project.Xc1;
-            Report.Xc2 = project.Xc2;
+            Report.Xc2 = (double)project.Xc2;
             Report.Unit = project.Unit;
 
             // 读取仪器数据
@@ -149,24 +149,55 @@ namespace ReportGenerator.Pages
                 return Page();
             }
 
+            int significantDigit = project.SignificantDigits;
+
+            var Bias = new List<string>();
+            var YorN = new List<string>();
             foreach (var key in targetResult.Keys)
             {
-                if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > Report.ALE)
+                var target = double.Parse(SignificantDigits.Reserved(targetResult.GetValueOrDefault(key), significantDigit));
+                var match = double.Parse(SignificantDigits.Reserved(matchResult.GetValueOrDefault(key), significantDigit));
+                if (target <= (double)project.SpecificationOneConcRange)
                 {
-                    Message = $"结果一致性未通过：{key}";
-                    return Page();
+                    var diff = match - target;
+                    Bias.Add(diff.ToString("F" + significantDigit));
+                    if (diff < project.SpecificationOne)
+                    {
+                        YorN.Add("Y");
+                    }
+                    else
+                    {
+                        YorN.Add("N");
+                    }
                 }
+                else
+                {
+                    var bias = (match - target) / target;
+                    Bias.Add(bias.ToString($"P2"));
+                    if (bias < project.SpecificationTwo)
+                    {
+                        YorN.Add("Y");
+                    }
+                    else
+                    {
+                        YorN.Add("N");
+                    }
+                }
+
+                //if ((targetResult.GetValueOrDefault(key) / matchResult.GetValueOrDefault(key) - 1) * 2 > Report.ALE)
+                //{
+                //    Message = $"结果一致性未通过：{key}";
+                //    return Page();
+                //}
             }
 
-            int significantDigit = project.SignificantDigits;
 
             // 结果保留n位有效数字后以逗号分隔的字符串保存到数据库
             Report.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
             Report.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
             Report.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-            Report.Bias = string.Join(",", from key in targetResult.Keys
-                                           let bias = matchResult.GetValueOrDefault(key) / targetResult.GetValueOrDefault(key) - 1
-                                           select bias.ToString($"F4"));
+            Report.Bias = string.Join(",", Bias);
+            Report.YorN = string.Join(",", YorN);
 
             // 各参数条件判断 不通过则停止程序并提示
 
@@ -186,7 +217,7 @@ namespace ReportGenerator.Pages
             if (OutliersList != null && OutliersList.Count() > 0)
             {
                 Report.Remark = "离群值: ";
-                Report.Remark += string.Join(',', from i in OutliersList
+                Report.Remark += string.Join('，', from i in OutliersList
                                                   let samplename = targetResult.ElementAt(i - 1).Key
                                                   select samplename);
                 //return Page();

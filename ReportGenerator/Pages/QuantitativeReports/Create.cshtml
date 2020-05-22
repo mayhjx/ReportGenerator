@@ -72,6 +72,7 @@
                             var TargetResult = Model.Report.TargetResult.Split(",").ToList();
                             var MatchResult = Model.Report.MatchResult.Split(",").ToList();
                             var Bias = Model.Report.Bias.Split(",").ToList();
+                            var YorN = Model.Report.YorN.Split(",").ToList();
                             var halfALE = Model.Report.ALE / 2;
                         }
 
@@ -80,14 +81,14 @@
                             var samplename = SampleName[i];
                             var targetResult = TargetResult[i];
                             var matchResult = MatchResult[i];
-                            var bias = double.Parse(Bias[i]);
-                            var Y = (halfALE > @Math.Abs(bias)) ? "Y" : "N";
+                            var bias = Bias[i];
+                            var Y = YorN[i];
 
                             <tr>
                                 <td>@samplename</td>
                                 <td>@targetResult</td>
                                 <td>@matchResult</td>
-                                <td>@string.Format("{0:P}", bias) / @Y</td>
+                                <td>@bias / @Y</td>
                             </tr>
                         }
                     </tbody>
@@ -252,12 +253,12 @@
                 <table class="table table-bordered table-sm">
                     <tbody>
                         <tr>
-                            <td>调查者(Investigator): <input asp-for="Report.Investigator" /></td>
-                            <td>日期(Date): <input type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") asp-for="Report.InvestigationDate" /></td>
+                            <td>调查者(Investigator)：<input asp-for="Report.Investigator" /></td>
+                            <td>日期(Date)：<input type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") asp-for="Report.InvestigationDate" /></td>
                         </tr>
                         <tr>
-                            <td>学科主任(Section director): <input asp-for="Report.Approver" /></td>
-                            <td>日期(Date): <input type="date" asp-for="Report.ApprovalDate" /></td>
+                            <td>学科主任(Section director)：<input asp-for="Report.Approver" /></td>
+                            <td>日期(Date)：<input type="date" asp-for="Report.ApprovalDate" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -340,6 +341,11 @@
                     <label asp-for="Report.Bias" class="control-label"></label>
                     <input asp-for="Report.Bias" class="form-control" />
                     <span asp-validation-for="Report.Bias" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Report.YorN" class="control-label"></label>
+                    <input asp-for="Report.YorN" class="form-control" />
+                    <span asp-validation-for="Report.YorN" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Report.ALE" class="control-label"></label>

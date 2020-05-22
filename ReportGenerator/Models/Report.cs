@@ -43,7 +43,9 @@ namespace ReportGenerator.Models
 
         public string MatchResult { get; set; } // 比对仪器数据（逗号分隔）
 
-        public string Bias { get; set; } // 偏倚
+        public string Bias { get; set; } // 偏倚（逗号分隔）
+
+        public string YorN { get; set; } // 一致性判断（逗号分隔）
 
         public double ALE { get; set; } // 最大允许误差
 
