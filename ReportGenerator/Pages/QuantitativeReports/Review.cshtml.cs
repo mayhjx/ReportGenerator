@@ -60,7 +60,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
             if (await TryUpdateModelAsync<Report>(
                 reportToUpdate,
                 "Report",
-                i => i.Approver, i => i.ApprovalDate))
+                i => i.Status, i => i.Approver, i => i.ApprovalDate))
             {
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
