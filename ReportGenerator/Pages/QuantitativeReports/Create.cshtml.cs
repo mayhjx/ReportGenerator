@@ -16,45 +16,6 @@ using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
-    //public class CreateModel : PageModel
-    //{
-    //    private readonly ReportGenerator.Data.ReportContext _context;
-
-    //    public CreateModel(ReportGenerator.Data.ReportContext context)
-    //    {
-    //        _context = context;
-    //    }
-
-    //    public IActionResult OnGet()
-    //    {
-    //        //return Page();
-    //        return RedirectToPage("/Upload");
-    //    }
-
-    //    public IActionResult OnGetGenerate(Report report)
-    //    {
-    //        this.Report = report;
-    //        return Page();
-    //    }
-
-    //    [BindProperty]
-    //    public Report Report { get; set; }
-
-    //    // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-    //    // more details see https://aka.ms/RazorPagesCRUD.
-    //    public async Task<IActionResult> OnPostAsync()
-    //    {
-    //        if (!ModelState.IsValid)
-    //        {
-    //            return Page();
-    //        }
-
-    //        _context.Report.Add(Report);
-    //        await _context.SaveChangesAsync();
-
-    //        return RedirectToPage("./Index");
-    //    }
-    //}
     public class CreateModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
@@ -97,7 +58,6 @@ namespace ReportGenerator.Pages.QuantitativeReports
         [BindProperty]
         public InputModel Upload { get; set; }
 
-        [BindProperty]
         public Report Report { get; set; }
 
         // 提示信息
@@ -344,6 +304,4 @@ namespace ReportGenerator.Pages.QuantitativeReports
             Report.aLCI = double.Parse(engine.GetSymbol("a.lower").AsNumeric()[0].ToString("F4"));
         }
     }
-
-
 }
