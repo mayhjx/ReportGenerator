@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+ï»¿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ReportGenerator.Models;
-using ReportGenerator.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using ReportGenerator.Data;
+using ReportGenerator.Models;
+using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
@@ -38,7 +35,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 return NotFound();
             }
 
-            if (Report.Status == "ÒÑÉóºË")
+            if (Report.Status == "å·²å®¡æ ¸")
             {
                 return RedirectToPage("Details", new { id });
             }
@@ -46,39 +43,65 @@ namespace ReportGenerator.Pages.QuantitativeReports
             return Page();
         }
 
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Report).State = EntityState.Modified;
+            var reportToUpdate = await _context.Report.FindAsync(id);
 
-            try
+            if (reportToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync<Report>(
+                reportToUpdate,
+                "Report",
+                i => i.Approver, i => i.ApprovalDate))
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReportExists(Report.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
+            return Page();
         }
 
-        private bool ReportExists(int id)
-        {
-            return _context.Report.Any(e => e.ID == id);
-        }
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        //// more details see https://aka.ms/RazorPagesCRUD.
+        //public async Task<IActionResult> OnPostAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Page();
+        //    }
+
+        //    _context.Attach(Report).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ReportExists(Report.ID))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return RedirectToPage("./Index");
+        //}
+
+        //private bool ReportExists(int id)
+        //{
+        //    return _context.Report.Any(e => e.ID == id);
+        //}
     }
 }
