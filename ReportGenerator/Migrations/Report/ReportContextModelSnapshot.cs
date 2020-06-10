@@ -101,6 +101,9 @@ namespace ReportGenerator.Migrations.Report
                     b.Property<double>("Xc2")
                         .HasColumnType("float");
 
+                    b.Property<string>("YorN")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("a")
                         .HasColumnType("float");
 

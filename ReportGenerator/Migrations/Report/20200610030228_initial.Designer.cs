@@ -10,8 +10,8 @@ using ReportGenerator.Data;
 namespace ReportGenerator.Migrations.Report
 {
     [DbContext(typeof(ReportContext))]
-    [Migration("20200522064434_AddRemark")]
-    partial class AddRemark
+    [Migration("20200610030228_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,6 +102,9 @@ namespace ReportGenerator.Migrations.Report
 
                     b.Property<double>("Xc2")
                         .HasColumnType("float");
+
+                    b.Property<string>("YorN")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("a")
                         .HasColumnType("float");

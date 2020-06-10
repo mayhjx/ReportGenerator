@@ -12,11 +12,6 @@
     <None Remove="Tests\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\Report\20200522061139_ApprovalDate_Nullable.cs" />
-    <Compile Remove="Migrations\Report\20200522061139_ApprovalDate_Nullable.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.9.0" />
