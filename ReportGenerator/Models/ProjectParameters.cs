@@ -22,8 +22,8 @@ namespace ReportGenerator.Models
         [Display(Name = "判断标准二适用范围(>)")]
         public double? SpecificationTwoConcRange { get; set; }
 
-        [Display(Name = "判断标准二（比值）")]
-        [DisplayFormat(DataFormatString = "{0:P0}")]
+        [Display(Name = "判断标准二（%）")]
+        //[DisplayFormat(DataFormatString = "{0:P0}")]
         public double? SpecificationTwo { get; set; }
 
         [Display(Name = "医学决定水平一")]
@@ -42,8 +42,8 @@ namespace ReportGenerator.Models
 
         public double LOQ { get; set; }
 
-        [Display(Name = "ALE")]
-        [DisplayFormat(DataFormatString = "{0:P0}")]
+        [Display(Name = "ALE(%)")]
+        //[DisplayFormat(DataFormatString = "{0:P0}")]
         public double ALE { get; set; }
     }
 }
