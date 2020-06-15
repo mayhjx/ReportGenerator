@@ -100,7 +100,7 @@ for (s in 1:samplesize){
 }
 
 h<-max(abs(cu))/sqrt(nneg+1)
-if (h<1.223848){
+if (h<1.358099){
   p=0.11
 } else {
   p=0.09

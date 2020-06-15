@@ -58,6 +58,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
         [BindProperty]
         public InputModel Upload { get; set; }
 
+        [BindProperty]
         public Report Report { get; set; }
 
         // 提示信息
@@ -294,6 +295,8 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
             // 离群值数据下标列表
             OutliersList = engine.GetSymbol("ID").AsInteger();
+
+            var h = engine.GetSymbol("h").AsNumeric()[0];
 
             Report.P = engine.GetSymbol("p").AsNumeric()[0];
             Report.b = double.Parse(engine.GetSymbol("b").AsNumeric()[0].ToString("F4"));
