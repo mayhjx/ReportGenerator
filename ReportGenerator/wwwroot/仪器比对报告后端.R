@@ -16,14 +16,14 @@ for (q in 1:samplesize){
   }
 }
 
-round2 = function(x, n) {
-  posneg = sign(x)
-  z = abs(x)*10^n
-  z = z + 0.5
-  z = trunc(z)
-  z = z/10^n
-  z*posneg
-}
+# round2 = function(x, n) {
+#   posneg = sign(x)
+#   z = abs(x)*10^n
+#   z = z + 0.5
+#   z = trunc(z)
+#   z = z/10^n
+#   z*posneg
+# }
 
 lx<-samplesize
 l<-choose(lx,2)
@@ -35,11 +35,11 @@ for (i in 1:(lx-1)) {
   }
 }
 S.sort<-sort(S)
-# S.sort1<-subset(S.sort,S.sort!=-1)
-S.sort1<-S.sort
+S.sort1<-subset(S.sort,S.sort!=0)
 S.sort2<-subset(S.sort,S.sort+1<0)
+S.sort3<-subset(S.sort,S.sort==-1)
 
-N<-length(S.sort1)
+N<-length(S.sort)+length(S.sort3)
 neg<-length(subset(S.sort,S.sort<0))
 K<-length(S.sort2)
 if (N%%2==0) {
