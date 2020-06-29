@@ -26,7 +26,8 @@ for (q in 1:samplesize){
 # }
 
 lx<-samplesize
-l<-choose(lx,2)
+l<-choose(lx,2) #所有点中任取两点的排列组合总数
+
 S<-matrix(1:l,nrow=1,ncol=l)
 for (i in 1:(lx-1)) {
   for (j in (i+1):lx) {
@@ -34,35 +35,49 @@ for (i in 1:(lx-1)) {
     S[index]<-(y[i]-y[j])/(x[i]-x[j])
   }
 }
+
+
 S.sort<-sort(S)
 S.sort1<-subset(S.sort,S.sort!=0)
+# S.sort1<-S.sort
 S.sort2<-subset(S.sort,S.sort+1<0)
 S.sort3<-subset(S.sort,S.sort==-1)
+S.sort4<-subset(S.sort,S.sort==0)
+S.sort5<-subset(S.sort,S.sort==1)
+S.sort6<-subset(S.sort,S.sort>1)
 
+# N<-length(S.sort1)
 N<-length(S.sort)+length(S.sort3)
 neg<-length(subset(S.sort,S.sort<0))
 K<-length(S.sort2)
-if (N%%2==0) {
-  N1<-N/2
-  b<-(S.sort1[N1+K]+S.sort1[N1+K+1])/2
-} else if (N%%2==1) {
-  N1<-(N-1)/2
-  b<-S.sort1[N1+K+1]
-} else {
-  N1<-"Neither!"
-}
+if (N%%2==0) { 
+  N1<-N/2 
+  b<-(S.sort1[N1+K-length(S.sort3)+1]+S.sort1[N1+K+1-length(S.sort3)+1])/2
+} else if (N%%2==1) { 
+  N1<-(N-1)/2 
+  b<-S.sort1[N1+K+1-length(S.sort3)+1]
+} else { 
+  N1<-"Neither!" 
+} 
 
 a<-median(y-b*x)
 #CI of b
 C.gamma<-qnorm(0.975)*sqrt(lx*(lx-1)*(2*lx+5)/18)
 M1<-round((N-C.gamma)/2)
 M2<-N-M1+1
-b.lower<-S.sort1[M1+K]
-b.upper<-S.sort1[M2+K]
+b.lower<-S.sort1[M1+K-length(S.sort3)+1]
+b.upper<-S.sort1[M2+K-length(S.sort3)+1]
 #CI of a
 a.lower<-median(y-b.upper*x)
 a.upper<-median(y-b.lower*x)
+result<-list(intercept=a,intercept.CI=c(a.lower,a.upper),slope=b,slope.CI=c(b.lower,b.upper))
 
+
+# re<-PB.reg(data)
+# 
+# 
+# b<-re$slope
+# a<-re$intercept
 nneg=0
 npos=0
 for (i in 1:samplesize){
@@ -78,7 +93,7 @@ for (j in 1:samplesize){
   if(b*x[j]+a>y[j]){
     r[j]=-sqrt(npos/nneg)
   } else if(b*x[j]+a<y[j]){
-    r[j]=sqrt(npos/nneg)
+    r[j]=sqrt(nneg/npos)
   } else(
     r[j]=0
   )
@@ -100,6 +115,15 @@ for (s in 1:samplesize){
 }
 
 h<-max(abs(cu))/sqrt(nneg+1)
+# 
+# SE1=re$intercept+(re$slope-1)*xc1
+# SEmin1=re$intercept.CI[1]+(re$slope.CI[1]-1)*xc1
+# SEmax1=re$intercept.CI[2]+(re$slope.CI[2]-1)*xc1
+# 
+# SE2=re$intercept+(re$slope-1)*xc2
+# SEmin2=re$intercept.CI[1]+(re$slope.CI[1]-1)*xc2
+# SEmax2=re$intercept.CI[2]+(re$slope.CI[2]-1)*xc2
+
 if (h<1.358099){
   p=0.11
 } else {
