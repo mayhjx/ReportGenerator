@@ -114,7 +114,7 @@ for (s in 1:samplesize){
   cu<-append(cu,sum(r1[1:s]))
 }
 
-h<-max(abs(cu))/sqrt(nneg+1)
+h<-max(abs(cu))/sqrt(nneg+npos)
 # 
 # SE1=re$intercept+(re$slope-1)*xc1
 # SEmin1=re$intercept.CI[1]+(re$slope.CI[1]-1)*xc1
