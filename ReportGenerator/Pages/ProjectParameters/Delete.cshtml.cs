@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ReportGenerator.Data;
 using ReportGenerator.Models;
 
 namespace ReportGenerator.Pages.ProjectParameters
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly ReportGenerator.Data.ProjectParametersContext _context;

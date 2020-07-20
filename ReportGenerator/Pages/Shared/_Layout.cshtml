@@ -1,10 +1,14 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - 报告生成器</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/DataTables/datatables.css" />*@
+    <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.min.css" />
+
+
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -20,11 +24,11 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>*@
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/QuantitativeReports/Index">定量项目仪器比对报告</a>
                         </li>
@@ -43,13 +47,16 @@
     </div>
 
     @*<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - ReportGenerator - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>*@
+            <div class="container">
+                &copy; 2020 - ReportGenerator - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/DataTables/dataTables.min.js"></script>
+    <script src="~/lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

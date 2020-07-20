@@ -11,7 +11,7 @@
     <a asp-page="Create">新建</a>
 </p>
 <div class="table-responsive">
-    <table class="table">
+    <table class="table text-nowrap" id="index">
         <thead>
             <tr>
                 <th>
@@ -37,10 +37,7 @@
                         @Html.DisplayNameFor(model => model.ProjectParameter[0].SpecificationTwoConcRange)
                     </th>*@
                 <th>
-                    判断标准一
-                </th>
-                <th>
-                    判断标准二
+                    判断标准
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ProjectParameter[0].Xc1)
@@ -68,11 +65,9 @@
                         @Html.DisplayFor(modelItem => item.ALE)
                     </td>
                     <td>
-                        &lt;=@Html.DisplayFor(modelItem => item.SpecificationOneConcRange)@Html.DisplayFor(modelItem => item.Unit)：
-                        ±@Html.DisplayFor(modelItem => item.SpecificationOne)@Html.DisplayFor(modelItem => item.Unit)
-                    </td>
-                    <td>
-                        &gt;@Html.DisplayFor(modelItem => item.SpecificationTwoConcRange)@Html.DisplayFor(modelItem => item.Unit)：
+                        &lt;=@Html.DisplayFor(modelItem => item.SpecificationOneConcRange)@Html.DisplayFor(modelItem => item.Unit):
+                        ±@Html.DisplayFor(modelItem => item.SpecificationOne)@Html.DisplayFor(modelItem => item.Unit) OR <br />
+                        &gt;@Html.DisplayFor(modelItem => item.SpecificationTwoConcRange)@Html.DisplayFor(modelItem => item.Unit):
                         ±@Html.DisplayFor(modelItem => item.SpecificationTwo)%
                     </td>
                     <td>
@@ -85,9 +80,9 @@
                         @Html.DisplayFor(modelItem => item.SignificantDigits)
                     </td>
                     <td>
-                        <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> |
+                        <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a>
                         @*<a asp-page="./Details" asp-route-id="@item.ID">Details</a> |*@
-                        <a asp-page="./Delete" asp-route-id="@item.ID">删除</a>
+                        @*<a asp-page="./Delete" asp-route-id="@item.ID">删除</a>*@
                     </td>
                 </tr>
             }
