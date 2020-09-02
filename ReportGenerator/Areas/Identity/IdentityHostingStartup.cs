@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +12,8 @@ namespace ReportGenerator.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<IdentityContext>(options =>
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
@@ -33,9 +32,9 @@ namespace ReportGenerator.Areas.Identity
                     options.Password.RequiredUniqueChars = 1;
 
                     // Lockout settings.
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-                    options.Lockout.AllowedForNewUsers = true;
+                    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    //options.Lockout.MaxFailedAccessAttempts = 5;
+                    //options.Lockout.AllowedForNewUsers = true;
 
                     // User settings.
                     options.User.AllowedUserNameCharacters =
