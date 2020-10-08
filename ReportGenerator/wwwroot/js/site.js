@@ -7,8 +7,8 @@
 $(document).ready(function () {
     $('#index').DataTable({
         paging: true,
-        lengthChange: false,
-        searching: false,
+        lengthChange: true,
+        searching: true,
         ordering: true,
         orderMulti: true,
         info: true,
