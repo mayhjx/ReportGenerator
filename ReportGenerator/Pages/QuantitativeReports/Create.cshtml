@@ -5,16 +5,16 @@
 
 }
 
-<div class="col-md-12">
+<div class="col-12 col-xl-4">
     @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
         <h3 class="h3 text-danger">警告： @Model.Message</h3>
     }
     <br />
     <form method="post" enctype="multipart/form-data">
-        <div class="form-row">
-            <label class="col-md-2 col-form-label">比对项目：</label>
-            <input class="col-md-2 form-control-sm" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
+        <div class="form-group">
+            <label class="col-form-label">比对项目</label>
+            <input class="form-control" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
             <datalist id="item">
                 @if (Model.Options != null)
                 {
@@ -27,34 +27,34 @@
             <span asp-validation-for="Upload.Item" class="text-danger"></span>
         </div>
 
-        <div class="form-row">
-            <label class="col-md-2 col-form-label">靶仪器编号：</label>
-            <input class="col-md-2 form-control-sm" type="text" asp-for="Upload.TargetNum" placeholder="" />
+        <div class="form-group">
+            <label class="col-form-label">靶仪器编号</label>
+            <input class="form-control" type="text" asp-for="Upload.TargetNum" placeholder="" />
             <span asp-validation-for="Upload.TargetNum" class="text-danger"></span>
         </div>
 
-        <div class="form-row">
-            <label class="col-md-2 col-form-label">比对仪器编号：</label>
-            <input class="col-md-2 form-control-sm" type="text" asp-for="Upload.MatchNum" placeholder="" />
+        <div class="form-group">
+            <label class="col-form-label">比对仪器编号</label>
+            <input class="form-control" type="text" asp-for="Upload.MatchNum" placeholder="" />
             <span asp-validation-for="Upload.MatchNum" class="text-danger"></span>
         </div>
 
-        <div class="form-row">
-            <label class="col-md-2 col-form-label">仪器数据<a download="仪器比对上传模板.csv" href="~/仪器比对上传模板.csv">(上传模板)</a>：</label>
-            <input class="col-md-3 form-control-file" type="file" asp-for="Upload.DataFile" />
+        <div class="form-group">
+            <label class="col-form-label">仪器数据<a download="仪器比对上传模板.csv" href="~/仪器比对上传模板.csv">（模板下载）</a></label>
+            <input class="form-control-file" type="file" asp-for="Upload.DataFile" />
             <span asp-validation-for="Upload.DataFile" class="text-danger"></span>
         </div>
 
-        <div class="form-row">
-            <label class="col-md-2 col-form-label">报告模板：</label>
-            <select class="col-md-2 form-control-sm" asp-for="Upload.Template">
+        <div class="form-group">
+            <label class="col-form-label">报告模板</label>
+            <select class="form-control" asp-for="Upload.Template">
                 <option value="1">仪器比对模板一</option>
             </select>
             <span asp-validation-for="Upload.Template" class="text-danger"></span>
         </div>
         <br />
-        <div class="form-row">
-            <input class="col-md-2 offset-md-1 btn btn-info" type="submit" />
+        <div class="form-group">
+            <input class="btn btn-primary btn-block" type="submit" />
         </div>
     </form>
 </div>

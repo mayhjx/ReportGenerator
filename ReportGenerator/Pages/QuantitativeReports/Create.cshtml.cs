@@ -125,7 +125,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                     }
                     catch
                     {
-                        Message = $"无法识别的输入: {data[0]} {data[1]}";
+                        Message = $"无法识别的靶仪器数据: {data[0]} {data[1]}";
                         return Page();
                     }
 
@@ -135,7 +135,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                     }
                     catch
                     {
-                        Message = $"无法识别的输入: {data[0]} {data[2]}";
+                        Message = $"无法识别的比对仪器数据: {data[0]} {data[2]}";
                         return Page();
                     }
 
@@ -164,6 +164,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 var match = double.Parse(SignificantDigits.Reserved(matchResult.GetValueOrDefault(key), significantDigit));
                 if (target <= (double)project.SpecificationOneConcRange)
                 {
+                    // 差值
                     var diff = match - target;
                     Bias.Add(diff.ToString("F" + significantDigit));
                     if (diff < project.SpecificationOne)
@@ -177,6 +178,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 }
                 else
                 {
+                    // 比值
                     var bias = (match - target) / target;
                     Bias.Add(bias.ToString($"P2"));
                     if (bias < project.SpecificationTwo / 100)

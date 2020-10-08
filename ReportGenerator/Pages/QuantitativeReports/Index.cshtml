@@ -8,23 +8,22 @@
 <h3>报告列表</h3>
 
 <p>
-    <a asp-page="Create"><input type="button" value="新建" class="btn btn-primary" /></a>
+    <a asp-page="Create"><input type="button" value="新建报告" class="btn btn-primary" /></a>
 </p>
 
-<form class="form-inline">
-    <div class="form-group">
-        <label class="sr-only" for="status">报告状态</label>
-        <select id="status" class="form-control-sm" asp-for="ReportStatus" asp-items="Model.Status">
-            <option value="">所有</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label class="sr-only" for="searchString"> 项目名称</label>
-        <input id="searchString" type="text" asp-for="SearchString" class=" form-control-sm" placeholder="比对项目" />
-    </div>
-    <input type="submit" value="搜索" class="btn btn-outline-info btn-sm" />
-</form>
-<br />
+@*<form class="form-inline">
+        <div class="form-group">
+            <label class="sr-only" for="status">报告状态</label>
+            <select id="status" class="form-control-sm" asp-for="ReportStatus" asp-items="Model.Status">
+                <option value="">所有</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="searchString"> 项目名称</label>
+            <input id="searchString" type="text" asp-for="SearchString" class=" form-control-sm" placeholder="比对项目" />
+        </div>
+        <input type="submit" value="搜索" class="btn btn-outline-info btn-sm" />
+    </form>*@
 <table class="table" id="index">
     <thead>
         <tr>
@@ -93,10 +92,8 @@
                 }
                 else
                 {
-                    <td>
-                    </td>
-                    <td>
-                    </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a> |
                         <a asp-page="./Review" asp-route-id="@item.ID">审核</a> |
