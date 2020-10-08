@@ -1,19 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
-using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
     public class EditModel : PageModel
     {
         private readonly ReportContext _context;
+        private readonly ILogger<EditModel> _logger;
 
-        public EditModel(ReportContext context)
+        public EditModel(ReportContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -64,46 +67,12 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 i => i.Technician, i => i.Investigator, i => i.InvestigationDate,
                 i => i.Approver, i => i.ApprovalDate))
             {
+                reportToUpdate.Status = "待审核";
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
 
             return Page();
         }
-
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    _context.Attach(Report).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReportExists(Report.ID))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return RedirectToPage("./Index");
-        //}
-
-        //private bool ReportExists(int id)
-        //{
-        //    return _context.Report.Any(e => e.ID == id);
-        //}
     }
 }

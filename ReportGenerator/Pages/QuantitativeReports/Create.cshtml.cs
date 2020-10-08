@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,12 +13,6 @@ using Microsoft.Extensions.Logging;
 using RDotNet;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
@@ -296,7 +296,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
             // 离群值数据下标列表
             OutliersList = engine.GetSymbol("ID").AsInteger();
 
-            var h = engine.GetSymbol("h").AsNumeric()[0];
+            //var h = engine.GetSymbol("h").AsNumeric()[0];
 
             Report.P = engine.GetSymbol("p").AsNumeric()[0];
             Report.b = double.Parse(engine.GetSymbol("b").AsNumeric()[0].ToString("F4"));

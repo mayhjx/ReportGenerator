@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
-using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
@@ -60,48 +60,14 @@ namespace ReportGenerator.Pages.QuantitativeReports
             if (await TryUpdateModelAsync<Report>(
                 reportToUpdate,
                 "Report",
-                i => i.Status, i => i.Approver, i => i.ApprovalDate))
+                i => i.Approver, i => i.ApprovalDate))
             {
+                reportToUpdate.Status = "已审核";
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
 
             return Page();
         }
-
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        //// more details see https://aka.ms/RazorPagesCRUD.
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    _context.Attach(Report).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReportExists(Report.ID))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return RedirectToPage("./Index");
-        //}
-
-        //private bool ReportExists(int id)
-        //{
-        //    return _context.Report.Any(e => e.ID == id);
-        //}
     }
 }
