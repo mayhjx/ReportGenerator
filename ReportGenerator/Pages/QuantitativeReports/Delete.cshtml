@@ -19,22 +19,21 @@
         </div>
 
         <table class="table table-bordered table-sm">
-
-            <tbody>
+            <thead>
                 <tr>
                     <td colspan="3">
                         比对项目名称：@Html.DisplayFor(model => model.Report.Item)
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>检测系统A</td>
-                    <td>检测系统B</td>
+                    <td width="20%"></td>
+                    <td class="text-center" width="40%">检测系统A</td>
+                    <td class="text-center" width="40%">检测系统B</td>
                 </tr>
                 <tr>
                     <td>检测设备或检测方法：</td>
-                    <td>@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
-                    <td>@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                    <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                    <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
                 </tr>
                 <tr>
                     <td>检测试剂/批号：</td>
@@ -45,18 +44,17 @@
                     <td colspan="3">
                         <div class="row">
                             <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
-                            <span class="col-md-3">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
-                            <span class="col-md-4">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
+                            <span class="col-md-3 text-center">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
+                            <span class="col-md-3 text-right">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
                         </div>
                     </td>
                 </tr>
-
-            </tbody>
+            </thead>
         </table>
 
-        <table class="table table-bordered table-sm text-center">
+        <table class="table table-bordered table-sm">
             <tbody>
-                <tr class="table-active">
+                <tr class="table-active text-center">
                     <td>样品编号</td>
                     <td>检测系统A结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
                     <td>检测系统B结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
@@ -79,39 +77,39 @@
                     var targetResult = TargetResult[i];
                     var matchResult = MatchResult[i];
                     var bias = Bias[i];
-                    var Y = YorN[i];
+                    var YN = YorN[i];
 
-                    <tr>
+                    <tr class="text-center">
                         <td>@samplename</td>
                         <td>@targetResult</td>
                         <td>@matchResult</td>
-                        <td>@bias / @Y</td>
+                        <td>@bias / @YN</td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                @*</tbody>
+                    </table>*@
 
-        @{
-            var a = Model.Report.a;
-            var b = Model.Report.b;
-            var aUCI = Model.Report.aUCI;
-            var bUCI = Model.Report.bUCI;
-            var aLCI = Model.Report.aLCI;
-            var bLCI = Model.Report.bLCI;
-            var Xc1 = Model.Report.Xc1;
-            var Xc2 = Model.Report.Xc2;
+                @{
+                    var a = Model.Report.a;
+                    var b = Model.Report.b;
+                    var aUCI = Model.Report.aUCI;
+                    var bUCI = Model.Report.bUCI;
+                    var aLCI = Model.Report.aLCI;
+                    var bLCI = Model.Report.bLCI;
+                    var Xc1 = Model.Report.Xc1;
+                    var Xc2 = Model.Report.Xc2;
 
-            double MaxSEDivXc(double Xc)
-            {
-                // 返回最大SE/Xc
-                var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
-                return result;
-            }
-        }
-        <table class="table table-bordered table-sm">
-            <tbody>
+                    double MaxSEDivXc(double Xc)
+                    {
+                        // 返回最大SE/Xc
+                        var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
+                        return result;
+                    }
+                }
+                @*<table class="table table-bordered table-sm">
+                    <tbody>*@
                 <tr>
-                    <td colspan="2">
+                    <td colspan="4">
                         <p>
                             不同检测系统结果比对分析：<br />
                             回归方程为 y = @a + @b x，
@@ -130,8 +128,8 @@
                         </p>
                     </td>
                 </tr>
-                <tr width="100%">
-                    <td width="50%">
+                <tr>
+                    <td colspan="2" width="50%">
                         @*(描述性统计)*@
                         <table class="table table-sm">
                             <tr>
@@ -218,12 +216,12 @@
                             </tr>
                         </table>
                     </td>
-                    <td width="50%">
+                    <td colspan="2" width="50%">
                         <img src=@Model.Report.PicturePath asp-append-version="true" alt="线性回归图" />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="4">
                         <p>
                             评估总结(Evaluation Summary)：<br />
                             本次实验中仪器比对结果合格，结果表明
@@ -236,7 +234,7 @@
                 @if (@Model.Report.Remark != null)
                 {
                     <tr>
-                        <td colspan="2">
+                        <td colspan="4">
                             <p>
                                 备注(Remark)：<br />
                                 @(Html.DisplayFor(model => model.Report.Remark))
@@ -244,18 +242,18 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                @*</tbody>
+                    </table>
 
-        <table class="table table-bordered table-sm">
-            <tbody>
+                    <table class="table table-bordered table-sm">
+                        <tbody>*@
                 <tr>
-                    <td>调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
-                    <td>日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                    <td colspan="2">调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
+                    <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
                 </tr>
                 <tr>
-                    <td>学科主任(Section director)：@Html.DisplayFor(model => model.Report.Approver)</td>
-                    <td>日期(Date)：@Html.DisplayFor(model => model.Report.ApprovalDate)</td>
+                    <td colspan="2">学科主任(Section director)：@Html.DisplayFor(model => model.Report.Approver)</td>
+                    <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.ApprovalDate)</td>
                 </tr>
             </tbody>
         </table>
