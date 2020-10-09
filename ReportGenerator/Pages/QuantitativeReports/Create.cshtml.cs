@@ -288,6 +288,8 @@ namespace ReportGenerator.Pages.QuantitativeReports
             engine.SetSymbol("target", engine.CreateCharacter(Report.TargetInstrumentName));
             engine.SetSymbol("match", engine.CreateCharacter(Report.MatchInstrumentName));
             engine.SetSymbol("filename", engine.CreateCharacter(imagePath));
+
+            // 如果离群值只有一个的话剔除后进行计算
             engine.SetSymbol("检测系统A结果", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
             engine.SetSymbol("检测系统B结果", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
 
