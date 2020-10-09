@@ -195,23 +195,23 @@
                                         <td colspan="2">Regression Equation</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">y = @a + @b x</td>
+                                        <td colspan="2">y = @a.ToString("F4") + @b.ToString("F4") x</td>
                                     </tr>
                                     <tr>
                                         <td>Intercept A</td>
-                                        <td>@a</td>
+                                        <td>@a.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>95% CI</td>
-                                        <td>@aLCI to @aUCI</td>
+                                        <td>@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Slope B</td>
-                                        <td>@b</td>
+                                        <td>@b.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>95% CI</td>
-                                        <td>@bLCI to @bUCI</td>
+                                        <td>@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Cusum test for linearity</td>
