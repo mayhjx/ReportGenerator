@@ -52,13 +52,10 @@ neg<-length(subset(S.sort,S.sort<0))
 K<-length(S.sort2)
 if (N%%2==0) { 
   N1<-N/2 
-  # b<-(S.sort1[N1+K-length(S.sort3)+1]+S.sort1[N1+K+1-length(S.sort3)+1])/2
-  b<-(S.sort1[N1+K-length(S.sort3)]+S.sort1[N1+K+1-length(S.sort3)])/2
+  b<-(S.sort1[N1+K-length(S.sort3)+1]+S.sort1[N1+K+1-length(S.sort3)+1])/2
 } else if (N%%2==1) { 
   N1<-(N-1)/2 
-  # b<-S.sort1[N1+K+1-length(S.sort3)+1]
-  # b<-S.sort1[N1+K+1-length(S.sort3)]
-  b<-S.sort1[N1+K-length(S.sort3)]
+  b<-S.sort1[N1+K+1-length(S.sort3)+1]
 } else { 
   N1<-"Neither!" 
 } 
@@ -68,12 +65,8 @@ a<-median(y-b*x)
 C.gamma<-qnorm(0.975)*sqrt(lx*(lx-1)*(2*lx+5)/18)
 M1<-round((N-C.gamma)/2)
 M2<-N-M1+1
-# b.lower<-S.sort1[M1+K-length(S.sort3)+1]
-# b.upper<-S.sort1[M2+K-length(S.sort3)+1]
-# b.lower<-S.sort1[M1+K-length(S.sort3)]
-# b.upper<-S.sort1[M2+K-length(S.sort3)]
-b.lower<-S.sort1[M1+K-length(S.sort4)]
-b.upper<-S.sort1[M2+K-length(S.sort4)]
+b.lower<-S.sort1[M1+K-length(S.sort3)+1]
+b.upper<-S.sort1[M2+K-length(S.sort3)+1]
 #CI of a
 a.lower<-median(y-b.upper*x)
 a.upper<-median(y-b.lower*x)
@@ -138,10 +131,9 @@ if (h<1.358099){
 } 
 
 # ×÷Í¼
-plot(x,y,pch=21,bg="gray",main="",
-     xlab = target,ylab = match)
-abline(a,b,col="blue")
-abline(a.lower,b.lower,col="red",lty=2)
+plot(x,y,pch=21,bg="gray",main="", xlab = target,ylab = match)
+abline(a,b,col="blue") 
+abline(a.lower,b.lower,col="red",lty=2) 
 abline(a.upper,b.upper,col="red",lty=2)
 dev.off()
 
