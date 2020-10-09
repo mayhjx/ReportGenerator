@@ -209,7 +209,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
             }
             catch (Exception e)
             {
-                Message = "无法调用R语言模块，数据未提交成功！" + e.Message;
+                Message = "调用R语言模块计算时出错：" + e.Message;
                 return Page();
             }
 
