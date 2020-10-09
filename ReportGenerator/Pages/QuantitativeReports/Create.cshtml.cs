@@ -220,6 +220,25 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 Report.Remark += string.Join('，', from i in OutliersList
                                                   let samplename = targetResult.ElementAt(i - 1).Key
                                                   select samplename);
+
+                // 如果离群值只有一个的话剔除后进行计算
+                // OutlinersList存放的是离群值下标
+                // 判断OutlinersList是否不为空
+                // 如果只含一个元素，在检测系统A,B结果中去除后重新调用R
+                // 同时删除已生成的线性图
+                if (OutliersList.Count() == 1)
+                {
+                    //var OutLiersSample = targetResult.ElementAt(OutliersList.First() - 1).Key;
+                    //var after = Report.SampleName.Split(",").ToList();
+                    //after.RemoveAt(OutliersList.First() - 1);
+                    //Report.SampleName = string.Join(",", after);
+                    RemoveOutliersSample(Report.SampleName, OutliersList);
+                    RemoveOutliersSample(Report.TargetResult, OutliersList);
+                    RemoveOutliersSample(Report.MatchResult, OutliersList);
+                    RemoveOutliersSample(Report.Bias, OutliersList);
+                    RemoveOutliersSample(Report.YorN, OutliersList);
+                    CallRSource(out OutliersList);
+                }
                 //return Page();
             }
 
@@ -248,6 +267,13 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
             return RedirectToPage("./Edit", new { id = Report.ID });
 
+        }
+
+        void RemoveOutliersSample(object result, IntegerVector OutliersList)
+        {
+            var after = result.ToString().Split(",").ToList();
+            after.RemoveAt(OutliersList.First() - 1);
+            result = string.Join(",", after);
         }
 
         // 返回最大SE/Xc
@@ -283,13 +309,17 @@ namespace ReportGenerator.Pages.QuantitativeReports
             }
             string imagePath = Path.Combine(PictureDir, Report.Item + "-" + DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".png").Replace("\\", "/");
 
+            //  去除一个离群值后重新计算，删除上一次生成的图片
+            if (Report.PicturePath != null)
+            {
+                //System.IO.File.Delete(Report.PicturePath);
+            }
             Report.PicturePath = Path.Combine(@"\Pictures", Path.GetFileName(imagePath));
 
             engine.SetSymbol("target", engine.CreateCharacter(Report.TargetInstrumentName));
             engine.SetSymbol("match", engine.CreateCharacter(Report.MatchInstrumentName));
             engine.SetSymbol("filename", engine.CreateCharacter(imagePath));
 
-            // 如果离群值只有一个的话剔除后进行计算
             engine.SetSymbol("检测系统A结果", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
             engine.SetSymbol("检测系统B结果", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
 
