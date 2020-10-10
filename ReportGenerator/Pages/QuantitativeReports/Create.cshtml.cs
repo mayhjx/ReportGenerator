@@ -224,19 +224,14 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 // 如果离群值只有一个的话剔除后进行计算
                 // OutlinersList存放的是离群值下标
                 // 判断OutlinersList是否不为空
-                // 如果只含一个元素，在检测系统A,B结果中去除后重新调用R
-                // 同时删除已生成的线性图
+                // 如果只含一个元素，去除后重新调用R
                 if (OutliersList.Count() == 1)
                 {
-                    //var OutLiersSample = targetResult.ElementAt(OutliersList.First() - 1).Key;
-                    //var after = Report.SampleName.Split(",").ToList();
-                    //after.RemoveAt(OutliersList.First() - 1);
-                    //Report.SampleName = string.Join(",", after);
-                    RemoveOutliersSample(Report.SampleName, OutliersList);
-                    RemoveOutliersSample(Report.TargetResult, OutliersList);
-                    RemoveOutliersSample(Report.MatchResult, OutliersList);
-                    RemoveOutliersSample(Report.Bias, OutliersList);
-                    RemoveOutliersSample(Report.YorN, OutliersList);
+                    Report.SampleName = RemoveOutliersSample(Report.SampleName, OutliersList);
+                    Report.TargetResult = RemoveOutliersSample(Report.TargetResult, OutliersList);
+                    Report.MatchResult = RemoveOutliersSample(Report.MatchResult, OutliersList);
+                    Report.Bias = RemoveOutliersSample(Report.Bias, OutliersList);
+                    Report.YorN = RemoveOutliersSample(Report.YorN, OutliersList);
                     CallRSource(out OutliersList);
                 }
                 //return Page();
@@ -269,11 +264,14 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
         }
 
-        void RemoveOutliersSample(object result, IntegerVector OutliersList)
+        private string RemoveOutliersSample(string input, IntegerVector OutliersList)
         {
-            var after = result.ToString().Split(",").ToList();
-            after.RemoveAt(OutliersList.First() - 1);
-            result = string.Join(",", after);
+            string result;
+            List<string> origin;
+            origin = input.ToString().Split(",").ToList();
+            origin.RemoveAt(OutliersList.First() - 1);
+            result = string.Join(",", origin);
+            return result;
         }
 
         // 返回最大SE/Xc
