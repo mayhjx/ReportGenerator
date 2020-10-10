@@ -223,8 +223,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
                 // 如果离群值只有一个的话剔除后进行计算
                 // OutlinersList存放的是离群值下标
-                // 判断OutlinersList是否不为空
-                // 如果只含一个元素，去除后重新调用R
+                // 去除离群值后重新调用R
                 if (OutliersList.Count() == 1)
                 {
                     Report.SampleName = RemoveOutliersSample(Report.SampleName, OutliersList);
