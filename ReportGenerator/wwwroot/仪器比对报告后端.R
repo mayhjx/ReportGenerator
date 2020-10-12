@@ -53,12 +53,12 @@ K<-length(S.sort2)
 if (N%%2==0) { 
   N1<-N/2 
   # b<-(S.sort1[N1+K-length(S.sort3)+1]+S.sort1[N1+K+1-length(S.sort3)+1])/2
-  b<-(S.sort1[N1+K-length(S.sort3)]+S.sort1[N1+K+1-length(S.sort3)])/2
+  b<-(S.sort1[N1+K-length(S.sort4)]+S.sort1[N1+K+1-length(S.sort4)])/2
 } else if (N%%2==1) { 
-  N1<-(N-1)/2 
+  N1<-(N+1)/2 
   # b<-S.sort1[N1+K+1-length(S.sort3)+1]
   # b<-S.sort1[N1+K+1-length(S.sort3)]
-  b<-S.sort1[N1+K-length(S.sort3)]
+  b<-S.sort1[N1+K-length(S.sort4)]
 } else { 
   N1<-"Neither!" 
 } 
