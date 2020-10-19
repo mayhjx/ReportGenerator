@@ -279,7 +279,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         function print2PDF() {
-            document.title = "同一检测项目不同检测系统的比对结果-" + @(Json.Serialize(Model.Report.Item)) + "_@Model.Report.TargetInstrumentName&@Model.Report.MatchInstrumentName";
+            document.title = "同一检测项目不同检测系统的比对结果-" + @(Json.Serialize(Model.Report.Item)) + "_" + @(Json.Serialize(Model.Report.TargetInstrumentName)) + "&" + @(Json.Serialize(Model.Report.MatchInstrumentName));
             window.print();
             document.title = "预览 - 报告生成器";
         }
