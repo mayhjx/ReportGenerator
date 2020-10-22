@@ -21,9 +21,9 @@ namespace ReportGenerator.Pages.QuantitativeReports
         private readonly ILogger<IndexModel> _logger;
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ProjectParametersContext _projectParametersContext;
-        private readonly ReportGenerator.Data.ReportContext _context;
+        private readonly ReportContext _context;
 
-        public CreateModel(ReportGenerator.Data.ReportContext context,
+        public CreateModel(ReportContext context,
                         ILogger<IndexModel> logger,
                         IWebHostEnvironment webHostEnvironment,
                         ProjectParametersContext projectParametersContext)
@@ -119,6 +119,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
                         Message = $"实验号重复: {data[0]}";
                         return Page();
                     }
+
                     try
                     {
                         targetResult.Add(data[0], double.Parse(data[1]));
@@ -138,7 +139,6 @@ namespace ReportGenerator.Pages.QuantitativeReports
                         Message = $"无法识别的比对仪器数据: {data[0]} {data[2]}";
                         return Page();
                     }
-
                 }
             }
 

@@ -8,7 +8,7 @@ namespace ReportGenerator.Models
         public int ID { get; set; }
 
         [Display(Name = "状态")]
-        public string Status { get; set; } // 待审核/已审核
+        public string Status { get; set; } // 待审核/已审核/未通过？
 
         [Display(Name = "比对项目")]
         public string Item { get; set; }
