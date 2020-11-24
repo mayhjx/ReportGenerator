@@ -117,17 +117,20 @@
                                     不同检测系统结果比对分析：<br />
                                     回归方程为 y = @a.ToString("F4") + @b.ToString("F4") x，
                                     斜率b的95%置信区间为（@bLCI.ToString("F4") ~ @bUCI.ToString("F4")），
-                                    截距a的95%置信区间为（@aLCI.ToString("F4") ~ @aUCI.ToString("F4")）；
+                                    截距a的95%置信区间为（@aLCI.ToString("F4") ~ @aUCI.ToString("F4")）。
 
                                     代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
                                     （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
                                     最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
-                                    小于1/2ALE @(halfALE.ToString("P1"))；
-
-                                    代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
-                                    （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
-                                    最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
                                     小于1/2ALE @(halfALE.ToString("P1"))。
+
+                                    @if (Xc2 != Xc1)
+                                    {
+                                        <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                                            （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
+                                            最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
+                                            小于1/2ALE @(halfALE.ToString("P1"))。</text>
+                                    }
                                 </p>
                             </td>
                         </tr>
