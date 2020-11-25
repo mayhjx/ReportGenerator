@@ -7,6 +7,15 @@ namespace ReportGenerator.Models
     {
         public int ID { get; set; }
 
+        [Display(Name = "格式：平台-仪器编号-年月（例：LCMS/MS-FXS-YZ05-202010）")]
+        public string ProtocalID { get; set; }
+
+        [Display(Name = "上次验证时间")]
+        public DateTime? LastInvestigationDate { get; set; }
+
+        [Display(Name = "比对目的")]
+        public string Purpose { get; set; }
+
         [Display(Name = "状态")]
         public string Status { get; set; } // 待审核/已审核/未通过？
 
