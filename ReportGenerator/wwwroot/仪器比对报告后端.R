@@ -1,4 +1,4 @@
-png(filename = filename)
+svg(filename = filename)
 samplesize=length(检测系统A结果)
 
 x<-检测系统A结果
