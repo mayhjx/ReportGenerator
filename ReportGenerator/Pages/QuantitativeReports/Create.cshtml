@@ -14,8 +14,9 @@
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label class="col-form-label">比对项目</label>
-            <input class="form-control" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />
-            <datalist id="item">
+            @*<input class="form-control" type="text" list="item" asp-for="Upload.Item" autocomplete="off" />*@
+            <select class="custom-select" asp-for="Upload.Item">
+                <option>---请选择---</option>
                 @if (Model.Options != null)
                 {
                     @foreach (var option in Model.Options)
@@ -23,7 +24,7 @@
                         <option value=@option>@option</option>
                     }
                 }
-            </datalist>
+            </select>
             <span asp-validation-for="Upload.Item" class="text-danger"></span>
         </div>
 
@@ -45,7 +46,7 @@
             <span asp-validation-for="Upload.DataFile" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" hidden>
             <label class="col-form-label">报告模板</label>
             <select class="form-control" asp-for="Upload.Template">
                 <option value="1">仪器比对模板一</option>
@@ -59,5 +60,5 @@
     </form>
 </div>
 <div>
-    <p>建议同时将仪器数据导入MedCalc中进行计算，与本程序计算的结果进行比对，如果有不一致的情况请及时告知，谢谢！</p>
+    <p>建议同时将仪器数据导入MedCalc中进行计算，与本程序计算的结果（回归方程，置信区间）进行比对，如果有不一致的情况请及时告知，谢谢！</p>
 </div>

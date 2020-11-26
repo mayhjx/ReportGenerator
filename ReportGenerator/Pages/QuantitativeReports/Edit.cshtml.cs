@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
+using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
@@ -62,12 +62,12 @@ namespace ReportGenerator.Pages.QuantitativeReports
             if (await TryUpdateModelAsync<Report>(
                 reportToUpdate,
                 "Report",
+                i => i.ProtocalID, i => i.LastInvestigationDate, i => i.Purpose,
                 i => i.Item, i => i.TargetReagentLot, i => i.MatchReagentLot,
                 i => i.StartTestDate, i => i.EndTestDate, i => i.EvaluationDate,
                 i => i.Technician, i => i.Investigator, i => i.InvestigationDate,
                 i => i.Approver, i => i.ApprovalDate))
             {
-                reportToUpdate.Status = "待审核";
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }

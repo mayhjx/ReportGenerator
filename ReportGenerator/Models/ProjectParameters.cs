@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ReportGenerator.Models
 {
     public class ProjectParameter
@@ -13,24 +12,24 @@ namespace ReportGenerator.Models
         public string Name { get; set; }
 
         [Display(Name = "判断标准一适用范围(<=)")]
-        public double? SpecificationOneConcRange { get; set; }
+        public double SpecificationOneConcRange { get; set; }
 
         [Display(Name = "判断标准一(差值)")]
         //[DisplayFormat(DataFormatString = "{0:P0}")]
-        public double? SpecificationOne { get; set; }
+        public double SpecificationOne { get; set; }
 
         [Display(Name = "判断标准二适用范围(>)")]
-        public double? SpecificationTwoConcRange { get; set; }
+        public double SpecificationTwoConcRange { get; set; }
 
         [Display(Name = "判断标准二（%）")]
         //[DisplayFormat(DataFormatString = "{0:P0}")]
-        public double? SpecificationTwo { get; set; }
+        public double SpecificationTwo { get; set; }
 
         [Display(Name = "医学决定水平一")]
         public double Xc1 { get; set; }
 
-        [Display(Name = "医学决定水平二")]
-        public double? Xc2 { get; set; }
+        [Display(Name = "医学决定水平二（如果没有，填入医学决定水平一的值）")]
+        public double Xc2 { get; set; }
 
         [Display(Name = "有效数字位数")]
         [Range(0, 10, ErrorMessage = "有效数字位数范围：0~10")]
@@ -45,5 +44,10 @@ namespace ReportGenerator.Models
         [Display(Name = "ALE(%)")]
         //[DisplayFormat(DataFormatString = "{0:P0}")]
         public double ALE { get; set; }
+
+        public double GetALE()
+        {
+            return ALE / 100;
+        }
     }
 }

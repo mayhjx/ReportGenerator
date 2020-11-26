@@ -86,8 +86,6 @@
                         <td>@bias / @YN</td>
                     </tr>
                 }
-                @*</tbody>
-                    </table>*@
 
                 @{
                     var a = Model.Report.a;
@@ -106,8 +104,6 @@
                         return result;
                     }
                 }
-                @*<table class="table table-bordered table-sm">
-                    <tbody>*@
                 <tr>
                     <td colspan="4">
                         <p>
@@ -245,19 +241,10 @@
                                 {
                                     <span class="text-danger h4">（离群值大于一个，请重新挑选数据进行计算！）</span>
                                 }
-                                @*else
-                                    {
-                                        <span>（已剔除）</span>
-                                    }*@
                             </p>
                         </td>
                     </tr>
                 }
-                @*</tbody>
-                    </table>
-
-                    <table class="table table-bordered table-sm">
-                        <tbody>*@
                 <tr>
                     <td colspan="2">调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
                     <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>

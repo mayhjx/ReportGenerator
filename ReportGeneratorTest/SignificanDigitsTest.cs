@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ReportGenerator.Pages;
+using ReportGenerator.Services;
 
 namespace ReportGeneratorTests
 {
@@ -56,7 +56,6 @@ namespace ReportGeneratorTests
             Assert.AreEqual("1.10E+003", SignificantDigits.Reserved(1101, 3));
             Assert.AreEqual("0.1250", SignificantDigits.Reserved(0.125000, 4));
             Assert.AreEqual("0.012500", SignificantDigits.Reserved(0.0125000, 5));
-
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace ReportGenerator.Pages
+namespace ReportGenerator.Services
 {
     /// <summary>
     /// 将num保留n位有效数字

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RDotNet;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
+using ReportGenerator.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -73,24 +73,22 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
         public async Task<IActionResult> OnPostAsync()
         {
-
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            string template = Upload.Template;
-
-            Report.Item = Upload.Item;
-            Report.TargetInstrumentName = Upload.TargetNum;
-            Report.MatchInstrumentName = Upload.MatchNum;
-
-            var project = await _projectParametersContext.ProjectParameter.FirstOrDefaultAsync(m => m.Name == Report.Item);
+            var project = await _projectParametersContext.ProjectParameter.FirstOrDefaultAsync(m => m.Name == Upload.Item);
             if (project == null)
             {
                 Message = $"未找到{Upload.Item}的项目参数！";
                 return Page();
             }
+
+            Report.Status = "待审核";
+            Report.Item = Upload.Item;
+            Report.TargetInstrumentName = Upload.TargetNum;
+            Report.MatchInstrumentName = Upload.MatchNum;
 
             Report.ALE = project.ALE / 100;
             Report.Xc1 = project.Xc1;
@@ -142,200 +140,71 @@ namespace ReportGenerator.Pages.QuantitativeReports
                 }
             }
 
-            if (targetResult.Keys.Count < 20 || matchResult.Keys.Count < 20)
-            {
-                Message = $"样品数量小于20个！";
-                return Page();
-            }
+            var sampleNameList = new List<string>();
+            var targetResultList = new List<double>();
+            var matchResultList = new List<double>();
+            sampleNameList.AddRange(targetResult.Keys);
+            targetResultList.AddRange(targetResult.Values);
+            matchResultList.AddRange(matchResult.Values);
 
-            if (targetResult.Keys.Count != matchResult.Keys.Count)
+            var comparison = new Comparison(project,
+                sampleNameList,
+                Upload.TargetNum,
+                targetResultList,
+                Upload.MatchNum,
+                matchResultList,
+                _WebHostEnvironment.WebRootPath);
+
+            if (!comparison.NumberIsEqual())
             {
                 Message = "样品数量不一致，请确认！";
                 return Page();
             }
 
-            int significantDigit = project.SignificantDigits;
-
-            var Bias = new List<string>();
-            var YorN = new List<string>();
-            foreach (var key in targetResult.Keys)
+            if (!comparison.NumberIsLargerThan19())
             {
-                var target = double.Parse(SignificantDigits.Reserved(targetResult.GetValueOrDefault(key), significantDigit));
-                var match = double.Parse(SignificantDigits.Reserved(matchResult.GetValueOrDefault(key), significantDigit));
-                if (target <= (double)project.SpecificationOneConcRange)
-                {
-                    // 差值
-                    var diff = match - target;
-                    Bias.Add(diff.ToString("F" + significantDigit));
-                    if (diff < project.SpecificationOne)
-                    {
-                        YorN.Add("Y");
-                    }
-                    else
-                    {
-                        YorN.Add("N");
-                    }
-                }
-                else
-                {
-                    // 比值
-                    var bias = (match - target) / target;
-                    Bias.Add(bias.ToString($"P2"));
-                    if (bias < project.SpecificationTwo / 100)
-                    {
-                        YorN.Add("Y");
-                    }
-                    else
-                    {
-                        YorN.Add("N");
-                    }
-                }
+                Message = "样品数量小于20个！";
+                return Page();
             }
 
-            // 结果保留n位有效数字后以逗号分隔的字符串保存到数据库
-            Report.SampleName = string.Join(",", targetResult.Select(kv => kv.Key).ToArray());
-            Report.TargetResult = string.Join(",", targetResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-            Report.MatchResult = string.Join(",", matchResult.Select(kv => SignificantDigits.Reserved(kv.Value, significantDigit)).ToArray());
-            Report.Bias = string.Join(",", Bias);
-            Report.YorN = string.Join(",", YorN);
+            if (!comparison.VerifySampleResultIsDifferent())
+            {
+                Message = "靶仪器和比对仪器的结果一样，请确认原始数据是否正确";
+                return Page();
+            }
 
-            // 各参数条件判断 不通过则停止程序并提示
-
-            // 获取离群值
-            IntegerVector OutliersList;
             try
             {
-                CallRSource(out OutliersList);
+                comparison.Run();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Message = "调用R语言模块计算时出错：" + e.Message;
+                Message = ex.Message;
                 return Page();
             }
 
-            // 返回离群值
-            if (OutliersList != null && OutliersList.Count() > 0)
-            {
-                Report.Remark = "离群值: ";
-                Report.Remark += string.Join('，', from i in OutliersList
-                                                  let samplename = targetResult.ElementAt(i - 1).Key
-                                                  select samplename);
+            Report.SampleName = comparison.GetSampleNameList();
+            Report.TargetResult = comparison.GetTargetSampleList();
+            Report.MatchResult = comparison.GetMatchSampleList();
+            Report.Bias = comparison.GetBias();
+            Report.YorN = comparison.GetYorN();
 
-                // 如果离群值只有一个的话剔除后进行计算
-                // OutlinersList存放的是离群值下标
-                // 去除离群值后重新调用R
-                if (OutliersList.Count() == 1)
-                {
-                    Report.SampleName = RemoveOutliersSample(Report.SampleName, OutliersList);
-                    Report.TargetResult = RemoveOutliersSample(Report.TargetResult, OutliersList);
-                    Report.MatchResult = RemoveOutliersSample(Report.MatchResult, OutliersList);
-                    Report.Bias = RemoveOutliersSample(Report.Bias, OutliersList);
-                    Report.YorN = RemoveOutliersSample(Report.YorN, OutliersList);
-                    CallRSource(out OutliersList);
-                }
-                //return Page();
-            }
+            Report.P = comparison.P;
+            Report.b = comparison.b;
+            Report.bUCI = comparison.bUCI;
+            Report.bLCI = comparison.bLCI;
+            Report.a = comparison.a;
+            Report.aUCI = comparison.aUCI;
+            Report.aLCI = comparison.aLCI;
 
-            // 当P值小于0.1
-            if (Report.P <= 0.1)
-            {
-                Message = $"两组数据线性相关性差: P<=0.10";
-                return Page();
-            }
+            Report.PicturePath = comparison.PicturePath;
+            Report.Remark = comparison.Remark;
+            Report.Status = comparison.Status;
 
-            // 最大SE/Xc > 1/2ALE
-            if (MaxSEDivXc(Report.Xc1) * 2 > Report.ALE)
-            {
-                Message = $"医学决定水平一处最大SE/Xc={MaxSEDivXc(Report.Xc1)} >1/2ALE";
-                return Page();
-            }
-            if (MaxSEDivXc(Report.Xc2) * 2 > Report.ALE)
-            {
-                Message = $"医学决定水平二处最大SE/Xc={MaxSEDivXc(Report.Xc2)} >1/2ALE";
-                return Page();
-            }
-
-            Report.Status = "待审核";
             _context.Report.Add(Report);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Edit", new { id = Report.ID });
-
-        }
-
-        private string RemoveOutliersSample(string input, IntegerVector OutliersList)
-        {
-            string result;
-            List<string> origin;
-            origin = input.ToString().Split(",").ToList();
-            origin.RemoveAt(OutliersList.First() - 1);
-            result = string.Join(",", origin);
-            return result;
-        }
-
-        // 返回最大SE/Xc
-        double MaxSEDivXc(double Xc)
-        {
-            return Math.Max(Math.Abs((Report.bLCI * Xc + Report.aLCI) / Xc - 1),
-                            Math.Abs((Report.bUCI * Xc + Report.aUCI) / Xc - 1));
-        }
-
-        /// <summary>
-        /// R模块-Passing-Bablok regession
-        /// </summary>
-        /// <param name="OutliersList">返回离群值的下标, 从1开始<param>
-        void CallRSource(out IntegerVector OutliersList)
-        {
-            // 要将 "C:\R-3.5.3\bin\x64 添加到系统环境路径中
-            // The problem is actually not that stats.dll could not be found, 
-            // but that a.dll that stats.dll depends on could not be loaded - 
-            // I've found this out by inspecting the stats.dll file using a tool called Dependency Walker. 
-            // In fact, while loading the stats package, the files "R.dll", "Rblas.dll" and
-            // "Rlapack.dll" could not be found - they all lie in the "bin" directory of the R installation, e.g. "R-3.5.3\bin\x64".
-            // https://github.com/NetLogo/R-Extension/issues/5 @gunnardressler
-
-            REngine engine;
-            REngine.SetEnvironmentVariables();
-            engine = REngine.GetInstance();
-
-            // 线形图保存路径
-            var PictureDir = Path.Combine(_WebHostEnvironment.WebRootPath, "Pictures");
-            if (!Directory.Exists(PictureDir))
-            {
-                Directory.CreateDirectory(PictureDir);
-            }
-            string imagePath = Path.Combine(PictureDir, Report.Item + "-" + DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".png").Replace("\\", "/");
-
-            //  去除一个离群值后重新计算，删除上一次生成的图片
-            if (Report.PicturePath != null)
-            {
-                //System.IO.File.Delete(Report.PicturePath);
-            }
-            Report.PicturePath = Path.Combine(@"\Pictures", Path.GetFileName(imagePath));
-
-            engine.SetSymbol("target", engine.CreateCharacter(Report.TargetInstrumentName));
-            engine.SetSymbol("match", engine.CreateCharacter(Report.MatchInstrumentName));
-            engine.SetSymbol("filename", engine.CreateCharacter(imagePath));
-
-            engine.SetSymbol("检测系统A结果", engine.CreateNumericVector(Report.TargetResult.Split(",").Select(x => double.Parse(x)).ToList()));
-            engine.SetSymbol("检测系统B结果", engine.CreateNumericVector(Report.MatchResult.Split(",").Select(x => double.Parse(x)).ToList()));
-
-            // 调用 R
-            string RSourcePath = Path.Combine(_WebHostEnvironment.WebRootPath, "仪器比对报告后端.R").Replace("\\", "/");
-            engine.Evaluate("source('" + RSourcePath + "')");
-
-            // 离群值数据下标列表
-            OutliersList = engine.GetSymbol("ID").AsInteger();
-
-            //var h = engine.GetSymbol("h").AsNumeric()[0];
-
-            Report.P = engine.GetSymbol("p").AsNumeric()[0];
-            Report.b = double.Parse(engine.GetSymbol("b").AsNumeric()[0].ToString("F4"));
-            Report.bUCI = double.Parse(engine.GetSymbol("b.upper").AsNumeric()[0].ToString("F4"));
-            Report.bLCI = double.Parse(engine.GetSymbol("b.lower").AsNumeric()[0].ToString("F4"));
-            Report.a = double.Parse(engine.GetSymbol("a").AsNumeric()[0].ToString("F4"));
-            Report.aUCI = double.Parse(engine.GetSymbol("a.upper").AsNumeric()[0].ToString("F4"));
-            Report.aLCI = double.Parse(engine.GetSymbol("a.lower").AsNumeric()[0].ToString("F4"));
         }
     }
 }

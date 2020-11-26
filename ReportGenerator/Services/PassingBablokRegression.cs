@@ -6,95 +6,95 @@ using System.IO;
 
 namespace ReportGenerator.Services
 {
-    public class Comparison
-    {
-        private readonly PassingBablokRegression pb;
-        private List<double> _targetSampleList;
-        private List<double> _matchSampleList;
-        private List<double> _bias;
-        private List<double> _yORn;
-
-        public Comparison(string targetInstrumentName,
-            List<double> targetSampleList,
-            string matchInstrumentName,
-            List<double> matchSampleList,
-            string scriptPath)
-        {
-            _targetSampleList = targetSampleList;
-            _matchSampleList = matchSampleList;
-            pb = new PassingBablokRegression(targetInstrumentName, targetSampleList, matchInstrumentName, matchSampleList, scriptPath);
-            pb.Run();
-        }
-
-        public string GetTargetSampleList()
-        {
-            return string.Join(",", _targetSampleList);
-        }
-
-        public string GetMatchSampleList()
-        {
-            return string.Join(",", _matchSampleList);
-        }
-
-        public bool NumberIsLargerThan19()
-        {
-            return _targetSampleList.Count >= 20 && _matchSampleList.Count >= 20;
-        }
-
-        public bool NumberIsEqual()
-        {
-            return _targetSampleList.Count == _matchSampleList.Count;
-        }
-
-        public double a { get => double.Parse(pb.a); }
-        public double aUCI { get => double.Parse(pb.aUCI); }
-        public double aLCI { get => double.Parse(pb.aLCI); }
-
-        public double b { get => double.Parse(pb.b); }
-        public double bUCI { get => double.Parse(pb.bUCI); }
-        public double bLCI { get => double.Parse(pb.bLCI); }
-
-        public double P { get => double.Parse(pb.P); }
-    }
-
+    /// <summary>
+    /// 要将 "C:\R-3.5.3\bin\x64 添加到系统环境路径中
+    /// The problem is actually not that stats.dll could not be found, 
+    /// but that a.dll that stats.dll depends on could not be loaded - 
+    /// I've found this out by inspecting the stats.dll file using a tool called Dependency Walker. 
+    /// In fact, while loading the stats package, the files "R.dll", "Rblas.dll" and
+    /// "Rlapack.dll" could not be found - they all lie in the "bin" directory of the R installation, e.g. "R-3.5.3\bin\x64".
+    /// https://github.com/NetLogo/R-Extension/issues/5 @gunnardressler
+    /// </summary>
     public class PassingBablokRegression : IPassingBablokRegression
     {
-        private REngine engine;
 
-        private string _scriptPath;
-        private string _imagePath;
+        private readonly REngine engine;
 
-        private List<double> _targetSampleList;
-        private List<double> _matchSampleList;
+        private const string PictureFolder = "Pictures";
+        private readonly string _scriptPath;
+        private readonly string _imagePath;
+
         private string _targetInstrumentName;
+        private List<double> _targetSampleList;
         private string _matchInstrumentName;
+        private List<double> _matchSampleList;
 
-        public PassingBablokRegression(string targetInstrumentName,
-            List<double> targetSampleList,
-            string matchInstrumentName,
-            List<double> matchSampleList,
-            string scriptPath)
+        public PassingBablokRegression(string scriptPath)
         {
             REngine.SetEnvironmentVariables();
             engine = REngine.GetInstance();
 
+            // 路径分隔符修改为 "/"
             _scriptPath = Path.Combine(scriptPath, "仪器比对报告后端.R").Replace("\\", "/");
 
-            var PictureDir = Path.Combine(scriptPath, "Pictures");
+            var PictureDir = Path.Combine(scriptPath, PictureFolder);
             if (!Directory.Exists(PictureDir))
             {
                 Directory.CreateDirectory(PictureDir);
             }
-            _imagePath = Path.Combine(PictureDir, DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".png").Replace("\\", "/");
+            _imagePath = Path.Combine(PictureDir, DateTime.Now.ToString("yyyyMMdd") + "-" + System.Guid.NewGuid().ToString() + ".svg").Replace("\\", "/");
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scriptPath">脚本所在位置</param>
+        /// <param name="targetInstrumentName">靶仪器编号</param>
+        /// <param name="targetSampleList">已保留有效数字位数的靶仪器数据</param>
+        /// <param name="matchInstrumentName">比对仪器编号</param>
+        /// <param name="matchSampleList">已保留有效数字位数的比对仪器数据</param>
+        public PassingBablokRegression(string scriptPath,
+            string targetInstrumentName,
+            List<double> targetSampleList,
+            string matchInstrumentName,
+            List<double> matchSampleList) : this(scriptPath)
+        {
             _targetSampleList = targetSampleList;
             _matchSampleList = matchSampleList;
             _targetInstrumentName = targetInstrumentName;
             _matchInstrumentName = matchInstrumentName;
         }
 
+        public void SetTargetInstrumentName(string name)
+        {
+            _targetInstrumentName = name;
+        }
+
+        public void SetMatchInstrumentName(string name)
+        {
+            _matchInstrumentName = name;
+        }
+
+        public void SetTargetSampleList(List<double> targetSampleList)
+        {
+            _targetSampleList = targetSampleList;
+        }
+
+        public void SetMatchSampleList(List<double> matchSampleList)
+        {
+            _matchSampleList = matchSampleList;
+        }
+
         public void Run()
         {
+            if (_targetInstrumentName == null ||
+                _matchInstrumentName == null ||
+                _targetSampleList == null ||
+                _matchSampleList == null)
+            {
+                throw new ArgumentNullException("参数未设置");
+            }
+
             engine.SetSymbol("target", engine.CreateCharacter(_targetInstrumentName));
             engine.SetSymbol("match", engine.CreateCharacter(_matchInstrumentName));
             engine.SetSymbol("filename", engine.CreateCharacter(_imagePath));
@@ -107,7 +107,7 @@ namespace ReportGenerator.Services
 
         public string PicPath
         {
-            get => _imagePath;
+            get => Path.Combine(@"\", PictureFolder, Path.GetFileName(_imagePath));
         }
 
         public string P
