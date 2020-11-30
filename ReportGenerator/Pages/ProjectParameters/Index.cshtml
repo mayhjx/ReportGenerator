@@ -10,7 +10,7 @@
 <p>
     <a asp-page="Create">新建</a>
 </p>
-<div class="table-responsive">
+<div class="">
     <table class="table table-hover text-nowrap" id="index">
         <thead>
             <tr>
@@ -40,10 +40,10 @@
                     判断标准
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProjectParameter[0].Xc1)
+                    医学决定水平一
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProjectParameter[0].Xc2)
+                    医学决定水平二
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ProjectParameter[0].SignificantDigits)
@@ -54,37 +54,37 @@
         <tbody>
             @foreach (var item in Model.ProjectParameter)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LOQ)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ALE)
-                    </td>
-                    <td>
-                        &lt;=@Html.DisplayFor(modelItem => item.SpecificationOneConcRange)@Html.DisplayFor(modelItem => item.Unit):
-                        ±@Html.DisplayFor(modelItem => item.SpecificationOne)@Html.DisplayFor(modelItem => item.Unit) OR <br />
-                        &gt;@Html.DisplayFor(modelItem => item.SpecificationTwoConcRange)@Html.DisplayFor(modelItem => item.Unit):
-                        ±@Html.DisplayFor(modelItem => item.SpecificationTwo)%
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Xc1)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Xc2)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SignificantDigits)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a>
-                        @*<a asp-page="./Details" asp-route-id="@item.ID">Details</a> |*@
-                        @*<a asp-page="./Delete" asp-route-id="@item.ID">删除</a>*@
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LOQ)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ALE)
+                </td>
+                <td>
+                    &lt;=@Html.DisplayFor(modelItem => item.SpecificationOneConcRange)@Html.DisplayFor(modelItem => item.Unit):
+                    ±@Html.DisplayFor(modelItem => item.SpecificationOne)@Html.DisplayFor(modelItem => item.Unit) OR <br />
+                    &gt;@Html.DisplayFor(modelItem => item.SpecificationTwoConcRange)@Html.DisplayFor(modelItem => item.Unit):
+                    ±@Html.DisplayFor(modelItem => item.SpecificationTwo)%
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Xc1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Xc2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SignificantDigits)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">编辑</a>
+                    @*<a asp-page="./Details" asp-route-id="@item.ID">Details</a> |*@
+                    @*<a asp-page="./Delete" asp-route-id="@item.ID">删除</a>*@
+                </td>
+            </tr>
             }
         </tbody>
     </table>
