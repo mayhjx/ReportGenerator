@@ -285,7 +285,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" required /></td>
-                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" value="@DateTime.Now.ToShortDateString()" required /></td>
+                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
                         </tr>
                     </tbody>
                 </table>
