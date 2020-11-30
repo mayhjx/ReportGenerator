@@ -265,35 +265,46 @@ namespace ReportGenerator.Services
         private void SetRemark()
         {
             /*
+             * 一致性判断
              * P值 <= 0.1
              * 最大SE/Xc%未通过
              * 离群值
              */
             StringBuilder stringBuilder = new StringBuilder();
 
+            for (int i = 0; i < _yORnList.Count; i++)
+            {
+                var yn = _biasList[i];
+                if (yn == "N")
+                {
+                    var samplename = _sampleNameList[i];
+                    stringBuilder.Append($"{samplename}一致性判断未通过。");
+                }
+            }
+
             var outliersSampleList = GetOutliersSampleName(pb.GetOutliersIndexList());
             if (outliersSampleList.Count == 1)
             {
-                stringBuilder.Append($"{string.Join(splitChar, outliersSampleList)}为离群值，请剔除数据后加做比对补充。\n");
+                stringBuilder.Append($"{string.Join(splitChar, outliersSampleList)}为离群值，请剔除数据后加做比对补充。");
             }
             else if (outliersSampleList.Count > 1)
             {
-                stringBuilder.Append($"{string.Join(splitChar, outliersSampleList)}为离群值，请查找比对差异较大的原因，重新比对。\n");
+                stringBuilder.Append($"{string.Join(splitChar, outliersSampleList)}为离群值，请查找比对差异较大的原因，重新比对。");
             }
 
             if (P <= 0.1)
             {
-                stringBuilder.Append("两组数据线性相关性未通过: P<=0.10\n");
+                stringBuilder.Append("两组数据线性相关性未通过: P<=0.10。");
             }
 
             if (GetMaxSEXc(Xc1) * 2 > ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1)} > 1/2ALE\n");
+                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1)} > 1/2ALE。");
             }
 
             if (GetMaxSEXc(Xc2) * 2 > ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2)} > 1/2ALE\n");
+                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2)} > 1/2ALE。");
             }
 
             Remark = stringBuilder.ToString();
