@@ -32,7 +32,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
             _logger = logger;
             _WebHostEnvironment = webHostEnvironment;
             _projectParametersContext = projectParametersContext;
-            // 从项目参数表中获取检测项目名称，在前端生成datalist
+            // 从项目参数表中获取检测项目名称，在前端生成option
             Options = from project in _projectParametersContext.ProjectParameter.ToList()
                       select project.Name;
         }
@@ -199,7 +199,18 @@ namespace ReportGenerator.Pages.QuantitativeReports
 
             Report.PicturePath = comparison.PicturePath;
             Report.Remark = comparison.Remark;
-            Report.Status = comparison.Status;
+            Report.Status = comparison.Status; // 如果有备注则未通过
+
+            var lastRecord = await _context.Report.Where(r => r.Item == Report.Item)
+                                                .Where(r => r.TargetInstrumentName == Report.TargetInstrumentName)
+                                                .Where(r => r.MatchInstrumentName == Report.MatchInstrumentName)
+                                                .OrderByDescending(d => d.EvaluationDate)
+                                                .FirstOrDefaultAsync();
+            // 上次评估日期
+            if (lastRecord != null)
+            {
+                Report.LastInvestigationDate = lastRecord.EvaluationDate;
+            }
 
             _context.Report.Add(Report);
             await _context.SaveChangesAsync();
