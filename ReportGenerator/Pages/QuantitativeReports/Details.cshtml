@@ -37,7 +37,7 @@
         <h2>比对项目名称：@Html.DisplayFor(model => model.Report.Item)</h2>
         <h2>检测系统A：@Html.DisplayFor(model => model.Report.TargetInstrumentName)</h2>
         <h2>检测系统B：@Html.DisplayFor(model => model.Report.MatchInstrumentName)</h2>
-        <h2>上次验证时间：@Html.DisplayFor(model => model.Report.LastInvestigationDate)</h2>
+        <h2>上次验证时间：@Model.Report.LastInvestigationDate.GetValueOrDefault().ToString("yyyy年MM月")</h2>
         <br>
         <h2>Protocol ID：@Html.DisplayFor(model => model.Report.ProtocalID)</h2>
         <h2>代码：@Html.DisplayFor(model => model.Report.ProtocalID)</h2>
@@ -310,13 +310,12 @@
         </div>
     </div>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/paged.polyfill.js"></script>
     <script>
-        function print2PDF() {
-            document.title = "同一检测项目不同检测系统的比对结果-" + @(Json.Serialize(Model.Report.Item)) + "_" + @(Json.Serialize(Model.Report.TargetInstrumentName)) + "&" + @(Json.Serialize(Model.Report.MatchInstrumentName));
-            window.print();
-            document.title = "预览 - 报告生成器";
-        }
+        $(document).ready(function () {
+            setTimeout("self.print(); history.go(-1);", 800);
+        });
     </script>
 </body>
 </html>
