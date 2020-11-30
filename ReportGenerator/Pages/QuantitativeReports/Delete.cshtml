@@ -8,8 +8,23 @@
 <h3 class="text-danger">请确认是否删除这份报告</h3>
 <div>
     <hr />
-    @*报告开始*@
     <div id="Report">
+        <div class="row">
+            <div class="col-6">
+                <label class="control-label">上次验证时间：</label>
+                @Html.DisplayFor(model => model.Report.LastInvestigationDate)
+            </div>
+            <div class="col-6">
+                <label class="control-label">报告代码：</label>
+                @Html.DisplayFor(model => model.Report.ProtocalID)
+            </div>
+            <div class="col-12">
+                <label class="control-label">比对目的：</label>
+                @Html.DisplayFor(model => model.Report.Purpose)
+            </div>
+        </div>
+
+        <br />
         <div>
             <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
         </div>
@@ -19,7 +34,7 @@
         </div>
 
         <table class="table table-bordered table-sm">
-            <thead>
+            <tbody>
                 <tr>
                     <td colspan="3">
                         比对项目名称：@Html.DisplayFor(model => model.Report.Item)
@@ -49,7 +64,7 @@
                         </div>
                     </td>
                 </tr>
-            </thead>
+            </tbody>
         </table>
 
         <table class="table table-bordered table-sm">
@@ -141,7 +156,7 @@
                             </tr>
                             <tr>
                                 <td>Sample size</td>
-                                <td>@SampleName.Count</td>
+                                <td class="text-right">@SampleName.Count</td>
                             </tr>
                         </table>
                         @{
@@ -156,33 +171,33 @@
                             </tr>
                             <tr>
                                 <td>Lowest value</td>
-                                <td>@doubleTargetResult.Min().ToString("F4")</td>
-                                <td>@doubleMatchResult.Min().ToString("F4")</td>
+                                <td class="text-right">@doubleTargetResult.Min().ToString("F4")</td>
+                                <td class="text-right">@doubleMatchResult.Min().ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Highest value</td>
-                                <td>@doubleTargetResult.Max().ToString("F4")</td>
-                                <td>@doubleMatchResult.Max().ToString("F4")</td>
+                                <td class="text-right">@doubleTargetResult.Max().ToString("F4")</td>
+                                <td class="text-right">@doubleMatchResult.Max().ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Arithmetic mean</td>
-                                <td>@doubleTargetResult.Average().ToString("F4")</td>
-                                <td>@doubleMatchResult.Average().ToString("F4")</td>
+                                <td class="text-right">@doubleTargetResult.Average().ToString("F4")</td>
+                                <td class="text-right">@doubleMatchResult.Average().ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Median</td>
-                                <td>@doubleTargetResult.Median().ToString("F4")</td>
-                                <td>@doubleMatchResult.Median().ToString("F4")</td>
+                                <td class="text-right">@doubleTargetResult.Median().ToString("F4")</td>
+                                <td class="text-right">@doubleMatchResult.Median().ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Standard deviation</td>
-                                <td>@doubleTargetResult.StandardDeviation().ToString("F4")</td>
-                                <td>@doubleMatchResult.StandardDeviation().ToString("F4")</td>
+                                <td class="text-right">@doubleTargetResult.StandardDeviation().ToString("F4")</td>
+                                <td class="text-right">@doubleMatchResult.StandardDeviation().ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Standard error of the mean</td>
-                                <td>@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
-                                <td>@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
+                                <td class="text-right">@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
+                                <td class="text-right">@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
                             </tr>
                         </table>
 
@@ -195,19 +210,19 @@
                             </tr>
                             <tr>
                                 <td>Intercept A</td>
-                                <td>@a.ToString("F4")</td>
+                                <td class="text-right">@a.ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>95% CI</td>
-                                <td>@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
+                                <td class="text-right">@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Slope B</td>
-                                <td>@b.ToString("F4")</td>
+                                <td class="text-right">@b.ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>95% CI</td>
-                                <td>@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
+                                <td class="text-right">@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
                             </tr>
                             <tr>
                                 <td>Cusum test for linearity</td>
@@ -216,7 +231,7 @@
                         </table>
                     </td>
                     <td colspan="2" width="50%">
-                        <img src=@Model.Report.PicturePath asp-append-version="true" alt="线性回归图" />
+                        <img src=@Model.Report.PicturePath width="600" height="600" asp-append-version="true" alt="线性回归图" />
                     </td>
                 </tr>
                 <tr>
@@ -237,10 +252,6 @@
                             <p>
                                 备注(Remark)：<br />
                                 @(Html.DisplayFor(model => model.Report.Remark))
-                                @if (Model.Report.Remark.Split("，").Length >= 2)
-                                {
-                                    <span class="text-danger h4">（离群值大于一个，请重新挑选数据进行计算！）</span>
-                                }
                             </p>
                         </td>
                     </tr>
@@ -256,7 +267,6 @@
             </tbody>
         </table>
     </div>
-    @*报告结束*@
 
     <form method="post">
         <input type="hidden" asp-for="Report.ID" />

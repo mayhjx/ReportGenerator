@@ -11,6 +11,7 @@ namespace ReportGenerator.Models
         public string ProtocalID { get; set; }
 
         [Display(Name = "上次验证时间")]
+        [DataType(DataType.Date)]
         public DateTime? LastInvestigationDate { get; set; }
 
         [Display(Name = "比对目的")]
@@ -42,7 +43,7 @@ namespace ReportGenerator.Models
         public DateTime? EndTestDate { get; set; } // 结束检测日期
 
         [DataType(DataType.Date)]
-        public DateTime? EvaluationDate { get; set; } // 评估日期
+        public DateTime? EvaluationDate { get; set; } = DateTime.Now; // 评估日期
 
         public string Technician { get; set; } // 检测人员
 
@@ -84,7 +85,7 @@ namespace ReportGenerator.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "调查日期")]
-        public DateTime? InvestigationDate { get; set; }
+        public DateTime? InvestigationDate { get; set; } = DateTime.Now;
 
         [Display(Name = "审核者")]
         public string Approver { get; set; }
