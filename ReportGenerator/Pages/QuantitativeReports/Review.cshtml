@@ -11,8 +11,24 @@
 <div class="row">
     <div class="col-md">
         <form method="post">
-            @*报告开始*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div id="Report">
+                <div class="form-row">
+                    <div class="col">
+                        <label class="control-label">上次验证时间：</label>
+                        <input class="form-control" asp-for="Report.LastInvestigationDate" required />
+                    </div>
+                    <div class="col">
+                        <label class="control-label">报告代码：</label>
+                        <input class="form-control" asp-for="Report.ProtocalID" required />
+                        <span class="small">格式：检测平台-比对仪器编号-验证时间（年月），例：LCMS/MS-FXS-YZ01-201901</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">比对目的：</label>
+                    <textarea class="form-control" rows="3" asp-for="Report.Purpose" required></textarea>
+                </div>
+                <br />
                 <div>
                     <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
                 </div>
@@ -22,10 +38,10 @@
                 </div>
 
                 <table class="table table-bordered table-sm">
-                    <thead>
+                    <tbody>
                         <tr>
                             <td colspan="3">
-                                比对项目名称：@Html.DisplayFor(model => model.Report.Item)
+                                比对项目名称：<input asp-for="Report.Item" value="@Model.Report.Item" required />
                             </td>
                         </tr>
                         <tr>
@@ -40,19 +56,19 @@
                         </tr>
                         <tr>
                             <td>检测试剂/批号：</td>
-                            <td>@Html.DisplayFor(model => model.Report.TargetReagentLot)</td>
-                            <td>@Html.DisplayFor(model => model.Report.MatchReagentLot)</td>
+                            <td><textarea asp-for="Report.TargetReagentLot" style="width:100%;" required></textarea></td>
+                            <td><textarea asp-for="Report.MatchReagentLot" style="width:100%;" required></textarea></td>
                         </tr>
                         <tr>
                             <td colspan="3">
                                 <div class="row">
-                                    <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
-                                    <span class="col-md-3 text-center">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
-                                    <span class="col-md-3 text-right">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
+                                    <span class="col-md-5">检测日期：<input type="date" asp-for="Report.StartTestDate" required /> 至 <input type="date" asp-for="Report.EndTestDate" required /></span>
+                                    <span class="col-md-3 text-center">评估日期：<input type="date" asp-for="Report.EvaluationDate" required /></span>
+                                    <span class="col-md-3 text-right">检测人员：<input asp-for="Report.Technician" required /></span>
                                 </div>
                             </td>
                         </tr>
-                    </thead>
+                    </tbody>
                 </table>
 
                 <table class="table table-bordered table-sm">
@@ -86,11 +102,12 @@
                                 <td>@samplename</td>
                                 <td>@targetResult</td>
                                 <td>@matchResult</td>
-                                <td>@bias / @YN</td>
+                                <td>
+                                    @bias /
+                                    <span class="@(YN == "N"? "text-danger h5" : "")">@YN</span>
+                                </td>
                             </tr>
                         }
-                        @*</tbody>
-                            </table>*@
 
                         @{
                             var a = Model.Report.a;
@@ -109,8 +126,7 @@
                                 return result;
                             }
                         }
-                        @*<table class="table table-bordered table-sm">
-                            <tbody>*@
+
                         <tr>
                             <td colspan="4">
                                 <p>
@@ -148,7 +164,7 @@
                                     </tr>
                                     <tr>
                                         <td>Sample size</td>
-                                        <td>@SampleName.Count</td>
+                                        <td class="text-right">@SampleName.Count</td>
                                     </tr>
                                 </table>
                                 @{
@@ -163,33 +179,33 @@
                                     </tr>
                                     <tr>
                                         <td>Lowest value</td>
-                                        <td>@doubleTargetResult.Min().ToString("F4")</td>
-                                        <td>@doubleMatchResult.Min().ToString("F4")</td>
+                                        <td class="text-right">@doubleTargetResult.Min().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Min().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Highest value</td>
-                                        <td>@doubleTargetResult.Max().ToString("F4")</td>
-                                        <td>@doubleMatchResult.Max().ToString("F4")</td>
+                                        <td class="text-right">@doubleTargetResult.Max().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Max().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Arithmetic mean</td>
-                                        <td>@doubleTargetResult.Average().ToString("F4")</td>
-                                        <td>@doubleMatchResult.Average().ToString("F4")</td>
+                                        <td class="text-right">@doubleTargetResult.Average().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Average().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Median</td>
-                                        <td>@doubleTargetResult.Median().ToString("F4")</td>
-                                        <td>@doubleMatchResult.Median().ToString("F4")</td>
+                                        <td class="text-right">@doubleTargetResult.Median().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Median().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Standard deviation</td>
-                                        <td>@doubleTargetResult.StandardDeviation().ToString("F4")</td>
-                                        <td>@doubleMatchResult.StandardDeviation().ToString("F4")</td>
+                                        <td class="text-right">@doubleTargetResult.StandardDeviation().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.StandardDeviation().ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Standard error of the mean</td>
-                                        <td>@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
-                                        <td>@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
+                                        <td class="text-right">@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
+                                        <td class="text-right">@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
                                     </tr>
                                 </table>
 
@@ -202,19 +218,19 @@
                                     </tr>
                                     <tr>
                                         <td>Intercept A</td>
-                                        <td>@a.ToString("F4")</td>
+                                        <td class="text-right">@a.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>95% CI</td>
-                                        <td>@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
+                                        <td class="text-right">@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Slope B</td>
-                                        <td>@b.ToString("F4")</td>
+                                        <td class="text-right">@b.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>95% CI</td>
-                                        <td>@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
+                                        <td class="text-right">@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
                                     </tr>
                                     <tr>
                                         <td>Cusum test for linearity</td>
@@ -223,7 +239,7 @@
                                 </table>
                             </td>
                             <td colspan="2" width="50%">
-                                <img src=@Model.Report.PicturePath asp-append-version="true" alt="线性回归图" />
+                                <img src=@Model.Report.PicturePath width="600" height="600" asp-append-version="true" alt="线性回归图" />
                             </td>
                         </tr>
                         <tr>
@@ -241,39 +257,25 @@
                         {
                             <tr class="d-print-none">
                                 <td colspan="4">
-                                    <p>
+                                    <p class="text-danger h4">
                                         备注(Remark)：<br />
-                                        @(Html.DisplayFor(model => model.Report.Remark))
-                                        @if (Model.Report.Remark.Split("，").Length >= 2)
-                                        {
-                                            <span class="text-danger h4">（离群值大于一个，请重新挑选数据进行计算！）</span>
-                                        }
-                                        @*else
-                                            {
-                                                <span>（已剔除）</span>
-                                            }*@
+                                        @Model.Report.Remark
                                     </p>
                                 </td>
                             </tr>
                         }
-                        @*</tbody>
-                            </table>
 
-                            <table class="table table-bordered table-sm">
-                                <tbody>*@
                         <tr>
-                            <td colspan="2">调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
-                            <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                            <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>
+                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.InvestigationDate" required /></td>
                         </tr>
                         <tr>
-                            <td colspan="2">学科主任(Section director)：<input type="text" asp-for="Report.Approver" required /></td>
-                            <td colspan="2">日期(Date)：<input type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") asp-for="Report.ApprovalDate" required /></td>
+                            <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" required /></td>
+                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" value="@DateTime.Now.ToShortDateString()" required /></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            @*报告结束*@
-
             <div class="form-group">
                 <input type="submit" value="审核" class="btn btn-primary" />
             </div>
