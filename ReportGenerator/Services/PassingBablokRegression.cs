@@ -110,6 +110,11 @@ namespace ReportGenerator.Services
             get => Path.Combine(@"\", PictureFolder, Path.GetFileName(_imagePath));
         }
 
+        public string CompletePicPath
+        {
+            get => _imagePath;
+        }
+
         public string P
         {
             get => engine.GetSymbol("p").AsNumeric()[0].ToString();

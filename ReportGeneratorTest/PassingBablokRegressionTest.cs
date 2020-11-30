@@ -31,7 +31,7 @@ namespace ReportGeneratorTest
 
             pb.Run();
 
-            Assert.IsTrue(File.Exists(pb.PicPath));
+            Assert.IsTrue(File.Exists(pb.CompletePicPath));
             if (File.Exists(pb.PicPath))
             {
                 File.Delete(pb.PicPath);
