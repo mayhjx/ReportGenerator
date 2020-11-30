@@ -11,9 +11,15 @@
     @if (@Model.Report.Remark != null)
     {
         <p class="text-danger h4">
-            备注(Remark)：<br />
-            @(Html.DisplayFor(model => model.Report.Remark))
+            备注：<br />
         </p>
+        var remarkList = Model.Report.Remark.Split("。", StringSplitOptions.RemoveEmptyEntries);
+        <ol class="text-danger">
+            @foreach (var li in remarkList)
+            {
+                <li>@li</li>
+            }
+        </ol>
         <br />
     }
     <div id="Report">

@@ -13,8 +13,14 @@
         {
             <p class="text-danger h4">
                 备注：<br />
-                @Model.Report.Remark
             </p>
+            var remarkList = Model.Report.Remark.Split("。", StringSplitOptions.RemoveEmptyEntries);
+            <ol class="text-danger">
+                @foreach (var li in remarkList)
+                {
+                    <li>@li</li>
+                }
+            </ol>
             <br />
         }
 
