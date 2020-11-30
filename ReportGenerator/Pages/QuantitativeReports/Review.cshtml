@@ -1,7 +1,6 @@
 ﻿@page
 @model ReportGenerator.Pages.QuantitativeReports.ReviewModel
 
-
 @{
     ViewData["Title"] = "审核";
 }
@@ -10,6 +9,15 @@
 <hr />
 <div class="row">
     <div class="col-md">
+        @if (@Model.Report.Remark != null)
+        {
+            <p class="text-danger h4">
+                备注：<br />
+                @Model.Report.Remark
+            </p>
+            <br />
+        }
+
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div id="Report">
@@ -138,14 +146,14 @@
                                     代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
                                     （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
                                     最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
-                                    小于1/2ALE @(halfALE.ToString("P1"))。
+                                    @(MaxSEDivXc(Xc1) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。
 
                                     @if (Xc2 != Xc1)
                                     {
                                         <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
                                             （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
                                             最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
-                                            小于1/2ALE @(halfALE.ToString("P1"))。</text>
+                                            @(MaxSEDivXc(Xc2) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。</text>
                                     }
                                 </p>
                             </td>
@@ -234,7 +242,7 @@
                                     </tr>
                                     <tr>
                                         <td>Cusum test for linearity</td>
-                                        <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : ""))</td>
+                                        <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : "P<=0.1"))</td>
                                     </tr>
                                 </table>
                             </td>
@@ -246,24 +254,24 @@
                             <td colspan="4">
                                 <p>
                                     评估总结(Evaluation Summary)：<br />
-                                    本次实验中仪器比对结果合格，结果表明
-                                    @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
-                                    系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
-                                    @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
+                                    @if (Model.Report.Status == "未通过")
+                                    {
+                                        <text>
+                                            本次实验中仪器比对结果不合格。
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        <text>
+                                            本次实验中仪器比对结果合格，结果表明
+                                            @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
+                                            系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
+                                            @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
+                                        </text>
+                                    }
                                 </p>
                             </td>
                         </tr>
-                        @if (@Model.Report.Remark != null)
-                        {
-                            <tr class="d-print-none">
-                                <td colspan="4">
-                                    <p class="text-danger h4">
-                                        备注(Remark)：<br />
-                                        @Model.Report.Remark
-                                    </p>
-                                </td>
-                            </tr>
-                        }
 
                         <tr>
                             <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>

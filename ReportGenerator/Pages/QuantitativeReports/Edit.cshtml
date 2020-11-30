@@ -5,282 +5,289 @@
     ViewData["Title"] = "编辑";
 }
 
-<h1>编辑</h1>
+<h2>编辑</h2>
 <hr />
 <div class="row">
     <div class="col-md">
-        <div class="content">
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div id="Report">
-                    <div class="form-row">
-                        <div class="col">
-                            <label class="control-label">上次验证时间：</label>
-                            <input class="form-control" asp-for="Report.LastInvestigationDate" required />
-                        </div>
-                        <div class="col">
-                            <label class="control-label">报告代码：</label>
-                            <input class="form-control" asp-for="Report.ProtocalID" required />
-                            <span class="small">格式：检测平台-比对仪器编号-验证时间（年月），例：LCMS/MS-FXS-YZ01-201901</span>
-                        </div>
+        @if (@Model.Report.Remark != null)
+        {
+            <p class="text-danger h4">
+                备注：<br />
+                @Model.Report.Remark
+            </p>
+            <br />
+        }
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="Report">
+                <div class="form-row">
+                    <div class="col">
+                        <label class="control-label">上次验证时间：</label>
+                        <input class="form-control" asp-for="Report.LastInvestigationDate" required />
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">比对目的：</label>
-                        <textarea class="form-control" rows="3" asp-for="Report.Purpose" required></textarea>
+                    <div class="col">
+                        <label class="control-label">报告代码：</label>
+                        <input class="form-control" asp-for="Report.ProtocalID" required />
+                        <span class="small">格式：检测平台-比对仪器编号-验证时间（年月），例：LCMS/MS-FXS-YZ01-201901</span>
                     </div>
-                    <br />
-                    <div>
-                        <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
-                    </div>
-
-                    <div class="row">
-                        <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
-                    </div>
-
-                    <table class="table table-bordered table-sm">
-                        <tbody>
-                            <tr>
-                                <td colspan="3">
-                                    比对项目名称：<input asp-for="Report.Item" value="@Model.Report.Item" required />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="20%"></td>
-                                <td class="text-center" width="40%">检测系统A</td>
-                                <td class="text-center" width="40%">检测系统B</td>
-                            </tr>
-                            <tr>
-                                <td>检测设备或检测方法：</td>
-                                <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
-                                <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
-                            </tr>
-                            <tr>
-                                <td>检测试剂/批号：</td>
-                                <td><textarea asp-for="Report.TargetReagentLot" style="width:100%;" required></textarea></td>
-                                <td><textarea asp-for="Report.MatchReagentLot" style="width:100%;" required></textarea></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="row">
-                                        <span class="col-md-5">检测日期：<input type="date" asp-for="Report.StartTestDate" required /> 至 <input type="date" asp-for="Report.EndTestDate" required /></span>
-                                        <span class="col-md-3 text-center">评估日期：<input type="date" asp-for="Report.EvaluationDate" required /></span>
-                                        <span class="col-md-3 text-right">检测人员：<input asp-for="Report.Technician" required /></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="table table-bordered table-sm">
-                        <tbody>
-                            <tr class="table-active text-center">
-                                <td>样本编号</td>
-                                <td>检测系统A结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
-                                <td>检测系统B结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
-                                <td>偏倚/一致性判断</td>
-                            </tr>
-
-                            @{
-                                // 用于生成实验号和结果列表
-                                var SampleName = Model.Report.SampleName.Split(",").ToList();
-                                var TargetResult = Model.Report.TargetResult.Split(",").ToList();
-                                var MatchResult = Model.Report.MatchResult.Split(",").ToList();
-                                var Bias = Model.Report.Bias.Split(",").ToList();
-                                var YorN = Model.Report.YorN.Split(",").ToList();
-                                var halfALE = Model.Report.ALE / 2;
-                            }
-
-                            @for (int i = 0; i < SampleName.Count; i++)
-                            {
-                                var samplename = SampleName[i];
-                                var targetResult = TargetResult[i];
-                                var matchResult = MatchResult[i];
-                                var bias = Bias[i];
-                                var YN = YorN[i];
-
-                                <tr class="text-center">
-                                    <td>@samplename</td>
-                                    <td>@targetResult</td>
-                                    <td>@matchResult</td>
-                                    <td>
-                                        @bias /
-                                        <span class="@(YN == "N"? "text-danger h5" : "")">@YN</span>
-                                    </td>
-                                </tr>
-                            }
-
-                            @{
-                                var a = Model.Report.a;
-                                var b = Model.Report.b;
-                                var aUCI = Model.Report.aUCI;
-                                var bUCI = Model.Report.bUCI;
-                                var aLCI = Model.Report.aLCI;
-                                var bLCI = Model.Report.bLCI;
-                                var Xc1 = Model.Report.Xc1;
-                                var Xc2 = Model.Report.Xc2;
-
-                                double MaxSEDivXc(double Xc)
-                                {
-                                    // 返回最大SE/Xc
-                                    var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
-                                    return result;
-                                }
-                            }
-
-                            <tr>
-                                <td colspan="4">
-                                    <p>
-                                        不同检测系统结果比对分析：<br />
-                                        回归方程为 y = @a.ToString("F4") + @b.ToString("F4") x，
-                                        斜率b的95%置信区间为（@bLCI.ToString("F4") ~ @bUCI.ToString("F4")），
-                                        截距a的95%置信区间为（@aLCI.ToString("F4") ~ @aUCI.ToString("F4")）。
-
-                                        代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
-                                        （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
-                                        最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
-                                        小于1/2ALE @(halfALE.ToString("P1"))。
-
-                                        @if (Xc2 != Xc1)
-                                        {
-                                            <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
-                                                （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
-                                                最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
-                                                小于1/2ALE @(halfALE.ToString("P1"))。</text>
-                                        }
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" width="50%">
-                                    @*(描述性统计)*@
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td>Variable X</td>
-                                            <td>@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Variable Y</td>
-                                            <td>@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sample size</td>
-                                            <td class="text-right">@SampleName.Count</td>
-                                        </tr>
-                                    </table>
-                                    @{
-                                        var doubleTargetResult = TargetResult.Select(x => double.Parse(x)).ToList();
-                                        var doubleMatchResult = MatchResult.Select(x => double.Parse(x)).ToList();
-                                    }
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td></td>
-                                            <td>Variable X</td>
-                                            <td>Variable Y</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lowest value</td>
-                                            <td class="text-right">@doubleTargetResult.Min().ToString("F4")</td>
-                                            <td class="text-right">@doubleMatchResult.Min().ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Highest value</td>
-                                            <td class="text-right">@doubleTargetResult.Max().ToString("F4")</td>
-                                            <td class="text-right">@doubleMatchResult.Max().ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Arithmetic mean</td>
-                                            <td class="text-right">@doubleTargetResult.Average().ToString("F4")</td>
-                                            <td class="text-right">@doubleMatchResult.Average().ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Median</td>
-                                            <td class="text-right">@doubleTargetResult.Median().ToString("F4")</td>
-                                            <td class="text-right">@doubleMatchResult.Median().ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Standard deviation</td>
-                                            <td class="text-right">@doubleTargetResult.StandardDeviation().ToString("F4")</td>
-                                            <td class="text-right">@doubleMatchResult.StandardDeviation().ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Standard error of the mean</td>
-                                            <td class="text-right">@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
-                                            <td class="text-right">@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
-                                        </tr>
-                                    </table>
-
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td colspan="2">Regression Equation</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">y = @a.ToString("F4") + @b.ToString("F4") x</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Intercept A</td>
-                                            <td class="text-right">@a.ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>95% CI</td>
-                                            <td class="text-right">@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Slope B</td>
-                                            <td class="text-right">@b.ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>95% CI</td>
-                                            <td class="text-right">@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cusum test for linearity</td>
-                                            <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : ""))</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td colspan="2" width="50%">
-                                    <img src=@Model.Report.PicturePath width="600" height="600" asp-append-version="true" alt="线性回归图" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <p>
-                                        评估总结(Evaluation Summary)：<br />
-                                        本次实验中仪器比对结果合格，结果表明
-                                        @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
-                                        系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
-                                        @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
-                                    </p>
-                                </td>
-                            </tr>
-                            @if (@Model.Report.Remark != null)
-                            {
-                                <tr class="d-print-none">
-                                    <td colspan="4">
-                                        <p class="text-danger h4">
-                                            备注(Remark)：<br />
-                                            @Model.Report.Remark
-                                        </p>
-                                    </td>
-                                </tr>
-                            }
-
-                            <tr>
-                                <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>
-                                <td colspan="2">日期(Date)：<input type="date" asp-for="Report.InvestigationDate" required /></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" disabled /></td>
-                                <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" disabled /></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="保存" class="btn btn-primary" />
+                    <label class="control-label">比对目的：</label>
+                    <textarea class="form-control" rows="3" asp-for="Report.Purpose" required></textarea>
                 </div>
-            </form>
-        </div>
+                <br />
+                <div>
+                    <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
+                </div>
+
+                <div class="row">
+                    <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
+                </div>
+
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                比对项目名称：<input asp-for="Report.Item" value="@Model.Report.Item" required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%"></td>
+                            <td class="text-center" width="40%">检测系统A</td>
+                            <td class="text-center" width="40%">检测系统B</td>
+                        </tr>
+                        <tr>
+                            <td>检测设备或检测方法：</td>
+                            <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                            <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                        </tr>
+                        <tr>
+                            <td>检测试剂/批号：</td>
+                            <td><textarea asp-for="Report.TargetReagentLot" style="width:100%;" required></textarea></td>
+                            <td><textarea asp-for="Report.MatchReagentLot" style="width:100%;" required></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="row">
+                                    <span class="col-md-5">检测日期：<input type="date" asp-for="Report.StartTestDate" required /> 至 <input type="date" asp-for="Report.EndTestDate" required /></span>
+                                    <span class="col-md-3 text-center">评估日期：<input type="date" asp-for="Report.EvaluationDate" required /></span>
+                                    <span class="col-md-3 text-right">检测人员：<input asp-for="Report.Technician" required /></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                        <tr class="table-active text-center">
+                            <td>样本编号</td>
+                            <td>检测系统A结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
+                            <td>检测系统B结果(@(Html.DisplayFor(Model => Model.Report.Unit)))</td>
+                            <td>偏倚/一致性判断</td>
+                        </tr>
+
+                        @{
+                            // 用于生成实验号和结果列表
+                            var SampleName = Model.Report.SampleName.Split(",").ToList();
+                            var TargetResult = Model.Report.TargetResult.Split(",").ToList();
+                            var MatchResult = Model.Report.MatchResult.Split(",").ToList();
+                            var Bias = Model.Report.Bias.Split(",").ToList();
+                            var YorN = Model.Report.YorN.Split(",").ToList();
+                            var halfALE = Model.Report.ALE / 2;
+                        }
+
+                        @for (int i = 0; i < SampleName.Count; i++)
+                        {
+                            var samplename = SampleName[i];
+                            var targetResult = TargetResult[i];
+                            var matchResult = MatchResult[i];
+                            var bias = Bias[i];
+                            var YN = YorN[i];
+
+                            <tr class="text-center">
+                                <td>@samplename</td>
+                                <td>@targetResult</td>
+                                <td>@matchResult</td>
+                                <td>
+                                    @bias /
+                                    <span class="@(YN == "N"? "text-danger h5" : "")">@YN</span>
+                                </td>
+                            </tr>
+                        }
+
+                        @{
+                            var a = Model.Report.a;
+                            var b = Model.Report.b;
+                            var aUCI = Model.Report.aUCI;
+                            var bUCI = Model.Report.bUCI;
+                            var aLCI = Model.Report.aLCI;
+                            var bLCI = Model.Report.bLCI;
+                            var Xc1 = Model.Report.Xc1;
+                            var Xc2 = Model.Report.Xc2;
+
+                            double MaxSEDivXc(double Xc)
+                            {
+                                // 返回最大SE/Xc
+                                var result = Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1), Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
+                                return result;
+                            }
+                        }
+
+                        <tr>
+                            <td colspan="4">
+                                <p>
+                                    不同检测系统结果比对分析：<br />
+                                    回归方程为 y = @a.ToString("F4") + @b.ToString("F4") x，
+                                    斜率b的95%置信区间为（@bLCI.ToString("F4") ~ @bUCI.ToString("F4")），
+                                    截距a的95%置信区间为（@aLCI.ToString("F4") ~ @aUCI.ToString("F4")）。
+
+                                    代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
+                                    （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
+                                    最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
+                                    @(MaxSEDivXc(Xc1) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。
+
+                                    @if (Xc2 != Xc1)
+                                    {
+                                        <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                                            （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
+                                            最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
+                                            @(MaxSEDivXc(Xc2) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。</text>
+                                    }
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" width="50%">
+                                @*(描述性统计)*@
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Variable X</td>
+                                        <td>@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Variable Y</td>
+                                        <td>@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sample size</td>
+                                        <td class="text-right">@SampleName.Count</td>
+                                    </tr>
+                                </table>
+                                @{
+                                    var doubleTargetResult = TargetResult.Select(x => double.Parse(x)).ToList();
+                                    var doubleMatchResult = MatchResult.Select(x => double.Parse(x)).ToList();
+                                }
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td></td>
+                                        <td>Variable X</td>
+                                        <td>Variable Y</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lowest value</td>
+                                        <td class="text-right">@doubleTargetResult.Min().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Min().ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Highest value</td>
+                                        <td class="text-right">@doubleTargetResult.Max().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Max().ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Arithmetic mean</td>
+                                        <td class="text-right">@doubleTargetResult.Average().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Average().ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Median</td>
+                                        <td class="text-right">@doubleTargetResult.Median().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.Median().ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Standard deviation</td>
+                                        <td class="text-right">@doubleTargetResult.StandardDeviation().ToString("F4")</td>
+                                        <td class="text-right">@doubleMatchResult.StandardDeviation().ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Standard error of the mean</td>
+                                        <td class="text-right">@((doubleTargetResult.StandardDeviation() / Math.Sqrt(doubleTargetResult.Count)).ToString("F4"))</td>
+                                        <td class="text-right">@((doubleMatchResult.StandardDeviation() / Math.Sqrt(doubleMatchResult.Count)).ToString("F4"))</td>
+                                    </tr>
+                                </table>
+
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td colspan="2">Regression Equation</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">y = @a.ToString("F4") + @b.ToString("F4") x</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intercept A</td>
+                                        <td class="text-right">@a.ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>95% CI</td>
+                                        <td class="text-right">@aLCI.ToString("F4") to @aUCI.ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Slope B</td>
+                                        <td class="text-right">@b.ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>95% CI</td>
+                                        <td class="text-right">@bLCI.ToString("F4") to @bUCI.ToString("F4")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cusum test for linearity</td>
+                                        <td>No significant deviation from linearity(@(Model.Report.P > 0.1 ? "P>0.1" : "P<=0.1"))</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td colspan="2" width="50%">
+                                <img src=@Model.Report.PicturePath width="600" height="600" asp-append-version="true" alt="线性回归图" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p>
+                                    评估总结(Evaluation Summary)：<br />
+                                    @if (Model.Report.Status == "未通过")
+                                    {
+                                        <text>
+                                            本次实验中仪器比对结果不合格。
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        <text>
+                                            本次实验中仪器比对结果合格，结果表明
+                                            @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
+                                            系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
+                                            @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
+                                        </text>
+                                    }
+                                </p>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>
+                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.InvestigationDate" required /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" disabled /></td>
+                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" disabled /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="保存" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
