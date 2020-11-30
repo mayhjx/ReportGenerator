@@ -344,6 +344,6 @@ namespace ReportGenerator.Services
         public string PicturePath { get => pb.PicPath; }
         public string Remark { get; private set; }
 
-        public string Status { get; private set; }
+        public string Status { get; private set; } = "待审核";
     }
 }
