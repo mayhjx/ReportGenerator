@@ -279,6 +279,7 @@ namespace ReportGenerator.Services
                 {
                     var samplename = _sampleNameList[i];
                     stringBuilder.Append($"{samplename}一致性判断未通过。");
+                    Status = "未通过";
                 }
             }
 
@@ -295,16 +296,19 @@ namespace ReportGenerator.Services
             if (P <= 0.1)
             {
                 stringBuilder.Append("两组数据线性相关性未通过: P<=0.10。");
+                Status = "未通过";
             }
 
             if (GetMaxSEXc(Xc1) * 2 > ALE)
             {
                 stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1)} > 1/2ALE。");
+                Status = "未通过";
             }
 
             if (GetMaxSEXc(Xc2) * 2 > ALE)
             {
                 stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2)} > 1/2ALE。");
+                Status = "未通过";
             }
 
             Remark = stringBuilder.ToString();
@@ -340,6 +344,6 @@ namespace ReportGenerator.Services
         public string PicturePath { get => pb.PicPath; }
         public string Remark { get; private set; }
 
-        public string Status { get => Remark != null ? "未通过" : "待审核"; }
+        public string Status { get; private set; }
     }
 }
