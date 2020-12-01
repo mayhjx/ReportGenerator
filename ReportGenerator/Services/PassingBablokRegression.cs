@@ -148,7 +148,15 @@ namespace ReportGenerator.Services
 
         public int[] GetOutliersIndexList()
         {
-            return engine.GetSymbol("ID").AsInteger().ToArray();
+            var outliersIndexList = engine.GetSymbol("ID").AsInteger();
+            if (outliersIndexList == null)
+            {
+                return new int[0];
+            }
+            else
+            {
+                return outliersIndexList.ToArray();
+            }
         }
     }
 }
