@@ -179,7 +179,7 @@ namespace ReportGenerator.Pages.QuantitativeReports
             }
             catch (Exception ex)
             {
-                Message = ex.Message;
+                Message = "程序出现错误：" + ex.Message;
                 return Page();
             }
 
