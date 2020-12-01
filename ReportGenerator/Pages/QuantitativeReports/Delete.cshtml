@@ -8,19 +8,19 @@
 <h3 class="text-danger">请确认是否删除这份报告</h3>
 <hr />
 <div>
-    @if (@Model.Report.Remark.Length > 0)
+    @if (@Model.Report.Remark?.Length > 0)
     {
-    <p class="text-danger h4">
-        备注：<br />
-    </p>
+        <p class="text-danger h4">
+            备注：<br />
+        </p>
         var remarkList = Model.Report.Remark.Split("。", StringSplitOptions.RemoveEmptyEntries);
-    <ol class="text-danger">
-        @foreach (var li in remarkList)
+        <ol class="text-danger">
+            @foreach (var li in remarkList)
             {
-        <li>@li</li>
+                <li>@li</li>
             }
-    </ol>
-    <br />
+        </ol>
+        <br />
     }
     <div id="Report">
         <div class="row">
@@ -108,12 +108,12 @@
                     var bias = Bias[i];
                     var YN = YorN[i];
 
-                <tr class="text-center">
-                    <td>@samplename</td>
-                    <td>@targetResult</td>
-                    <td>@matchResult</td>
-                    <td>@bias / @YN</td>
-                </tr>
+                    <tr class="text-center">
+                        <td>@samplename</td>
+                        <td>@targetResult</td>
+                        <td>@matchResult</td>
+                        <td>@bias / @YN</td>
+                    </tr>
                 }
 
                 @{
@@ -148,10 +148,10 @@
 
                             @if (Xc2 != Xc1)
                             {
-                            <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
-                                （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
-                                最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
-                                @(MaxSEDivXc(Xc2) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。</text>
+                                <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
+                                    （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
+                                    最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
+                                    @(MaxSEDivXc(Xc2) < halfALE ? "小于" : "大于")1/2ALE @(halfALE.ToString("P1"))。</text>
                             }
                         </p>
                     </td>
@@ -254,18 +254,18 @@
                             评估总结(Evaluation Summary)：<br />
                             @if (Model.Report.Status == "未通过")
                             {
-                            <text>
-                                本次实验中仪器比对结果不合格。
-                            </text>
+                                <text>
+                                    本次实验中仪器比对结果不合格。
+                                </text>
                             }
                             else
                             {
-                            <text>
-                                本次实验中仪器比对结果合格，结果表明
-                                @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
-                                系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
-                                @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
-                            </text>
+                                <text>
+                                    本次实验中仪器比对结果合格，结果表明
+                                    @(Html.DisplayFor(model => model.Report.TargetInstrumentName))和@(Html.DisplayFor(model => model.Report.MatchInstrumentName))
+                                    系统进行@(Html.DisplayFor(model => model.Report.Item))检测没有显著性差异，
+                                    @(Html.DisplayFor(model => model.Report.MatchInstrumentName))能有效地进行@(Html.DisplayFor(model => model.Report.Item))项目的检测工作。
+                                </text>
                             }
                         </p>
                     </td>
