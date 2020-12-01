@@ -22,6 +22,7 @@ namespace ReportGeneratorTest
         [DataTestMethod]
         [DataRow(@"C:\Users\lihua\source\repos\ReportGeneratorV2\ReportGeneratorTest\测试数据.csv")]
         [DataRow(@"C:\Users\lihua\source\repos\ReportGeneratorV2\ReportGeneratorTest\测试数据1.csv")]
+        [DataRow(@"C:\Users\lihua\source\repos\ReportGeneratorV2\ReportGeneratorTest\测试数据2.csv")]
         public void TestRun(string filePath)
         {
             var data = Helper.DataReader(filePath);
