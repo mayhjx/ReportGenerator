@@ -301,13 +301,13 @@ namespace ReportGenerator.Services
 
             if (GetMaxSEXc(Xc1) * 2 > ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1)} > 1/2ALE。");
+                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1):P1} > 1/2ALE。");
                 Status = "未通过";
             }
 
             if (GetMaxSEXc(Xc2) * 2 > ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2)} > 1/2ALE。");
+                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2):P1} > 1/2ALE。");
                 Status = "未通过";
             }
 
@@ -315,14 +315,14 @@ namespace ReportGenerator.Services
         }
 
         /// <summary>
-        /// 计算最大SE/Xc%
+        /// 计算最大SE/Xc%，保留3位小数
         /// </summary>
         /// <param name="Xc">医学决定水平</param>
         /// <returns></returns>
         private double GetMaxSEXc(double Xc)
         {
-            return Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1),
-                            Math.Abs((bUCI * Xc + aUCI) / Xc - 1));
+            return Math.Round(Math.Max(Math.Abs((bLCI * Xc + aLCI) / Xc - 1),
+                            Math.Abs((bUCI * Xc + aUCI) / Xc - 1)), 3);
         }
 
         public double ALE { get => _project.GetALE(); }
