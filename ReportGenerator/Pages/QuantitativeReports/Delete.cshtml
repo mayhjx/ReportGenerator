@@ -144,14 +144,14 @@
                             代入医学决定水平值Xc1=@(Xc1)算出Y为@((b * Xc1 + a).ToString("F4"))
                             （Y的置信区间为@((bLCI * Xc1 + aLCI).ToString("F4")) ~ @((bUCI * Xc1 + aUCI).ToString("F4"))），
                             最大SE/Xc%为@(MaxSEDivXc(Xc1).ToString("P1"))，
-                            @(MaxSEDivXc(Xc1) <= halfALE ? "不大于" : "大于")1/2ALE @(halfALE.ToString("P1"))。
+                            @(MaxSEDivXc(Xc1) < halfALE ? "小于" : "大于等于")1/2ALE @(halfALE.ToString("P1"))。
 
                             @if (Xc2 != Xc1)
                             {
                                 <text>代入医学决定水平值Xc2=@(Xc2)算出Y为@((b * Xc2 + a).ToString("F4"))
                                     （Y的置信区间为@((bLCI * Xc2 + aLCI).ToString("F4")) ~ @((bUCI * Xc2 + aUCI).ToString("F4"))），
                                     最大SE/Xc%为@(MaxSEDivXc(Xc2).ToString("P1"))，
-                                    @(MaxSEDivXc(Xc2) <= halfALE ? "不大于" : "大于")1/2ALE @(halfALE.ToString("P1"))。</text>
+                                    @(MaxSEDivXc(Xc2) < halfALE ? "小于" : "大于等于")1/2ALE @(halfALE.ToString("P1"))。</text>
                             }
                         </p>
                     </td>
