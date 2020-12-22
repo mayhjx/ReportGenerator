@@ -4,98 +4,101 @@
 @{
     ViewData["Title"] = "审核";
 }
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2>审核</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md">
+                @await Html.PartialAsync("~/Pages/Shared/_ReportRemarkPartial.cshtml", Model.Report.Remark)
 
-<h2>审核</h2>
-<hr />
-<div class="row">
-    <div class="col-md">
-        @await Html.PartialAsync("~/Pages/Shared/_ReportRemarkPartial.cshtml", Model.Report.Remark)
+                <div id="Report">
+                    <div class="form-row">
+                        <div class="col">
+                            <label class="control-label">上次验证时间：</label>
+                            @Html.DisplayFor(model => model.Report.LastInvestigationDate)
+                        </div>
+                        <div class="col">
+                            <label class="control-label">报告代码：</label>
+                            @Html.DisplayFor(model => model.Report.ProtocalID)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">比对目的：</label>
+                        @Html.DisplayFor(model => model.Report.Purpose)
+                    </div>
 
-        <div id="Report">
-            <div class="form-row">
-                <div class="col">
-                    <label class="control-label">上次验证时间：</label>
-                    @Html.DisplayFor(model => model.Report.LastInvestigationDate)
+                    <br />
+
+                    <div>
+                        <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
+                    </div>
+
+                    <div class="row">
+                        <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
+                    </div>
+
+                    <table class="table table-bordered table-sm">
+                        <tbody>
+                            <tr>
+                                <td colspan="3">
+                                    比对项目名称：@Html.DisplayFor(model => model.Report.Item)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%"></td>
+                                <td class="text-center" width="40%">检测系统A</td>
+                                <td class="text-center" width="40%">检测系统B</td>
+                            </tr>
+                            <tr>
+                                <td>检测设备或检测方法：</td>
+                                <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                                <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                            </tr>
+                            <tr>
+                                <td>检测试剂/批号：</td>
+                                <td>@Html.DisplayFor(model => model.Report.TargetReagentLot)</td>
+                                <td>@Html.DisplayFor(model => model.Report.MatchReagentLot)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
+                                        <span class="col-md-3 text-center">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
+                                        <span class="col-md-3 text-right">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @await Html.PartialAsync("~/Pages/Shared/_ReportPartial.cshtml", Model.Report)
                 </div>
-                <div class="col">
-                    <label class="control-label">报告代码：</label>
-                    @Html.DisplayFor(model => model.Report.ProtocalID)
-                </div>
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <table class="table table-bordered table-sm">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
+                                <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" required /></td>
+                                <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <input type="submit" value="审核" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label class="control-label">比对目的：</label>
-                @Html.DisplayFor(model => model.Report.Purpose)
-            </div>
-
-            <br />
-
-            <div>
-                <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
-            </div>
-
-            <div class="row">
-                <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
-            </div>
-
-            <table class="table table-bordered table-sm">
-                <tbody>
-                    <tr>
-                        <td colspan="3">
-                            比对项目名称：@Html.DisplayFor(model => model.Report.Item)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="20%"></td>
-                        <td class="text-center" width="40%">检测系统A</td>
-                        <td class="text-center" width="40%">检测系统B</td>
-                    </tr>
-                    <tr>
-                        <td>检测设备或检测方法：</td>
-                        <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
-                        <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
-                    </tr>
-                    <tr>
-                        <td>检测试剂/批号：</td>
-                        <td>@Html.DisplayFor(model => model.Report.TargetReagentLot)</td>
-                        <td>@Html.DisplayFor(model => model.Report.MatchReagentLot)</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="row">
-                                <span class="col-md-5">检测日期：@Html.DisplayFor(model => model.Report.StartTestDate) 至 @Html.DisplayFor(model => model.Report.EndTestDate)</span>
-                                <span class="col-md-3 text-center">评估日期：@Html.DisplayFor(model => model.Report.EvaluationDate)</span>
-                                <span class="col-md-3 text-right">检测人员：@Html.DisplayFor(model => model.Report.Technician)</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            @await Html.PartialAsync("~/Pages/Shared/_ReportPartial.cshtml", Model.Report)
         </div>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <table class="table table-bordered table-sm">
-                <tbody>
-                    <tr>
-                        <td colspan="2">调查者(Investigator)：@Html.DisplayFor(model => model.Report.Investigator)</td>
-                        <td colspan="2">日期(Date)：@Html.DisplayFor(model => model.Report.InvestigationDate)</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" required /></td>
-                        <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="form-group">
-                <input type="submit" value="审核" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-page="./Index">返回</a>
+        <div>
+            <a asp-page="./Index">返回</a>
+        </div>
+    </main>
 </div>
 
 @section Scripts {

@@ -5,80 +5,83 @@
     ViewData["Title"] = "新建";
 }
 
-<h1>新建</h1>
+<div class="container">
+    <main role="main" class="pb-3">
+        <h1>新建</h1>
 
-<h4>项目参数</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.Name" class="control-label"></label>
-                <input asp-for="ProjectParameter.Name" class="form-control" />
-                <span asp-validation-for="ProjectParameter.Name" class="text-danger"></span>
+        <h4>项目参数</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.Name" class="control-label"></label>
+                        <input asp-for="ProjectParameter.Name" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.SpecificationOneConcRange" class="control-label"></label>
+                        <input asp-for="ProjectParameter.SpecificationOneConcRange" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.SpecificationOneConcRange" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.SpecificationOne" class="control-label"></label>
+                        <input asp-for="ProjectParameter.SpecificationOne" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.SpecificationOne" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.SpecificationTwoConcRange" class="control-label"></label>
+                        <input asp-for="ProjectParameter.SpecificationTwoConcRange" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.SpecificationTwoConcRange" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.SpecificationTwo" class="control-label"></label>
+                        <input asp-for="ProjectParameter.SpecificationTwo" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.SpecificationTwo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.Xc1" class="control-label"></label>
+                        <input asp-for="ProjectParameter.Xc1" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.Xc1" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.Xc2" class="control-label"></label>
+                        <input asp-for="ProjectParameter.Xc2" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.Xc2" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.SignificantDigits" class="control-label"></label>
+                        <input asp-for="ProjectParameter.SignificantDigits" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.SignificantDigits" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.Unit" class="control-label"></label>
+                        <input asp-for="ProjectParameter.Unit" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.Unit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.LOQ" class="control-label"></label>
+                        <input asp-for="ProjectParameter.LOQ" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.LOQ" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectParameter.ALE" class="control-label"></label>
+                        <input asp-for="ProjectParameter.ALE" class="form-control" />
+                        <span asp-validation-for="ProjectParameter.ALE" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="新建" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.SpecificationOneConcRange" class="control-label"></label>
-                <input asp-for="ProjectParameter.SpecificationOneConcRange" class="form-control" />
-                <span asp-validation-for="ProjectParameter.SpecificationOneConcRange" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.SpecificationOne" class="control-label"></label>
-                <input asp-for="ProjectParameter.SpecificationOne" class="form-control" />
-                <span asp-validation-for="ProjectParameter.SpecificationOne" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.SpecificationTwoConcRange" class="control-label"></label>
-                <input asp-for="ProjectParameter.SpecificationTwoConcRange" class="form-control" />
-                <span asp-validation-for="ProjectParameter.SpecificationTwoConcRange" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.SpecificationTwo" class="control-label"></label>
-                <input asp-for="ProjectParameter.SpecificationTwo" class="form-control" />
-                <span asp-validation-for="ProjectParameter.SpecificationTwo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.Xc1" class="control-label"></label>
-                <input asp-for="ProjectParameter.Xc1" class="form-control" />
-                <span asp-validation-for="ProjectParameter.Xc1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.Xc2" class="control-label"></label>
-                <input asp-for="ProjectParameter.Xc2" class="form-control" />
-                <span asp-validation-for="ProjectParameter.Xc2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.SignificantDigits" class="control-label"></label>
-                <input asp-for="ProjectParameter.SignificantDigits" class="form-control" />
-                <span asp-validation-for="ProjectParameter.SignificantDigits" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.Unit" class="control-label"></label>
-                <input asp-for="ProjectParameter.Unit" class="form-control" />
-                <span asp-validation-for="ProjectParameter.Unit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.LOQ" class="control-label"></label>
-                <input asp-for="ProjectParameter.LOQ" class="form-control" />
-                <span asp-validation-for="ProjectParameter.LOQ" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectParameter.ALE" class="control-label"></label>
-                <input asp-for="ProjectParameter.ALE" class="form-control" />
-                <span asp-validation-for="ProjectParameter.ALE" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="新建" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div>
+            <a asp-page="Index">返回</a>
+        </div>
+    </main>
 </div>
-
-<div>
-    <a asp-page="Index">返回</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -4,98 +4,101 @@
 @{
     ViewData["Title"] = "编辑";
 }
+<div class="container">
+    <main role="main" class="pb-3">
+        <h2>编辑</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md">
+                @await Html.PartialAsync("~/Pages/Shared/_ReportRemarkPartial.cshtml", Model.Report.Remark)
 
-<h2>编辑</h2>
-<hr />
-<div class="row">
-    <div class="col-md">
-        @await Html.PartialAsync("~/Pages/Shared/_ReportRemarkPartial.cshtml", Model.Report.Remark)
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div id="Report">
+                        <div class="form-row">
+                            <div class="col">
+                                <label class="control-label">上次验证时间：</label>
+                                <input class="form-control" asp-for="Report.LastInvestigationDate" required />
+                            </div>
+                            <div class="col">
+                                <label class="control-label">报告代码：</label>
+                                <input class="form-control" asp-for="Report.ProtocalID" required />
+                                <span class="small">格式：检测平台-比对仪器编号-验证时间（年月），例：LCMS/MS-FXS-YZ01-201901</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">比对目的：</label>
+                            <textarea class="form-control" rows="3" asp-for="Report.Purpose" required></textarea>
+                        </div>
+                        <br />
+                        <div>
+                            <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
+                        </div>
 
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div id="Report">
-                <div class="form-row">
-                    <div class="col">
-                        <label class="control-label">上次验证时间：</label>
-                        <input class="form-control" asp-for="Report.LastInvestigationDate" required />
+                        <div class="row">
+                            <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
+                        </div>
+
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">
+                                        比对项目名称：<input asp-for="Report.Item" value="@Model.Report.Item" required style="width:50%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%"></td>
+                                    <td class="text-center" width="40%">检测系统A</td>
+                                    <td class="text-center" width="40%">检测系统B</td>
+                                </tr>
+                                <tr>
+                                    <td>检测设备或检测方法：</td>
+                                    <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
+                                    <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
+                                </tr>
+                                <tr>
+                                    <td>检测试剂/批号：</td>
+                                    <td><textarea asp-for="Report.TargetReagentLot" style="width:100%;" required></textarea></td>
+                                    <td><textarea asp-for="Report.MatchReagentLot" style="width:100%;" required></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="row">
+                                            <span class="col-md-5">检测日期：<input type="date" asp-for="Report.StartTestDate" required /> 至 <input type="date" asp-for="Report.EndTestDate" required /></span>
+                                            <span class="col-md-3 text-center">评估日期：<input type="date" asp-for="Report.EvaluationDate" required /></span>
+                                            <span class="col-md-3 text-right">检测人员：<input asp-for="Report.Technician" required /></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        @await Html.PartialAsync("~/Pages/Shared/_ReportPartial.cshtml", Model.Report)
+
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>
+                                    <td colspan="2">日期(Date)：<input type="date" asp-for="Report.InvestigationDate" required /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" disabled /></td>
+                                    <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" disabled /></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col">
-                        <label class="control-label">报告代码：</label>
-                        <input class="form-control" asp-for="Report.ProtocalID" required />
-                        <span class="small">格式：检测平台-比对仪器编号-验证时间（年月），例：LCMS/MS-FXS-YZ01-201901</span>
+                    <div class="form-group">
+                        <input type="submit" value="保存" class="btn btn-primary" />
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">比对目的：</label>
-                    <textarea class="form-control" rows="3" asp-for="Report.Purpose" required></textarea>
-                </div>
-                <br />
-                <div>
-                    <h3 class="h3 text-center">同一检测项目不同检测系统/方法的比对结果登记表</h3>
-                </div>
-
-                <div class="row">
-                    <p class=" col-md-12 text-right">表号：GZKM-SOP03.22.01</p>
-                </div>
-
-                <table class="table table-bordered table-sm">
-                    <tbody>
-                        <tr>
-                            <td colspan="3">
-                                比对项目名称：<input asp-for="Report.Item" value="@Model.Report.Item" required style="width:50%;" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="20%"></td>
-                            <td class="text-center" width="40%">检测系统A</td>
-                            <td class="text-center" width="40%">检测系统B</td>
-                        </tr>
-                        <tr>
-                            <td>检测设备或检测方法：</td>
-                            <td class="text-center">@Html.DisplayFor(model => model.Report.TargetInstrumentName)</td>
-                            <td class="text-center">@Html.DisplayFor(model => model.Report.MatchInstrumentName)</td>
-                        </tr>
-                        <tr>
-                            <td>检测试剂/批号：</td>
-                            <td><textarea asp-for="Report.TargetReagentLot" style="width:100%;" required></textarea></td>
-                            <td><textarea asp-for="Report.MatchReagentLot" style="width:100%;" required></textarea></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="row">
-                                    <span class="col-md-5">检测日期：<input type="date" asp-for="Report.StartTestDate" required /> 至 <input type="date" asp-for="Report.EndTestDate" required /></span>
-                                    <span class="col-md-3 text-center">评估日期：<input type="date" asp-for="Report.EvaluationDate" required /></span>
-                                    <span class="col-md-3 text-right">检测人员：<input asp-for="Report.Technician" required /></span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                @await Html.PartialAsync("~/Pages/Shared/_ReportPartial.cshtml", Model.Report)
-
-                <table class="table table-bordered table-sm">
-                    <tbody>
-                        <tr>
-                            <td colspan="2">调查者(Investigator)：<input asp-for="Report.Investigator" required /></td>
-                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.InvestigationDate" required /></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">学科主任(Section director)：<input asp-for="Report.Approver" disabled /></td>
-                            <td colspan="2">日期(Date)：<input type="date" asp-for="Report.ApprovalDate" disabled /></td>
-                        </tr>
-                    </tbody>
-                </table>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="保存" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-<div>
-    <a asp-page="./Index">返回</a>
+        <div>
+            <a asp-page="./Index">返回</a>
+        </div>
+    </main>
 </div>
 
 @section Scripts {
