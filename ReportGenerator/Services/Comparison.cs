@@ -299,15 +299,15 @@ namespace ReportGenerator.Services
                 Status = "未通过";
             }
 
-            if (GetMaxSEXc(Xc1) * 2 > ALE)
+            if (GetMaxSEXc(Xc1) * 2 >= ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1):P1} > 1/2ALE。");
+                stringBuilder.Append($"医学决定水平处({Xc1})最大SE/Xc%={GetMaxSEXc(Xc1):P1} >= 1/2ALE。");
                 Status = "未通过";
             }
 
-            if (GetMaxSEXc(Xc2) * 2 > ALE)
+            if (GetMaxSEXc(Xc2) * 2 >= ALE)
             {
-                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2):P1} > 1/2ALE。");
+                stringBuilder.Append($"医学决定水平处({Xc2})最大SE/Xc%={GetMaxSEXc(Xc2):P1} >= 1/2ALE。");
                 Status = "未通过";
             }
 
