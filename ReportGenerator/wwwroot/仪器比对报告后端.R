@@ -139,7 +139,7 @@ if (h<1.358099){
 
 # ×÷Í¼
 plot(x,y,pch=21,bg="gray",main="",
-     xlab = target,ylab = match)
+     xlab = target,ylab = match,family="GBK")
 abline(a,b,col="blue")
 abline(a.lower,b.lower,col="red",lty=2)
 abline(a.upper,b.upper,col="red",lty=2)
