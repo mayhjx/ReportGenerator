@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ReportGenerator.Data;
 using ReportGenerator.Models;
+using System.Threading.Tasks;
 
 namespace ReportGenerator.Pages.QuantitativeReports
 {
